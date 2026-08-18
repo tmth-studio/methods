@@ -8,8 +8,8 @@ For use with AI assistants (Copilot, ChatGPT, Claude). Decision procedures inste
 
 | Document | What it does |
 |---|---|
-| [pyramid-authoring-standard.md](pyramid-authoring-standard.md) | Minto's Pyramid Principle for *authoring* — reader's question, SCQA, pyramid construction, summarising, writing the memo |
-| [pyramid-deck-standard.md](pyramid-deck-standard.md) | Minto's method for *converting* a finished pyramid memo into slides — storyboard, exhibit design, lint pass |
+| [objective-customer-value-standard.md](objective-customer-value-standard.md) | Defines Objective Customer Value (OCV), a formula and measurement protocol for computing customer value from observable data, and a gated procedure for predicting solution uptake |
+| [Pyramid_Principle_Workbook.docx](Pyramid_Principle_Workbook.docx) | Minto's Pyramid Principle as a guided workbook — authoring and deck conversion with write-in tables (attachable to Copilot; [HTML version](Pyramid_Principle_Workbook.html)) |
 
 **To use:** give your assistant the raw URL of a document and ask it to follow the standard, then run the staged prompts inside it.
 
