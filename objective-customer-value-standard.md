@@ -1,8 +1,8 @@
 # Objective Customer Value (OCV) — measurement and uptake-prediction standard
 
-**Version 1.1 · August 2026 · Tough Minds, Tender Hearts**
+**Version 1.2 · August 2026 · Tough Minds, Tender Hearts**
 
-*v1.1 — outcome statements must now be bare (no adjectives, adverbs, or embedded thresholds); the customer's success criteria are captured separately as observable measures; new lint rule L13. v1.0 — first release.*
+*v1.2 — new outcome derivation procedure (Step 1a): the outcome ladder, revealed importance, the minimal covering outcome rule; new lint L14. v1.1 — bare outcome statements, success criteria separated, lint L13. v1.0 — first release.*
 
 An operating manual an AI assistant can execute. It defines a single quantity — Objective Customer Value — gives the formula and a measurement protocol for computing it from observable data, and gives a procedure for converting it into a prediction of solution uptake. Decision procedures, contrastive examples, and lint rules throughout.
 
@@ -110,7 +110,41 @@ Run these steps in order. Do not skip a step because the answer feels obvious �
 
 **Capture success criteria separately.** The qualifiers you just stripped do not disappear — they become hypotheses about the *customer's own* definition of success, to be confirmed in Step 2 and recorded as observable measures (a threshold they track, a budget they hold, a deadline they face). Costs are then measured as shortfalls against the customer's criteria, not against the analyst's adjectives. A criterion the customer does not recognise or measure is not a success criterion; it is your value proposition, and it belongs in the solution description.
 
-**Set the level deliberately.** Outcomes nest: "I run my business" contains "I get paid" contains "I chase an invoice". State candidate levels and choose the highest one the solution can genuinely move — this is the same enumeration as §2.4, and each candidate framing must itself be stated bare. If you cannot name the outcome without mentioning the solution, stop — you are working vendor-side.
+**Set the level deliberately.** Outcomes nest: "I run my business" contains "I get paid" contains "I chase an invoice". The choice of level is not cosmetic — it bounds the entire result, so it gets its own procedure.
+
+### Step 1a — deriving the outcome (the bounding step)
+
+OCV is computed over the routine for the chosen outcome. The choice therefore decides which costs exist at all: choose too low and you truncate — costs the solution genuinely removes sit outside the routine and never get counted; choose too high and you inflate — the routine fills with costs the solution cannot touch, the value story stops being credible, and the deflators collapse. Getting the level right is worth more precision than any parameter estimate downstream. Derive it; never assert it.
+
+**Stage 1 — build the outcome ladder.** Start at the customer's apex outcome (for a business customer, "I run my business"; for a household, "I run my home"). Decompose top-down into the bare outcomes it contains, breadth-first — list all siblings at each level before descending, so no branch is privileged by your solution's perspective. Two to four levels is normally enough. Every rung must pass the bare-statement rule.
+
+**Stage 2 — rank rungs by revealed importance.** Importance is never asked; it is read from what the customer already allocates. For each rung: what do they currently spend on its routine, how much time does it consume, what do failures against it cost, what have they already bought to protect it? Rank siblings by that revealed allocation. A rung the customer says matters but allocates nothing to is not yet an outcome they will pay against.
+
+**Stage 3 — screen for deliverability.** Strike any rung whose routine the solution cannot materially change — a solution that touches a trivial share of a routine's cost cannot claim that outcome, however important it is.
+
+**Stage 4 — apply the minimal covering outcome rule.** From the rungs that survive:
+
+> **Choose the lowest rung whose routine contains every cost the solution changes.**
+
+Both failure directions are now mechanical to check. If a cost the solution removes falls outside the chosen routine, the outcome is too low — go up one rung. If the chosen routine carries large cost blocks the solution cannot touch, you are carrying dead weight — check whether one rung down still covers everything; if it does, go down. The correct level is usually one rung lower than first instinct: solution-builders overstate their reach.
+
+**Stage 5 — validate.** The statement is bare (L13); the customer would recognise it in their own words; success criteria are separated out; and the covering test is recorded (which costs, which rung, why).
+
+**Worked ladder — a business bank's SME customer:**
+
+```
+I run my business                          ← apex; no bank moves this
+├─ I win work                              ← not deliverable by a bank; struck (Stage 3)
+├─ I do the work                           ← struck (Stage 3)
+└─ I run my business's money               ← the bank's branch
+   ├─ I get paid                           (acquiring, collections, invoicing)
+   ├─ I pay                                (payments, payroll, suppliers)
+   ├─ I have cash when I need it           (the timing gap: lending, overdraft)
+   ├─ I keep what I earn                   (FX spread, fees, idle-balance interest)
+   └─ I prove my standing                  (credit record, accounts; enabling)
+```
+
+The rule then does real work: a *full banking relationship* claims "I run my business's money" — the minimal rung covering all the costs the whole product set changes. A *single cash-flow tool* must NOT claim that rung (inflated — it cannot touch FX or acquiring costs); its minimal covering outcome is "I have cash when I need it". Same bank, same customer, different propositions, different outcomes — and therefore different OCVs. One proposition, one outcome, one OCV: computing a product's uptake against the relationship-level outcome is the inflation error in its most common corporate form.
 
 **Step 2 — Map the current routine.** What the segment actually does to achieve the outcome today: the sequence of actions, what they buy and use, what they believe, where the process hurts. Observed or documented behaviour outranks self-report at every point. The gap between what customers say they do and what records show they do is where the real cost usually lives.
 
@@ -232,6 +266,7 @@ Run these on any OCV analysis before presenting it. Report each failure by rule 
 - **L11 — Ceiling inflation.** Segment population sourced from a market-size report rather than from the segment definition used in Steps 1–3.
 - **L12 — Stale calibration.** Live sales data exists but the deflator scores and adoption ranking have not been reconciled against it (§4.3.4).
 - **L13 — Qualified outcome.** Any adjective, adverb, or embedded threshold in the outcome statement (Step 1). The qualifier pre-loads the cost the analysis is supposed to discover, making the OCV circular. Strip it; re-derive it, if it survives, as a customer-held success criterion with an observable measure.
+- **L14 — Unbounded outcome.** No outcome ladder or covering test on record (Step 1a); or the covering test fails in either direction — a solution-changed cost sits outside the chosen routine (truncation), or the routine carries major cost blocks the solution cannot touch and a lower rung would still cover everything (inflation). The characteristic corporate form: a single product's OCV computed against the relationship-level outcome.
 
 ---
 
