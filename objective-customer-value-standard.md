@@ -1,6 +1,8 @@
 # Objective Customer Value (OCV) — measurement and uptake-prediction standard
 
-**Version 1.0 · August 2026 · Tough Minds, Tender Hearts**
+**Version 1.1 · August 2026 · Tough Minds, Tender Hearts**
+
+*v1.1 — outcome statements must now be bare (no adjectives, adverbs, or embedded thresholds); the customer's success criteria are captured separately as observable measures; new lint rule L13. v1.0 — first release.*
 
 An operating manual an AI assistant can execute. It defines a single quantity — Objective Customer Value — gives the formula and a measurement protocol for computing it from observable data, and gives a procedure for converting it into a prediction of solution uptake. Decision procedures, contrastive examples, and lint rules throughout.
 
@@ -96,7 +98,19 @@ The same solution can carry values an order of magnitude apart depending on **wh
 
 Run these steps in order. Do not skip a step because the answer feels obvious — the load-bearing costs are usually the ones the customer has adapted around and no longer notices.
 
-**Step 1 — Define the customer and the outcome.** One segment, one high-importance outcome, stated in the customer's terms ("get paid on time", "pass the audit", "keep the line running"). If you cannot name the outcome without mentioning the solution, stop — you are working vendor-side.
+**Step 1 — Define the customer and the outcome.** One segment, one high-importance outcome.
+
+**The outcome statement must be bare.** A first-person, present-tense statement of what the customer is trying to achieve — and nothing else. No adjectives, no adverbs, no embedded thresholds, no "how", no "why". The reason is circularity: a qualifier in the outcome is a value proposition in disguise, and an analysis that starts from "I get paid *on time*" has already decided that lateness is the cost — it will then "measure" exactly what it assumed. The whole claim to objectivity fails at that point. Strip the statement first; investigate the costs afterwards.
+
+| ❌ Qualified | ✅ Bare | What the qualifier was |
+|---|---|---|
+| "I get paid on time" | "I get paid" | "On time" is a candidate cost (financing the gap), to be measured, not presumed |
+| "I feed my family well" | "I feed my family" | "Well" is a solution's nutrition pitch |
+| "I access capital quickly" | "I access capital" | "Quickly" is the vendor's differentiator |
+
+**Capture success criteria separately.** The qualifiers you just stripped do not disappear — they become hypotheses about the *customer's own* definition of success, to be confirmed in Step 2 and recorded as observable measures (a threshold they track, a budget they hold, a deadline they face). Costs are then measured as shortfalls against the customer's criteria, not against the analyst's adjectives. A criterion the customer does not recognise or measure is not a success criterion; it is your value proposition, and it belongs in the solution description.
+
+**Set the level deliberately.** Outcomes nest: "I run my business" contains "I get paid" contains "I chase an invoice". State candidate levels and choose the highest one the solution can genuinely move — this is the same enumeration as §2.4, and each candidate framing must itself be stated bare. If you cannot name the outcome without mentioning the solution, stop — you are working vendor-side.
 
 **Step 2 — Map the current routine.** What the segment actually does to achieve the outcome today: the sequence of actions, what they buy and use, what they believe, where the process hurts. Observed or documented behaviour outranks self-report at every point. The gap between what customers say they do and what records show they do is where the real cost usually lives.
 
@@ -174,7 +188,7 @@ The 3× threshold exists because the deflators in §4.1 routinely halve or quart
 
 **Solution:** an automated invoice-chasing tool for small trade contractors. Price: £600/year. **Segment:** UK contractors, £150k–£400k revenue, invoicing ~£20k/month on 30-day terms.
 
-**Step 1–2.** Outcome: "get paid what I'm owed, on time." Current routine: owner chases by phone/email in evenings; some invoices drift 60–90 days; a fraction are written off; a credit line covers the cash gap.
+**Step 1–2.** Outcome (bare): "I get paid." Success criteria confirmed from the routine, not assumed: paid in full (write-offs are tracked in their accounts) and paid inside the credit-line horizon (the overdraft cost is the observable measure of lateness). Current routine: owner chases by phone/email in evenings; some invoices drift 60–90 days; a fraction are written off; a credit line covers the cash gap.
 
 **Step 3 — costs of the current routine (central values, tiers shown):**
 
@@ -217,6 +231,7 @@ Run these on any OCV analysis before presenting it. Report each failure by rule 
 - **L10 — Uptake without gates.** A penetration or revenue forecast presented for a segment that has not passed both gates.
 - **L11 — Ceiling inflation.** Segment population sourced from a market-size report rather than from the segment definition used in Steps 1–3.
 - **L12 — Stale calibration.** Live sales data exists but the deflator scores and adoption ranking have not been reconciled against it (§4.3.4).
+- **L13 — Qualified outcome.** Any adjective, adverb, or embedded threshold in the outcome statement (Step 1). The qualifier pre-loads the cost the analysis is supposed to discover, making the OCV circular. Strip it; re-derive it, if it survives, as a customer-held success criterion with an observable measure.
 
 ---
 
