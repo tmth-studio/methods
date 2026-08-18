@@ -599,7 +599,7 @@ Output: options table, recommendation, metrics, gate, assumption.</pre>
           <li><a href="#b-step-8">Do the lint check</a></li>
           <li><a href="#b-step-9">Storyboard the slides</a></li>
           <li><a href="#b-step-10">Test against the audience</a></li>
-          <li><a href="#b-step-11">Build the HTML deck</a></li>
+          <li><a href="#b-step-11">Specify the deck and hand off to the builder</a></li>
           <li><a href="#b-step-12">Deliver and record the outcome</a></li>
         </ol>
       </div>
@@ -1453,16 +1453,152 @@ Output: reaction walk, order changes, Q&amp;A sheet, appendix list.</pre>
         <div class="next-step"><strong>Next:</strong> <a href="#b-step-11">B11 — Build the HTML deck</a></div>
       </div>
 
-      <!-- B11: HTML deck build -->
+      <!-- B11: Deck specification + builder handoff -->
       <div id="b-step-11" class="step">
         <div class="step-header">
           <div class="step-number">B11</div>
           <div>
-            <h3 class="step-title">Build the HTML deck</h3>
-            <p class="step-subtitle">Change the adjusted storyboard into one HTML file with the full deck</p>
+            <h3 class="step-title">Specify the deck and hand off to the builder</h3>
+            <p class="step-subtitle">Write a build specification so complete that the PowerPoint builder makes zero decisions</p>
           </div>
         </div>
-        <div class="step-io"><strong>Input:</strong> adjusted storyboard (B10) + exhibit specifications (B6) + speaker notes · <strong>Output:</strong> one self-contained HTML file with the complete deck</div>
+        <div class="step-io"><strong>Input:</strong> adjusted storyboard (B10) + exhibit specifications (B6) + evidence register · <strong>Output:</strong> deck build specification + built .pptx deck</div>
+
+        <div class="rule-box">
+          <h4>The zero-decision principle</h4>
+          <p>Every decision was made in B1–B10. The builder executes; it does not decide. The specification carries: the text verbatim (with bold marked), the real data tables, the template slide for each layout, the colours as RGB values. If the builder must decide anything — a word, a number, a layout — the specification is not finished.</p>
+          <p><strong>The template file:</strong> download <em>Pyramid_Deck_Templates.pptx</em> from the methods repo. It contains 11 pre-styled template slides: T1 cover · T2 executive summary · T3 agenda · T4 Governing Thought (text-only) · T5 chart + so-what panel · T6 label-and-content rows · T7 quote cards · T8 case template · T9 comparison table · T10 scenario table · T11 the ask. Each placeholder is marked in brackets. The build = duplicate the matching template slide, replace the placeholders, delete the red template notes. The builder never designs a layout.</p>
+        </div>
+
+        <div class="process-box">
+          <h4>Copilot procedure — Part 1: write the specification</h4>
+          <ol>
+            <li>Compile the deck settings block: font Segoe UI for all text; colours as RGB — accent 31,79,168 · navy 15,39,68 · tint 219,231,248 · comparison grey 176,184,196 · muted 113,128,150; titles in accent, bold, sentence case, 2 lines maximum, no full stop; 16:9.</li>
+            <li>For each storyboard row, write one <strong>slide build card</strong>:
+              <ul>
+                <li>SLIDE [n] — TEMPLATE [T1–T11]</li>
+                <li>KICKER: [section name, verbatim]</li>
+                <li>TITLE: [claim, verbatim]</li>
+                <li>BODY: [all text verbatim; mark bold with **double asterisks**; for charts: CHART TYPE, the DATA TABLE with real numbers from the register, the HIGHLIGHT element, values-on-bars ON, axes/gridlines/legend OFF]</li>
+                <li>SOURCE: [verbatim source line]</li>
+                <li>NOTES: [extra colour only]</li>
+              </ul>
+            </li>
+            <li>Write cards for the fixed slides too: cover (T1), executive summary with the SCQA prose verbatim (T2), agenda + each agenda repeat with the current section named (T3), Governing Thought (T4), conclusion, the ask with gate and date (T11).</li>
+            <li>Completeness check: the specification contains no "[TBD]", no placeholder, no open choice. Every number matches the evidence register. Every card names its template slide.</li>
+          </ol>
+        </div>
+
+        <div class="prompt-box">
+          <h4>Prompt 1 — write the specification (chat Copilot)</h4>
+          <pre>You do Step B11 Part 1 (Deck Build Specification) of a Minto
+presentation build.
+
+Adjusted storyboard: [PASTE from B10]
+Exhibit specifications: [PASTE from B6]
+Evidence register (the real numbers): [PASTE]
+
+Write a build specification for a PowerPoint builder. The builder
+makes ZERO decisions: every word, number, and layout choice must be
+in the specification.
+
+Template slides available (the builder duplicates these):
+T1 cover · T2 executive summary (SCQA prose) · T3 agenda ·
+T4 Governing Thought (text-only) · T5 chart + so-what panel ·
+T6 label-and-content rows · T7 quote cards · T8 case template ·
+T9 comparison table · T10 scenario table · T11 the ask
+
+Do this:
+1. Deck settings block: font Segoe UI; colours RGB — accent
+   31,79,168 / navy 15,39,68 / tint 219,231,248 / grey 176,184,196 /
+   muted 113,128,150; titles accent + bold + sentence case + 2 lines
+   maximum + no full stop; 16:9.
+2. One slide build card per storyboard row, plus the fixed slides
+   (cover, executive summary, agenda + repeats, Governing Thought,
+   conclusion, ask). Card format:
+   SLIDE [n] — TEMPLATE [T#]
+   KICKER: [verbatim]
+   TITLE: [verbatim]
+   BODY: [all text verbatim; bold marked **like this**; charts get
+   CHART TYPE + DATA TABLE (real numbers) + HIGHLIGHT element +
+   values-on ON + axes/gridlines/legend OFF]
+   SOURCE: [verbatim]
+   NOTES: [extra colour only]
+3. Completeness check: no [TBD], no open choice, every number from
+   the register, every card names its template. Report the check.
+
+Output: deck settings block + all slide build cards + the
+completeness check result.</pre>
+        </div>
+
+        <div class="process-box">
+          <h4>Copilot procedure — Part 2: drive the builder (Copilot in PowerPoint)</h4>
+          <ol>
+            <li>Open <em>Pyramid_Deck_Templates.pptx</em>. Save a copy with the deck name.</li>
+            <li>Work in batches of 3 to 5 slides. Large batches degrade builder accuracy.</li>
+            <li>For each batch: paste the builder prompt (below) + the deck settings block + the batch's slide cards into Copilot in PowerPoint.</li>
+            <li>After each batch: check each built slide against its card. List each deviation word for word. Instruct: "Repair these deviations: [paste]". Do not continue to the next batch with open deviations.</li>
+            <li>If Copilot in PowerPoint cannot execute a card (complex chart, case screenshot), build that element by hand from the template slide. The template makes manual work mechanical too.</li>
+            <li>Delete the red template notes and all unused template slides. Check the page numbers.</li>
+          </ol>
+        </div>
+
+        <div class="prompt-box">
+          <h4>Prompt 2 — the builder prompt (paste into Copilot in PowerPoint, per batch)</h4>
+          <pre>You build slides from the cards below, exactly.
+
+Rules:
+1. For each card, duplicate the template slide it names (T1-T11) and
+   replace the placeholders with the card content. Do not design new
+   layouts.
+2. Use only the text in the cards. Do not write new text. Do not
+   shorten text. Do not correct text.
+3. Apply bold exactly where the card marks **double asterisks**.
+   Nothing else is bold.
+4. Build charts from the DATA TABLE in the card. Values on the data
+   points. No axes, no gridlines, no legend. The HIGHLIGHT element
+   gets RGB 31,79,168; all other elements get RGB 176,184,196.
+5. No stock images. No icons. No decoration. No extra slides. No
+   design suggestions.
+6. Font: Segoe UI everywhere. Colours from the deck settings block.
+7. After the batch: list each card element you could not build
+   exactly as specified.
+
+Deck settings: [PASTE the settings block]
+Cards for this batch: [PASTE 3-5 slide cards]</pre>
+        </div>
+
+        <div class="process-box">
+          <h4>Verification — the outline diff</h4>
+          <ol>
+            <li>In PowerPoint: View → Outline. Select all outline text and copy it.</li>
+            <li>Open a NEW Copilot chat (no history). Paste: <em>"Compare this outline text to this specification. List each difference: missing text, changed text, wrong order, wrong slide. Outline: [paste]. Specification: [paste]."</em></li>
+            <li>Repair each difference in PowerPoint. Repeat until the diff is clean.</li>
+            <li>The outline diff checks text only. Charts, bold marks, and colours need your eyes: check each built slide against its card.</li>
+          </ol>
+        </div>
+
+        <div class="check-box">
+          <h4>Your review checklist — do the checks in this order</h4>
+          <ul>
+            <li>✓ <strong>Specification check:</strong> no [TBD], no open choices, every card names a template slide, every number matches the register.</li>
+            <li>✓ <strong>Outline diff is clean:</strong> the built deck's outline text matches the specification word for word.</li>
+            <li>✓ <strong>Card-by-card visual check:</strong> bold discipline survived (only marked words are bold); charts show values, no axes, one accent highlight; sources present.</li>
+            <li>✓ <strong>Standalone test:</strong> read three slides cold. The full message must arrive from the slide alone.</li>
+            <li>✓ <strong>Data check:</strong> check five numbers against the evidence register. If one is wrong, check all. Only you can do this check.</li>
+            <li>✓ Template notes deleted; unused template slides deleted; page numbers correct.</li>
+          </ul>
+        </div>
+
+        <label class="output-label">Deck file name + location + specification location:</label>
+        <div class="output-box"><textarea placeholder="The .pptx file, the folder, and where the specification is saved."></textarea></div>
+        <label class="output-label">Build deviations found + repairs:</label>
+        <div class="output-box"><textarea placeholder="Batch # | deviation | repair instructed | repaired?"></textarea></div>
+
+        <div class="checkpoint"><p class="checkpoint-text">GATE: the specification has zero open decisions. The built deck matches it card for card. The numbers match the register.</p></div>
+
+        <h3 style="margin-top: 32px;">Fallback route — HTML deck (no PowerPoint Copilot available)</h3>
+        <p>Use this route when Copilot in PowerPoint is not available. It produces a self-contained HTML deck with a built-in QA check on the 'q' key.</p>
 
         <div class="rule-box">
           <h4>Rules for the file</h4>
@@ -1719,7 +1855,7 @@ continue in a second code block from the exact cut point.</pre>
             <p class="step-subtitle">Present. Record the decision. Collect the lessons.</p>
           </div>
         </div>
-        <div class="step-io"><strong>Input:</strong> HTML deck (B11) + Q&amp;A sheet (B10) · <strong>Output:</strong> outcome record + lessons</div>
+        <div class="step-io"><strong>Input:</strong> built deck (B11) + Q&amp;A sheet (B10) · <strong>Output:</strong> outcome record + lessons</div>
 
         <div class="process-box">
           <h4>Procedure</h4>
