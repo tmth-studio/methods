@@ -125,11 +125,57 @@
       <h3>How to use this workbook</h3>
       <p><strong>Division of work.</strong> Copilot does the production work in each step: analysis, drafts, structure, and chart specification. You do three tasks only:</p>
       <ol style="margin: 12px 0 0 20px;">
-        <li><strong>Paste the step prompt into Copilot.</strong> Each step has a prepared prompt (purple box). Attach your inputs to the prompt.</li>
+        <li><strong>Paste the session state header, then the step prompt, into Copilot.</strong> Each step has a prepared prompt (purple box). The state header (below) tells Copilot what is already done. Attach your inputs.</li>
         <li><strong>Check the output against the review checklist</strong> (amber box). Each check is a specific Minto rule.</li>
         <li><strong>Write the approved output in the output box.</strong> The output is the input for the next step. Do not continue with an output that is not approved.</li>
       </ol>
       <p style="margin-top: 12px;"><strong>The gates are the method.</strong> The value of Minto is the test of each element before you build on it. If a check fails, Copilot must repair the work and send it again. A failed check never means "acceptable".</p>
+    </div>
+
+    <!-- Session state header -->
+    <div class="rule-box">
+      <h4>Session state header — paste at the top of every prompt</h4>
+      <p>Copilot has no memory of your process. Without this header, it repeats completed work, proposes steps you have done, and does not ask for the information that would improve the output. Fill the brackets and paste this block above each step prompt:</p>
+      <pre style="background: var(--surface); border: 1px solid var(--border); border-radius: 3px; padding: 12px; font-size: 12.5px; font-family: ui-monospace, Menlo, monospace; white-space: pre-wrap; line-height: 1.5; color: var(--text-secondary);">SESSION STATE
+Completed steps: [example: A1-A5, B1-B3]
+Current step: [example: B4]
+Approved outputs attached below: [list them]
+
+Rules for this session:
+1. Do not repeat or redo work from the completed steps. Their outputs
+   are final unless I ask for a change.
+2. Do not propose next steps or a plan. The workbook sets the
+   sequence. Do only the current step.
+3. BEFORE you produce the output: if information is missing that
+   would make the output materially better, ask me numbered
+   questions first and stop. If you have enough, say "no questions"
+   and produce the output.
+4. If an instruction in this prompt conflicts with something you
+   assume, follow the prompt and flag the conflict.</pre>
+      <p style="margin-top: 8px;">Rule 3 is the important one. It changes Copilot from a passive producer into an active interviewer: it must ask for the missing budget figure, the missing attendee name, or the missing data source before it writes — instead of inventing around the gap.</p>
+    </div>
+
+    <!-- Verification protocol -->
+    <div class="rule-box">
+      <h4>Verification protocol — three checks catch the errors. Use all three.</h4>
+      <p><strong>1. Self-check — same chat.</strong> Add this line to the end of each prompt in this workbook:</p>
+      <pre style="background: var(--surface); border: 1px solid var(--border); border-radius: 3px; padding: 12px; font-size: 12.5px; font-family: ui-monospace, Menlo, monospace; white-space: pre-wrap; line-height: 1.5; color: var(--text-secondary);">Before you give the output: test your work against each rule in this
+prompt. Add a table at the end: rule | PASS or FAIL | repair made.
+Repair each FAIL before you give the output.</pre>
+      <p style="margin-top: 12px;"><strong>2. Independent check — new chat.</strong> The producer must not be the only checker of its own work. For the heavy gates (B4 pyramid, B8 lint, B11 deck), open a NEW Copilot chat with no history. Paste this verifier prompt, with the output and the step's checklist:</p>
+      <pre style="background: var(--surface); border: 1px solid var(--border); border-radius: 3px; padding: 12px; font-size: 12.5px; font-family: ui-monospace, Menlo, monospace; white-space: pre-wrap; line-height: 1.5; color: var(--text-secondary);">You are a verifier. You did not make this work. Your task is to find
+defects. Do not repair them.
+
+Work product: [PASTE the output]
+Rules: [PASTE the step's review checklist and gate]
+
+Do this:
+1. Test the product against each rule. Try to make each rule fail.
+2. Quote the exact text of each failure.
+3. Do not accept a claim without evidence inside the product.
+4. Output a table: rule | PASS or FAIL | exact quote | proposed repair.
+5. End with one verdict: ACCEPT or RETURN FOR REPAIR.</pre>
+      <p style="margin-top: 12px;"><strong>3. Human checks — only you can do these.</strong> Copilot cannot see the rendered page, and it cannot know if your data is true. You must check: the deck in the browser (B11 has a built-in check on the 'q' key), five numbers against the evidence register, and the match between the simulated room and the real persons.</p>
     </div>
 
     <!-- Flow Selector -->
@@ -1447,10 +1493,11 @@ background:var(--bg);color:var(--text);}
 .slide{display:none;min-height:100vh;padding:48px 64px;
 flex-direction:column;background:var(--surface);}
 .slide.active{display:flex;}
-.slide h1{font-size:26px;line-height:1.3;max-width:960px;
-margin-bottom:24px;}
+.slide h1{font-size:26px;line-height:1.3;max-width:1000px;
+margin-bottom:16px;}
 .exhibit{flex:1;display:flex;align-items:center;
 justify-content:center;}
+.exhibit&gt;*{width:100%;max-width:1000px;}
 .source{font-size:11px;color:var(--muted);
 border-top:1px solid var(--border);padding-top:8px;}
 .notes{display:none;position:fixed;bottom:56px;left:16px;
@@ -1462,11 +1509,19 @@ color:var(--muted);}
 .nav button{padding:6px 14px;border:1px solid var(--border);
 background:var(--surface);cursor:pointer;}
 .bar-row{display:flex;align-items:center;gap:12px;
-margin:10px 0;font-size:14px;}
-.bar-row .label{width:180px;text-align:right;}
-.bar-row .bar{height:26px;background:var(--grey);}
+margin:14px 0;font-size:18px;}
+.bar-row .label{width:240px;text-align:right;}
+.bar-row .bar{height:40px;background:var(--grey);}
 .bar-row .bar.hl{background:var(--accent);}
 .bar-row .val{font-weight:600;}
+table.x{border-collapse:collapse;font-size:18px;width:100%;}
+table.x th,table.x td{border-bottom:1px solid var(--border);
+padding:12px 16px;text-align:left;}
+table.x th{border-bottom:2px solid var(--grey);}
+#qa{display:none;position:fixed;top:16px;left:16px;right:16px;
+background:#fff8e6;border:2px solid #d4820a;padding:16px;
+font-size:13px;z-index:9;max-height:70vh;overflow:auto;
+white-space:pre-line;}
 &lt;/style&gt;&lt;/head&gt;&lt;body&gt;
 
 &lt;section class="slide active"&gt;
@@ -1477,6 +1532,7 @@ margin:10px 0;font-size:14px;}
 &lt;/section&gt;
 &lt;!-- more slides --&gt;
 
+&lt;div id="qa"&gt;&lt;/div&gt;
 &lt;div class="nav"&gt;
   &lt;button onclick="mv(-1)"&gt;&amp;larr;&lt;/button&gt;
   &lt;span id="ctr"&gt;&lt;/span&gt;
@@ -1488,13 +1544,49 @@ function show(n){s[i].classList.remove('active');
 i=(n+s.length)%s.length;s[i].classList.add('active');
 document.getElementById('ctr').textContent=(i+1)+' / '+s.length;}
 function mv(d){show(i+d);}
+function qa(){var out=[],k=i,j,sl,n,h,lh,ex,r,c,so;
+for(j=0;j!=s.length;j++){show(j);sl=s[j];n=j+1;
+h=sl.querySelector('h1');
+if(!h||!h.textContent.trim()){out.push('Slide '+n+': no title');}
+else{lh=parseFloat(getComputedStyle(h).lineHeight);
+if(h.getBoundingClientRect().height&gt;2.3*lh)
+out.push('Slide '+n+': title is more than 2 lines');}
+ex=sl.querySelector('.exhibit');
+if(!ex||!ex.firstElementChild){out.push('Slide '+n+': empty exhibit');}
+else{r=ex.getBoundingClientRect();
+c=ex.firstElementChild.getBoundingClientRect();
+if(r.height&gt;0&amp;&amp;0.4*r.height&gt;c.height)
+out.push('Slide '+n+': exhibit uses under 40% of its space'+
+' — make it larger');}
+so=sl.querySelector('.source');
+if(!so||5&gt;so.textContent.replace('Source:','').trim().length)
+out.push('Slide '+n+': no source line');
+if(!sl.querySelector('.notes')||
+!sl.querySelector('.notes').textContent.trim())
+out.push('Slide '+n+': no speaker notes');}
+show(k);var q=document.getElementById('qa');
+q.textContent='QA CHECK — '+s.length+' slides\n'+
+(out.length?out.join('\n'):'All checks PASS');
+q.style.display=q.style.display==='block'?'none':'block';}
 document.addEventListener('keydown',function(e){
 if(e.key==='ArrowRight')mv(1);
 if(e.key==='ArrowLeft')mv(-1);
 if(e.key==='n')s[i].querySelector('.notes')
-.classList.toggle('show');});
+.classList.toggle('show');
+if(e.key==='q')qa();});
 show(0);
 &lt;/script&gt;&lt;/body&gt;&lt;/html&gt;
+
+8. Make each exhibit fill its space. The exhibit content must use
+   more than 40% of the height of its area. Bar charts: 40px bars,
+   18px labels. Tables: use class "x". If a slide shows a large
+   empty area, the exhibit is too small. Make it larger.
+9. Keep the QA script. It runs on the 'q' key and checks each
+   slide: title present and 2 lines maximum, exhibit present and
+   large, source line present, speaker notes present.
+10. Before you give the output: test your work against rules 1-9.
+    Add a table at the end: rule | PASS or FAIL | repair made.
+    Repair each FAIL before you give the output.
 
 Output: the complete file in one code block. If the output is cut,
 continue in a second code block from the exact cut point.</pre>
@@ -1507,18 +1599,21 @@ continue in a second code block from the exact cut point.</pre>
             <li>Paste it into Notepad.</li>
             <li>Save as <strong>deck.html</strong>. Set "Save as type" to "All files". Set the encoding to UTF-8.</li>
             <li>Open the file in Edge. Use the arrow keys to move. Use the 'n' key for the notes.</li>
+            <li>Press 'q'. The built-in QA check tests each slide and lists the failures with slide numbers.</li>
           </ol>
         </div>
 
         <div class="check-box">
-          <h4>Your review checklist</h4>
+          <h4>Your review checklist — do the checks in this order</h4>
           <ul>
-            <li>✓ The file opens and all slides show. The counter shows the correct total.</li>
+            <li>✓ <strong>Machine check first:</strong> press 'q'. The QA overlay must show "All checks PASS". If it lists failures, send them back to Copilot word for word: "Repair these QA failures: [paste]". Repeat until PASS.</li>
+            <li>✓ The file opens and all slides show. The counter shows the correct total from the B10 storyboard.</li>
             <li>✓ Step through the full deck with the titles only. The argument stands. This is the title-read test in the browser.</li>
-            <li>✓ Each exhibit matches its B6 specification. One message. One highlight in the accent colour.</li>
-            <li>✓ Check five numbers against the evidence register. If one is wrong, check all.</li>
+            <li>✓ Each exhibit matches its B6 specification. One message. One highlight in the accent colour. No large empty areas.</li>
+            <li>✓ <strong>Data check:</strong> check five numbers against the evidence register. If one is wrong, check all. Copilot cannot do this check — only you know the true data.</li>
             <li>✓ The file works without a network connection. Turn the network off and open it again.</li>
             <li>✓ The 'n' key shows the correct notes on each slide.</li>
+            <li>✓ <strong>Independent check (optional, for high-stakes decks):</strong> new Copilot chat, verifier prompt from the Verification protocol, paste the storyboard + the deck's title list. The verifier confirms the deck matches the storyboard.</li>
           </ul>
         </div>
 
