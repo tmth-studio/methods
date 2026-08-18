@@ -1,8 +1,8 @@
 # Objective Customer Value (OCV) — measurement and uptake-prediction standard
 
-**Version 1.2 · August 2026 · Tough Minds, Tender Hearts**
+**Version 1.3 · August 2026 · Tough Minds, Tender Hearts**
 
-*v1.2 — new outcome derivation procedure (Step 1a): the outcome ladder, revealed importance, the minimal covering outcome rule; new lint L14. v1.1 — bare outcome statements, success criteria separated, lint L13. v1.0 — first release.*
+*v1.3 (after two live tests, one consumer and one B2B) — visibility is now scored per component; switching cost must be priced with the full cost-class taxonomy; credibility anchors split for contractual vs claimed mechanisms; consumer-time pricing convention stated. v1.2 — outcome derivation procedure (Step 1a), minimal covering outcome rule, lint L14. v1.1 — bare outcome statements, success criteria separated, lint L13. v1.0 — first release.*
 
 An operating manual an AI assistant can execute. It defines a single quantity — Objective Customer Value — gives the formula and a measurement protocol for computing it from observable data, and gives a procedure for converting it into a prediction of solution uptake. Decision procedures, contrastive examples, and lint rules throughout.
 
@@ -76,6 +76,12 @@ Every candidate "benefit" must be classified into exactly one class and priced b
 | **Friction** | Time and error load of running the routine — what is loosely called "stress" | hours × fully-loaded rate + error rate × cost per error | Time studies, support logs, rework records |
 
 This taxonomy is the fix for the standard failure mode where "hard" savings get counted and "soft" ones get waved at. Fear and stress are not soft; they are risk-borne and friction costs that have simply not been priced. Price them or exclude them — never adjectivise them.
+
+**Pricing conventions:**
+
+- **Business time** is priced at the fully-loaded rate of whoever performs the routine.
+- **Consumer/household time** has no loaded-rate analogue. Convention: price it at a banded net-wage rate for the segment (state the band, e.g. £10–18/hour), and always run the one-way sensitivity on it — in consumer cases it is frequently the dominant parameter, and it must never dominate silently.
+- **Value-neutral trades** (the customer pays money to get time, or vice versa, at roughly fair exchange) occasionally appear, mainly in consumer cases. They are not costs eliminated; enter both legs explicitly so they net out visibly rather than being counted one-sided.
 
 **Contrastive pair:**
 
@@ -177,9 +183,9 @@ WTP = OCV × V × C × B
 
 | Deflator | What it measures | How to score it |
 |---|---|---|
-| **V — Visibility** | Can the customer *see* the causal link between this solution and the cost it removes? Foregone and risk-borne costs are real but often invisible to the customer. | 1.0 = the cost is a line in their accounts. 0.5 = they acknowledge it when shown. 0.2 = they must take the causal chain on trust. |
-| **C — Credibility** | Does the customer believe the solution will actually deliver the parameter change claimed? Unproven mechanisms deflate hard. | 1.0 = demonstrated in their own operation (trial). 0.7 = proven in a peer they recognise. 0.3 = vendor claim only. |
-| **B — Behavioural drag** | Loss-aversion asymmetry: customers overweight what the switch makes them give up (habit, sunk learning, incumbent relationships) by roughly 3×, while innovators overweight their own benefits by roughly 3× — a ~9× perception gap on habit-embedded routines. | 1.0 = the solution slots into the existing routine unchanged. 0.6 = moderate routine change. 0.3 = the routine itself must be abandoned and relearned. |
+| **V — Visibility** | Can the customer *see* the causal link between this solution and the cost it removes? Foregone and risk-borne costs are real but often invisible to the customer. | **Score per component, not once**: components in the same analysis routinely span the full range (a published interest rate ≈ 0.95; unaccounted time ≈ 0.3). Apply each component's V, sum to a visibility-adjusted value, then apply C and B to the sum. 1.0 = the cost is a line in their accounts. 0.5 = they acknowledge it when shown. 0.2 = they must take the causal chain on trust. |
+| **C — Credibility** | Does the customer believe the solution will actually deliver the parameter change claimed? | Anchor by mechanism type. **Contractual mechanisms** (an advertised rate, a guaranteed rebate, a priced SLA) start near 0.9 — no trial is needed to believe a contract. **Claimed mechanisms** (a promised behaviour change, an efficacy claim) start near 0.3 as a vendor claim, ≈ 0.7 once proven in a peer the customer recognises, ≈ 1.0 once demonstrated in their own operation. Much of proposition design is converting claimed value into contractual value. |
+| **B — Behavioural drag** | Loss-aversion asymmetry: customers overweight what the switch makes them give up (habit, sunk learning, incumbent relationships) by roughly 3×, while innovators overweight their own benefits by roughly 3× — a ~9× perception gap on habit-embedded routines. | 1.0 = the solution slots into the existing routine unchanged. 0.6 = moderate routine change. 0.3 = the routine itself must be abandoned and relearned. B resets toward 1.0 at **events** where the routine is already being re-decided (formation, renewal, refinancing, a move, a failure) — event-led distribution is often the only economic route past a low B. |
 
 Score each deflator explicitly, with one sentence of justification. Multiplying unexamined 1.0s is lint (L7).
 
@@ -191,7 +197,7 @@ Score each deflator explicitly, with one sentence of justification. Multiplying 
 Adopt if:  WTP  ≥  Price + Switching cost
 ```
 
-Switching cost is priced like any friction cost: implementation hours × loaded rate + integration spend + parallel-running period. It is paid once; annualise it over a defensible horizon (default 3 years) when comparing against a recurring price.
+**Switching cost is priced with the full cost-class taxonomy (§2.2), not as friction alone.** It typically contains: friction (implementation hours × loaded rate, integration spend, parallel running), risk-borne (probability × impact of transition failures — misdirected payments, downtime, data loss), and sometimes foregone (revenue paused during cutover). The risk-borne component is the one habitually omitted, and it can flip the gate verdict on its own. Switching cost is paid once; annualise it over a defensible horizon (default 3 years) when comparing against a recurring price.
 
 **Gate 2 — Multiple screen (is the case strong enough to survive being wrong?):**
 
