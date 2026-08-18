@@ -1333,6 +1333,20 @@ Do this:
 Output: dot-dash sequence, storyboard table, title-read test result.</pre>
         </div>
 
+        <div class="reference-box">
+          <h4>Slide design rules — abstracted from a McKinsey reference deck</h4>
+          <p>These rules come from a study of a McKinsey &amp; Company deck (46 pages, 2012). Apply them in the storyboard and in the B11 build.</p>
+          <p><strong>1. Titles.</strong> The title is a full-sentence claim in the accent colour, top left, 2 lines maximum. Sentence case. No full stop. Titles connect across slides: a claim can continue from one slide to the next ("…brings distinctive capabilities…" then "…as well as valuable skills…"). The title sequence reads as the argument.</p>
+          <p><strong>2. The kicker line.</strong> Above each body-slide title, put a small italic grey label with the section name (example: "Diagnosis", "Strategy", "Execution"). The reader always knows the section. When a slide gives the detail of a numbered item from a summary slide, put that number in a blue circle before the title.</p>
+          <p><strong>3. The tracker.</strong> In a multi-part section, repeat a small process diagram on each slide (left rail). Show the current stage in dark blue and the other stages in light blue. Repeat the agenda slide at each section break, with the current section in a light highlight bar.</p>
+          <p><strong>4. The label-and-content grammar.</strong> Left column: short category labels in light accent boxes (2–4 words). Right column: the content for each label, as bullets. Put a dotted line between label groups. Use numbered circles (1, 2, 3) only for sequences and priorities, not for plain lists.</p>
+          <p><strong>5. Emphasis discipline.</strong> Bold ONLY the load-bearing words in each bullet, never full sentences. A reader of only the bold words must get the message. One accent colour family. Reserve a second colour (red) for the few items that matter most: key numbers, results, warnings.</p>
+          <p><strong>6. Charts.</strong> Chart header = metric name + period. The unit sits on its own grey line below the header ("Percent"). Put the values on the bars. Remove the y-axis, the gridlines, and the legend. The message bar is dark; the comparison bars are light. Two parallel charts can carry headers that continue one sentence ("This is true nationwide…" / "…and especially in New York").</p>
+          <p><strong>7. Quotes and cases.</strong> Quote card: light tinted background, the key phrase in bold, attribution "– Name, Title, Company". Case-study slides use one fixed template: Opportunity / Best practices / Result labels on the left, logo and screenshot on the right. Put the so-what in a separate right panel titled "What this means for [reader]" — keep the implication apart from the evidence.</p>
+          <p><strong>8. Footers and sources.</strong> Every evidence slide has "SOURCE: …" at the bottom left. Footnote numbers sit above the footer in small grey text. The slide number sits at the bottom right.</p>
+          <p><strong>9. Detail signals.</strong> Mark an item that gets detail later with a dashed outline and a "Details follow" legend. Mark appendix detail with "Details in appendix".</p>
+        </div>
+
         <div class="check-box">
           <h4>Your review checklist</h4>
           <ul>
@@ -1341,6 +1355,7 @@ Output: dot-dash sequence, storyboard table, title-read test result.</pre>
             <li>✓ No bullet-text slides in the body. Text goes in the speaker notes.</li>
             <li>✓ The Governing Thought slide and the ask slide are clean text-only slides.</li>
             <li>✓ The slide count fits the time budget, with space for interruptions.</li>
+            <li>✓ The design rules are applied: kicker lines, bold-only-key-words, values on bars, sources on evidence slides.</li>
           </ul>
         </div>
 
@@ -1493,8 +1508,18 @@ background:var(--bg);color:var(--text);}
 .slide{display:none;min-height:100vh;padding:48px 64px;
 flex-direction:column;background:var(--surface);}
 .slide.active{display:flex;}
+.kicker{font-size:13px;color:var(--muted);font-style:italic;}
 .slide h1{font-size:26px;line-height:1.3;max-width:1000px;
-margin-bottom:16px;}
+margin-bottom:16px;color:var(--accent);}
+.chart-head{font-weight:600;font-size:16px;}
+.chart-unit{font-size:13px;color:var(--muted);
+border-bottom:1px solid var(--border);margin-bottom:12px;
+padding-bottom:4px;}
+.quote{background:#e6f4ec;padding:14px 18px;font-size:16px;
+margin:10px 0;}
+.quote .attr{font-size:13px;color:var(--muted);}
+.sowhat{border:1px solid var(--accent);background:#e8eef8;
+padding:14px;font-size:15px;}
 .exhibit{flex:1;display:flex;align-items:center;
 justify-content:center;}
 .exhibit&gt;*{width:100%;max-width:1000px;}
@@ -1525,9 +1550,10 @@ white-space:pre-line;}
 &lt;/style&gt;&lt;/head&gt;&lt;body&gt;
 
 &lt;section class="slide active"&gt;
+  &lt;div class="kicker"&gt;[SECTION NAME]&lt;/div&gt;
   &lt;h1&gt;[CLAIM TITLE]&lt;/h1&gt;
   &lt;div class="exhibit"&gt;[EXHIBIT]&lt;/div&gt;
-  &lt;div class="source"&gt;Source: [..]&lt;/div&gt;
+  &lt;div class="source"&gt;SOURCE: [..]&lt;/div&gt;
   &lt;div class="notes"&gt;[SPEAKER NOTES]&lt;/div&gt;
 &lt;/section&gt;
 &lt;!-- more slides --&gt;
@@ -1577,14 +1603,29 @@ if(e.key==='q')qa();});
 show(0);
 &lt;/script&gt;&lt;/body&gt;&lt;/html&gt;
 
-8. Make each exhibit fill its space. The exhibit content must use
+8. Apply the slide design rules:
+   a. Each body slide has a kicker line: the section name in small
+      italic grey, above the title.
+   b. Bold ONLY the load-bearing words in bullets, never full
+      sentences. A reader of only the bold words must get the
+      message.
+   c. Chart slides: header = metric name + period (class
+      "chart-head"), the unit on its own grey line (class
+      "chart-unit"). Values on the bars. No axis, no gridlines,
+      no legend. Message bar dark (hl class), comparison bars grey.
+   d. Quotes: class "quote", key phrase in bold, attribution
+      "– Name, Title, Company" in class "attr".
+   e. If a slide needs a so-what next to the evidence, put it in a
+      panel with class "sowhat" titled "What this means for
+      [reader]".
+9. Make each exhibit fill its space. The exhibit content must use
    more than 40% of the height of its area. Bar charts: 40px bars,
    18px labels. Tables: use class "x". If a slide shows a large
    empty area, the exhibit is too small. Make it larger.
-9. Keep the QA script. It runs on the 'q' key and checks each
-   slide: title present and 2 lines maximum, exhibit present and
-   large, source line present, speaker notes present.
-10. Before you give the output: test your work against rules 1-9.
+10. Keep the QA script. It runs on the 'q' key and checks each
+    slide: title present and 2 lines maximum, exhibit present and
+    large, source line present, speaker notes present.
+11. Before you give the output: test your work against rules 1-10.
     Add a table at the end: rule | PASS or FAIL | repair made.
     Repair each FAIL before you give the output.
 
