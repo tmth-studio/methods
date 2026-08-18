@@ -1,0 +1,1362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pyramid Principle: Guided Workbook v2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f4f1;
+      --surface: #ffffff;
+      --text: #0f1923;
+      --text-secondary: #4a5568;
+      --text-muted: #718096;
+      --border: #dde1e7;
+      --border-strong: #b0b8c4;
+      --accent: #1f4fa8;
+      --accent-light: #e8eef8;
+      --panel-bg: #0f2744;
+      --panel-text: #ffffff;
+      --success: #166534;
+      --success-light: #e6f4ec;
+      --warning-bg: #fff8e6;
+      --warning-border: #d4820a;
+      --danger: #991b1b;
+      --danger-light: #fde8e8;
+      --purple: #5b21b6;
+      --purple-light: #f0ebfb;
+      --tag-radius: 3px;
+      --font-ui: 'DM Sans', system-ui, sans-serif;
+      --font-body: 'Lora', Georgia, serif;
+      --width: 960px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-ui); font-size: 16px; line-height: 1.6; }
+    .container { max-width: var(--width); margin: 0 auto; padding: 40px 24px 80px; background: var(--surface); }
+    h1 { font-size: 30px; font-weight: 600; margin: 40px 0 12px; }
+    h2 { font-size: 22px; font-weight: 600; margin: 40px 0 16px; border-bottom: 2px solid var(--accent); padding-bottom: 8px; }
+    h3 { font-size: 18px; font-weight: 600; margin: 20px 0 12px; }
+    h4 { font-size: 13px; font-weight: 600; margin: 16px 0 8px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em; }
+    p { margin: 12px 0; color: var(--text-secondary); }
+    li { color: var(--text-secondary); }
+    table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 14px; }
+    th { font-weight: 600; text-align: left; border-bottom: 2px solid var(--border-strong); padding: 8px 10px; color: var(--text); }
+    td { border-bottom: 1px solid var(--border); padding: 8px 10px; vertical-align: top; color: var(--text-secondary); }
+    .intro-section { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 24px; margin: 24px 0; }
+    .intro-section h3 { margin-top: 0; }
+    .flow-selector { display: flex; gap: 16px; margin: 24px 0; }
+    .flow-button { flex: 1; padding: 20px; border: 2px solid var(--border); border-radius: 4px; text-align: center; cursor: pointer; transition: all 0.2s; }
+    .flow-button:hover, .flow-button.active { border-color: var(--accent); background: var(--accent-light); }
+    .flow-button h3 { margin: 0 0 8px; }
+    .flow-button p { font-size: 13px; margin: 0; }
+    .step { border: 1px solid var(--border); border-radius: 4px; margin: 28px 0; padding: 24px; page-break-inside: avoid; }
+    .step-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px; }
+    .step-number { background: var(--panel-bg); color: var(--panel-text); min-width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-weight: 600; font-size: 15px; flex-shrink: 0; }
+    .step-title { font-size: 18px; font-weight: 600; margin: 0; }
+    .step-subtitle { font-size: 13px; color: var(--text-muted); margin: 0; }
+    .step-io { font-size: 12px; color: var(--text-muted); background: #f1f3f5; border-radius: 3px; padding: 8px 12px; margin: 12px 0; }
+    .step-io strong { color: var(--text-secondary); }
+    .process-box { background: var(--success-light); border-left: 4px solid var(--success); padding: 16px; margin: 12px 0; border-radius: 2px; }
+    .process-box h4 { color: var(--success); margin-top: 0; }
+    .process-box p, .process-box li { font-size: 14px; }
+    .process-box ol, .process-box ul { margin: 8px 0 0 20px; }
+    .process-box li { margin: 6px 0; }
+    .check-box { background: var(--warning-bg); border-left: 4px solid var(--warning-border); padding: 16px; margin: 12px 0; border-radius: 2px; }
+    .check-box h4 { color: var(--warning-border); margin-top: 0; }
+    .check-box ul { margin: 8px 0 0 20px; }
+    .check-box li { font-size: 14px; margin: 4px 0; }
+    .prompt-box { background: var(--purple-light); border-left: 4px solid var(--purple); padding: 16px; margin: 12px 0; border-radius: 2px; }
+    .prompt-box h4 { color: var(--purple); margin-top: 0; }
+    .prompt-box pre { background: var(--surface); border: 1px solid var(--border); border-radius: 3px; padding: 12px; font-size: 12.5px; font-family: ui-monospace, Menlo, monospace; white-space: pre-wrap; line-height: 1.5; color: var(--text-secondary); }
+    .rule-box { background: var(--danger-light); border-left: 4px solid var(--danger); padding: 16px; margin: 12px 0; border-radius: 2px; }
+    .rule-box h4 { color: var(--danger); margin-top: 0; }
+    .rule-box p, .rule-box li { font-size: 14px; }
+    .output-box { border: 2px dashed var(--border-strong); padding: 16px; margin: 16px 0; background: rgba(31, 79, 168, 0.02); border-radius: 4px; }
+    .output-label { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; margin: 16px 0 4px; display: block; }
+    .output-box textarea { width: 100%; min-height: 80px; padding: 12px; border: 1px solid var(--border); border-radius: 4px; font-family: var(--font-body); font-size: 14px; resize: vertical; }
+    .reference-box { background: var(--accent-light); padding: 16px; margin: 12px 0; border-radius: 2px; border-left: 4px solid var(--accent); }
+    .reference-box h4 { color: var(--accent); margin-top: 0; }
+    .reference-box p, .reference-box li { font-size: 13.5px; margin: 4px 0; }
+    .reference-box ul, .reference-box ol { margin: 8px 0 0 20px; }
+    .good { color: var(--success); font-weight: 600; }
+    .bad { color: var(--danger); font-weight: 600; }
+    .checkpoint { background: var(--accent-light); border: 1px solid var(--accent); padding: 12px 16px; border-radius: 4px; margin: 16px 0; text-align: center; }
+    .checkpoint-text { font-weight: 600; color: var(--accent); font-size: 13px; }
+    .next-step { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 14px; }
+    .next-step a { color: var(--accent); text-decoration: none; font-weight: 500; }
+    .flow-section { display: none; }
+    .flow-section.active { display: block; }
+    .toc { background: var(--accent-light); padding: 20px; border-radius: 4px; margin: 24px 0; }
+    .toc h3 { margin-top: 0; }
+    .toc ol { margin: 12px 0 0 20px; }
+    .toc li { margin: 4px 0; font-size: 14px; }
+    .toc a { color: var(--accent); text-decoration: none; }
+    .flow-label { display: inline-block; padding: 4px 12px; border-radius: var(--tag-radius); font-size: 11px; font-weight: 600; margin-bottom: 8px; }
+    .flow-label.a { background: var(--success-light); color: var(--success); }
+    .flow-label.b { background: var(--danger-light); color: var(--danger); }
+    .anatomy { border: 1px solid var(--border-strong); border-radius: 4px; margin: 16px 0; font-size: 13px; }
+    .anatomy .a-title { background: var(--panel-bg); color: var(--panel-text); padding: 10px 14px; font-weight: 600; }
+    .anatomy .a-kicker { padding: 6px 14px; color: var(--text-muted); font-style: italic; border-bottom: 1px solid var(--border); }
+    .anatomy .a-exhibit { padding: 40px 14px; text-align: center; color: var(--text-muted); background: repeating-linear-gradient(45deg, #fafafa, #fafafa 10px, #f1f3f5 10px, #f1f3f5 20px); }
+    .anatomy .a-source { padding: 6px 14px; font-size: 11px; color: var(--text-muted); border-top: 1px solid var(--border); }
+    @media print {
+      body { background: white; }
+      .container { padding: 20px; }
+      .flow-selector { display: none; }
+      .flow-section { display: block !important; }
+      .prompt-box pre { white-space: pre-wrap; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Cover -->
+    <div style="text-align: center; margin-bottom: 48px; padding-bottom: 32px; border-bottom: 2px solid var(--border);">
+      <h1 style="margin-top: 0;">Pyramid Principle: Guided Workbook</h1>
+      <p style="font-size: 17px;">Strategic analysis and presentation workflow — Copilot executes, you check</p>
+      <p style="font-size: 13px; color: var(--text-muted); margin-top: 16px;">v2 — full Minto coverage: lint rules, MECE, vertical/horizontal logic, copy standards, chart selection method, slide anatomy. Companion to <em>Pyramid_Methods_Comprehensive_Final.docx</em>.</p>
+    </div>
+
+    <!-- How to Use -->
+    <div class="intro-section">
+      <h3>How this workbook works</h3>
+      <p><strong>Division of labour.</strong> Copilot does the production work at every step: analysis, drafting, structuring, chart specification. You do three things only:</p>
+      <ol style="margin: 12px 0 0 20px;">
+        <li><strong>Paste the step's prompt into Copilot</strong> — each step has a ready-made prompt (purple box). Paste it with your inputs attached.</li>
+        <li><strong>Check the output against the review checklist</strong> (amber box) — every check is a specific Minto rule, not a vibe.</li>
+        <li><strong>Record the approved output</strong> in the write-in box — it becomes the input for the next step. Never advance with an unapproved output.</li>
+      </ol>
+      <p style="margin-top: 12px;"><strong>The gates are the method.</strong> Minto's value is not the pyramid diagram — it is the discipline of testing every element before building on it. A failed check means Copilot repairs and resubmits; it never means "close enough".</p>
+    </div>
+
+    <!-- Flow Selector -->
+    <h2>Which path are you on?</h2>
+    <div class="flow-selector">
+      <div class="flow-button" onclick="selectFlow('a')">
+        <h3>Flow A: Analysis</h3>
+        <p>I have a problem and need to understand what's actually happening</p>
+      </div>
+      <div class="flow-button" onclick="selectFlow('b')">
+        <h3>Flow B: Presentation</h3>
+        <p>I know what to recommend and need to build the case</p>
+      </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- FLOW A -->
+    <!-- ============================================================= -->
+    <div id="flow-a" class="flow-section">
+      <h2><span class="flow-label a">FLOW A: ANALYSIS</span> Understanding what's actually happening</h2>
+
+      <div class="toc">
+        <h3>Steps in Flow A</h3>
+        <ol>
+          <li><a href="#a-step-1">Frame the problem</a></li>
+          <li><a href="#a-step-2">Build Situation &amp; Complication</a></li>
+          <li><a href="#a-step-3">Generate and test hypotheses</a></li>
+          <li><a href="#a-step-4">Derive the Question and answer it</a></li>
+          <li><a href="#a-step-5">Generate the recommendation</a></li>
+          <li><a href="#a-step-6">Hand off to Flow B</a></li>
+        </ol>
+      </div>
+
+      <!-- A1 -->
+      <div id="a-step-1" class="step">
+        <div class="step-header">
+          <div class="step-number">A1</div>
+          <div>
+            <h3 class="step-title">Frame the problem</h3>
+            <p class="step-subtitle">Clarify what you are solving for and what decision depends on it</p>
+          </div>
+        </div>
+        <div class="step-io"><strong>Input:</strong> raw problem statement (email, meeting note, briefing) · <strong>Output:</strong> one-sentence problem frame</div>
+
+        <div class="process-box">
+          <h4>Copilot's process — follow in order</h4>
+          <ol>
+            <li>Read the source material (paste emails, briefing extracts, meeting notes into the prompt).</li>
+            <li>Extract four elements: <strong>symptom</strong> (the observable problem), <strong>evidence</strong> (numbers, timeframe, comparison baseline), <strong>decision</strong> (what choice hangs on this), <strong>reader</strong> (who decides).</li>
+            <li>Distinguish symptom from cause. "Churn rose" is a symptom. "Pricing is wrong" is a hypothesis — Copilot must not smuggle a diagnosis into the frame.</li>
+            <li>Quantify the stakes: what does the problem cost per year, and what does the pending decision cost if wrong?</li>
+            <li>Write one sentence: <em>[symptom + magnitude + timeframe]; we need to [identify X] before [decision + cost].</em></li>
+            <li>Flag any missing element explicitly rather than inventing it.</li>
+          </ol>
+        </div>
+
+        <div class="prompt-box">
+          <h4>Prompt to give Copilot</h4>
+          <pre>You are running Step A1 (Frame the Problem) of a Minto Pyramid analysis.
+
+Source material: [PASTE emails / notes / briefing]
+
+Do this:
+1. Extract: symptom (observable, with numbers), evidence (data, timeframe,
+   baseline), decision at stake (with cost), reader (who decides).
+2. Do NOT diagnose. If the source proposes causes, list them separately as
+   "candidate hypotheses for later" — keep them out of the frame.
+3. Write a one-sentence problem frame:
+   "[Symptom + magnitude + timeframe]; we need to identify [X] before
+   [decision + cost]."
+4. List anything missing that I need to supply. Do not invent data.
+
+Output: the frame sentence, the four elements as a table, missing items.</pre>
+        </div>
+
+        <div class="check-box">
+          <h4>Your review checklist</h4>
+          <ul>
+            <li>✓ Symptom is observable and quantified (not an interpretation)</li>
+            <li>✓ No diagnosis has leaked into the frame ("because of..." = fail)</li>
+            <li>✓ The decision and its cost are explicit</li>
+            <li>✓ The reader is named</li>
+            <li>✓ Flagged gaps are real gaps — supply the data or accept the limitation</li>
+          </ul>
+        </div>
+
+        <div class="reference-box">
+          <h4>Reference example</h4>
+          <p><span class="good">Good:</span> "SME churn has risen from 22% to 35% over three years (£6M annual revenue impact); we need to identify the root cause before committing £2M to the product roadmap."</p>
+          <p><span class="bad">Bad:</span> "We have a churn problem because our prices are too high." (Diagnosis smuggled in; no decision; no stakes.)</p>
+        </div>
+
+        <label class="output-label">Approved problem frame:</label>
+        <div class="output-box"><textarea placeholder="Paste the approved frame here. This is the input to A2."></textarea></div>
+
+        <div class="checkpoint"><p class="checkpoint-text">GATE: frame is one sentence, symptom-only, decision + reader explicit</p></div>
+        <div class="next-step"><strong>Next:</strong> <a href="#a-step-2">A2 — Build Situation &amp; Complication</a></div>
+      </div>
+
+      <!-- A2 -->
+      <div id="a-step-2" class="step">
+        <div class="step-header">
+          <div class="step-number">A2</div>
+          <div>
+            <h3 class="step-title">Build Situation &amp; Complication</h3>
+            <p class="step-subtitle">Establish the non-controversial baseline, then isolate what changed</p>
+          </div>
+        </div>
+        <div class="step-io"><strong>Input:</strong> problem frame (A1) + available data · <strong>Output:</strong> Situation statement, Complication statement, evidence register</div>
+
+        <div class="process-box">
+          <h4>Copilot's process — follow in order</h4>
+          <ol>
+            <li>Gather baseline facts from available sources: segment size, revenue, historical metrics, market context, what has stayed constant.</li>
+            <li>Sort every fact into two piles: <strong>non-controversial</strong> (reader accepts without proof) and <strong>contested</strong> (needs evidence). Only the first pile can enter the Situation.</li>
+            <li>Draft the Situation: 2–4 sentences, facts only, no "but"/"however", no judgment words (failing, weak, poor).</li>
+            <li>Isolate the change: what is different now vs. the baseline? When did it start? What broke as a consequence?</li>
+            <li>Draft the Complication: starts with "But", names the change and the damage with numbers, ends by implying (not stating) the open question. It must not propose a solution.</li>
+            <li>Build the evidence register: every fact used, with source and date, in a two-column table (fact | source).</li>
+            <li>Run the <strong>Nod Test</strong> on both: would the named reader nod at every sentence without asking for proof? Mark any sentence that fails.</li>
+          </ol>
+        </div>
+
+        <div class="prompt-box">
+          <h4>Prompt to give Copilot</h4>
+          <pre>You are running Step A2 (Situation &amp; Complication) of a Minto analysis.
+
+Problem frame: [PASTE from A1]
+Available data: [PASTE data / attach files]
+
+Do this:
+1. Sort all facts: non-controversial vs. contested. Only non-controversial
+   facts may enter the Situation.
+2. Draft Situation (2–4 sentences): facts only, no "but/however", no
+   judgment words. Every claim must trace to the data provided.
+3. Draft Complication (2–3 sentences): starts "But", names what changed and
+   what broke, with numbers. NO solution, NO diagnosis.
+4. Build an evidence register: fact | source | date.
+5. Run the Nod Test: for each sentence, state whether [READER] would nod
+   without proof. Flag failures and propose repairs.
+
+Output: Situation, Complication, evidence register, Nod Test results.</pre>
+        </div>
+
+        <div class="check-box">
+          <h4>Your review checklist</h4>
+          <ul>
+            <li>✓ Situation: every sentence passes the Nod Test — you'd stake the meeting on the reader not objecting</li>
+            <li>✓ Situation contains zero interpretation (adjectives like "strong/weak" = fail)</li>
+            <li>✓ Complication follows from the Situation — the tension is felt, not asserted</li>
+            <li>✓ Complication contains no solution and no cause claim</li>
+            <li>✓ Evidence register: every number has a source you could produce in the meeting</li>
+          </ul>
+        </div>
+
+        <div class="reference-box">
+          <h4>Reference example (Fairy Food Mother)</h4>
+          <p><strong>Situation:</strong> "Prosus acquired JET with a mandate to replicate the iFood playbook. JET holds ~45% UK market share. Young families are 45% of the base. The business is repositioning around profitability."</p>
+          <p><strong>Complication:</strong> "But young families sit at 42% 90-day retention despite the highest promotional spend of any segment. They respond to deals, then leave."</p>
+          <p><em>Note the shape: the Situation makes the Complication hurt. Profitability mandate + margin burned on a segment that does not retain = tension the reader feels before you say a word about solutions.</em></p>
+        </div>
+
+        <label class="output-label">Approved Situation:</label>
+        <div class="output-box"><textarea placeholder="2–4 sentences. Non-controversial facts only."></textarea></div>
+        <label class="output-label">Approved Complication:</label>
+        <div class="output-box"><textarea placeholder="2–3 sentences. What changed, what broke. No solution."></textarea></div>
+        <label class="output-label">Evidence register (fact | source):</label>
+        <div class="output-box"><textarea placeholder="Every fact used above, with its source. Seeds hypothesis testing in A3."></textarea></div>
+
+        <div class="checkpoint"><p class="checkpoint-text">GATE: both statements pass the Nod Test; every fact sourced</p></div>
+        <div class="next-step"><strong>Next:</strong> <a href="#a-step-3">A3 — Generate and test hypotheses</a></div>
+      </div>
+
+      <!-- A3 -->
+      <div id="a-step-3" class="step">
+        <div class="step-header">
+          <div class="step-number">A3</div>
+          <div>
+            <h3 class="step-title">Generate and test hypotheses</h3>
+            <p class="step-subtitle">Identify candidate causes, predict what each implies, test against data</p>
+          </div>
+        </div>
+        <div class="step-io"><strong>Input:</strong> Situation + Complication + evidence register (A2) · <strong>Output:</strong> hypothesis table with verdicts, strongest hypothesis, research gaps</div>
+
+        <div class="process-box">
+          <h4>Copilot's process — follow in order</h4>
+          <ol>
+            <li>Generate 3–5 candidate hypotheses for the root cause. Include the "obvious" explanation (the one stakeholders already believe) — it must be tested, not assumed.</li>
+            <li>Check the set is <strong>MECE</strong>: hypotheses must not overlap (two phrasings of the same cause) and must plausibly cover the space (ask: "what ELSE could explain this?").</li>
+            <li>For each hypothesis, write predictions: <em>"If H is true, the data should show X, Y, Z."</em> Predictions must be checkable with available or gatherable data.</li>
+            <li>Critically: write <strong>disconfirming</strong> predictions too — <em>"If H is true, we should NOT see W."</em> A hypothesis you cannot state a disconfirmation for is not testable.</li>
+            <li>Test each prediction against the evidence register and any additional data supplied. Record evidence for AND against — no hypothesis gets a verdict from supporting evidence alone.</li>
+            <li>Assign verdicts: SUPPORTED / CONTRADICTED / INCONCLUSIVE. A verdict of SUPPORTED requires at least one surviving disconfirmation test.</li>
+            <li>List research gaps: what single piece of missing data would most change the verdict? (This is the highest-value next research action.)</li>
+          </ol>
+        </div>
+
+        <div class="prompt-box">
+          <h4>Prompt to give Copilot</h4>
+          <pre>You are running Step A3 (Hypothesis Testing) of a Minto analysis.
+
+Situation: [PASTE]
+Complication: [PASTE]
+Evidence register: [PASTE]
+Additional data: [PASTE / attach]
+
+Do this:
+1. Generate 3–5 MECE hypotheses for the root cause. Include the explanation
+   stakeholders already believe.
+2. For each: write confirming predictions ("if true, data shows X") AND
+   disconfirming predictions ("if true, data should NOT show W").
+3. Test every prediction against the data. Record evidence for AND against.
+4. Verdicts: SUPPORTED (needs a survived disconfirmation test) /
+   CONTRADICTED / INCONCLUSIVE.
+5. Output a table: Hypothesis | Predictions | Evidence for | Evidence
+   against | Verdict.
+6. Name the strongest hypothesis and the single missing data item that
+   would most change your confidence.</pre>
+        </div>
+
+        <div class="check-box">
+          <h4>Your review checklist</h4>
+          <ul>
+            <li>✓ The stakeholders' favourite explanation is in the table and was genuinely tested</li>
+            <li>✓ Hypotheses are MECE — no two are the same cause reworded; nothing obvious is missing</li>
+            <li>✓ Every SUPPORTED verdict survived a disconfirmation attempt (not just accumulated friendly evidence)</li>
+            <li>✓ Evidence-against columns are populated — empty ones mean Copilot didn't look</li>
+            <li>✓ The named research gap is worth the cost of gathering — or you accept the uncertainty explicitly</li>
+          </ul>
+        </div>
+
+        <div class="reference-box">
+          <h4>Reference example (SME banking)</h4>
+          <p>"Competitor pricing" was the CFO's belief. Test: if price were the cause, existing customers would churn and price objections would rise. Data: existing churn stable, objections DOWN 30%. Verdict: CONTRADICTED. The surviving hypothesis — competitor messaging reframed the market — passed its disconfirmation test (existing customers, who haven't seen the messaging at renewal yet, are unaffected).</p>
+        </div>
+
+        <label class="output-label">Hypothesis table (with verdicts):</label>
+        <div class="output-box"><textarea placeholder="Hypothesis | Evidence for | Evidence against | Verdict"></textarea></div>
+        <label class="output-label">Strongest hypothesis + why:</label>
+        <div class="output-box"><textarea placeholder="Which survived, and which disconfirmation test it passed."></textarea></div>
+        <label class="output-label">Research gaps (accepted or to gather):</label>
+        <div class="output-box"><textarea placeholder="What's still uncertain. Decision: gather or accept."></textarea></div>
+
+        <div class="checkpoint"><p class="checkpoint-text">GATE: verdicts grounded in for-AND-against evidence; obvious answer tested</p></div>
+        <div class="next-step"><strong>Next:</strong> <a href="#a-step-4">A4 — Derive the Question and answer it</a></div>
+      </div>
+
+      <!-- A4 -->
+      <div id="a-step-4" class="step">
+        <div class="step-header">
+          <div class="step-number">A4</div>
+          <div>
+            <h3 class="step-title">Derive the Question and answer it</h3>
+            <p class="step-subtitle">Frame the real problem as one question; answer it from the evidence</p>
+          </div>
+        </div>
+        <div class="step-io"><strong>Input:</strong> hypothesis verdicts (A3) · <strong>Output:</strong> the Question (one sentence), the Answer (one sentence)</div>
+
+        <div class="process-box">
+          <h4>Copilot's process — follow in order</h4>
+          <ol>
+            <li>Re-read Situation + Complication + strongest hypothesis together. The Question is what the reader would now ask, knowing all three.</li>
+            <li>Draft the Question. Test it three ways: (a) it is ONE question, not several bundled; (b) it is answerable with what you know or can decide; (c) answering it tells you what to do — if you could answer it and still not know your next move, it is the wrong question.</li>
+            <li>Check the Question level: it should sit ABOVE the surface debate. In the SME case the surface question was "should we cut price?" — the real question was "how do we compete when the market has been reframed on a dimension we don't win on?"</li>
+            <li>Answer the Question in one sentence, drawn strictly from the surviving hypothesis. The Answer is a claim about what is true or what to do — not a restatement of findings.</li>
+            <li>Trace check: Answer ← strongest hypothesis ← surviving evidence. If any link needs new facts not in the register, flag it.</li>
+          </ol>
+        </div>
+
+        <div class="prompt-box">
+          <h4>Prompt to give Copilot</h4>
+          <pre>You are running Step A4 (Question &amp; Answer) of a Minto analysis.
+
+Situation: [PASTE]  Complication: [PASTE]
+Strongest hypothesis + evidence: [PASTE from A3]
+
+Do this:
+1. Derive THE question the reader would ask knowing the above. One question
+   only. It must be answerable, and answering it must determine action.
+2. Check the altitude: is there a deeper question beneath the surface
+   debate? Propose both if so, and recommend one.
+3. Answer the question in ONE sentence, using only the surviving
+   hypothesis and its evidence.
+4. Show the trace: Answer ← hypothesis ← evidence. Flag any gap.
+
+Output: Question, Answer, trace, any flags.</pre>
+        </div>
+
+        <div class="check-box">
+          <h4>Your review checklist</h4>
+          <ul>
+            <li>✓ One question — no "and" joining two decisions</li>
+            <li>✓ Answering it determines action (the "so that we know what to do" test)</li>
+            <li>✓ It's the real question, not the surface debate</li>
+            <li>✓ The Answer follows from A3's verdicts — you can walk the trace aloud</li>
+          </ul>
+        </div>
+
+        <label class="output-label">The Question:</label>
+        <div class="output-box"><textarea placeholder="One sentence."></textarea></div>
+        <label class="output-label">The Answer:</label>
+        <div class="output-box"><textarea placeholder="One sentence, evidence-grounded."></textarea></div>
+
+        <div class="checkpoint"><p class="checkpoint-text">GATE: one question, action-determining, answer traces to evidence</p></div>
+        <div class="next-step"><strong>Next:</strong> <a href="#a-step-5">A5 — Generate the recommendation</a></div>
+      </div>
+
+      <!-- A5 -->
+      <div id="a-step-5" class="step">
+        <div class="step-header">
+          <div class="step-number">A5</div>
+          <div>
+            <h3 class="step-title">Generate the recommendation</h3>
+            <p class="step-subtitle">Turn the answer into an actionable, costed, testable recommendation</p>
+          </div>
+        </div>
+        <div class="step-io"><strong>Input:</strong> Question + Answer (A4) · <strong>Output:</strong> recommendation with resources, timeline, alternatives, success metrics</div>
+
+        <div class="process-box">
+          <h4>Copilot's process — follow in order</h4>
+          <ol>
+            <li>Generate 3–4 genuine response options given the Answer — including "do nothing" as an honest baseline with its cost, not a strawman.</li>
+            <li>Evaluate each option against: strategic fit (does it play to what the evidence says we win on?), cost, time to impact, reversibility, and risk if the analysis is wrong.</li>
+            <li>Select and draft the recommendation: what, why (one clause tying to the Answer), resources, timeline, owner.</li>
+            <li>Attach success metrics: 3–4 measures, each with baseline, target, and measurement date. A metric without a date is a hope.</li>
+            <li>Attach a decision gate: the condition under which you would stop or revisit ("if X hasn't moved by [date], revisit before further spend"). This is what makes the recommendation safe to approve.</li>
+            <li>State the key assumption: the one thing that, if false, invalidates the recommendation.</li>
+          </ol>
+        </div>
+
+        <div class="prompt-box">
+          <h4>Prompt to give Copilot</h4>
+          <pre>You are running Step A5 (Recommendation) of a Minto analysis.
+
+Question: [PASTE]  Answer: [PASTE]
+Constraints: budget [X], timeline [Y], strategic context [Z]
+
+Do this:
+1. Generate 3–4 genuine options including "do nothing" with its real cost.
+2. Score each: strategic fit / cost / time to impact / reversibility /
+   risk-if-wrong. Short table.
+3. Recommend one. Format: what, why (tie to the Answer), resources,
+   timeline, owner.
+4. Success metrics: 3–4, each with baseline, target, and measurement DATE.
+5. Decision gate: the stop/revisit condition and date.
+6. Key assumption: the one thing that, if false, kills this.
+
+Output: options table, recommendation, metrics, gate, assumption.</pre>
+        </div>
+
+        <div class="check-box">
+          <h4>Your review checklist</h4>
+          <ul>
+            <li>✓ Alternatives are real — you could defend choosing any of them</li>
+            <li>✓ "Do nothing" has an honest cost attached</li>
+            <li>✓ Every metric has baseline + target + date</li>
+            <li>✓ The decision gate makes this approvable by a cautious CFO</li>
+            <li>✓ The key assumption is genuinely load-bearing (test: if false, would you still act?)</li>
+          </ul>
+        </div>
+
+        <label class="output-label">Approved recommendation (what / why / resources / timeline / owner):</label>
+        <div class="output-box"><textarea placeholder="The recommendation. Becomes the Governing Thought in Flow B."></textarea></div>
+        <label class="output-label">Alternatives considered (with trade-offs):</label>
+        <div class="output-box"><textarea placeholder="Options B, C + do-nothing baseline."></textarea></div>
+        <label class="output-label">Success metrics + decision gate + key assumption:</label>
+        <div class="output-box"><textarea placeholder="Metrics with dates; the stop/revisit condition; the load-bearing assumption."></textarea></div>
+
+        <div class="checkpoint"><p class="checkpoint-text">GATE: evidence-based, costed, gated, key assumption named</p></div>
+        <div class="next-step"><strong>Next:</strong> <a href="#a-step-6">A6 — Hand off to Flow B</a></div>
+      </div>
+
+      <!-- A6 -->
+      <div id="a-step-6" class="step">
+        <div class="step-header">
+          <div class="step-number">A6</div>
+          <div>
+            <h3 class="step-title">Hand off to Flow B</h3>
+            <p class="step-subtitle">Package the analysis for the presentation flow</p>
+          </div>
+        </div>
+        <div class="process-box">
+          <h4>Handoff package — carry all of this into Flow B</h4>
+          <ul>
+            <li>✓ Problem frame (A1)</li>
+            <li>✓ Situation + Complication + evidence register (A2)</li>
+            <li>✓ Hypothesis table with verdicts (A3) — this becomes pressure-test ammunition</li>
+            <li>✓ Question + Answer (A4)</li>
+            <li>✓ Recommendation + alternatives + metrics + gate + assumption (A5)</li>
+          </ul>
+          <p>The recommendation becomes Flow B's <strong>Governing Thought</strong>. The evidence register becomes the raw material for exhibits. The contradicted hypotheses become your pre-loaded objection counters — the strongest defensive asset the analysis produced.</p>
+        </div>
+        <div class="output-box" style="text-align: center; padding: 32px;">
+          <p style="margin: 0;"><strong>Analysis complete — switch to Flow B</strong></p>
+          <button onclick="selectFlow('b')" style="background: var(--accent); color: var(--panel-text); border: none; padding: 12px 24px; border-radius: 4px; font-weight: 600; cursor: pointer; margin-top: 16px;">Start Flow B: Build the Case</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- FLOW B -->
+    <!-- ============================================================= -->
+    <div id="flow-b" class="flow-section">
+      <h2><span class="flow-label b">FLOW B: PRESENTATION</span> Building the case</h2>
+
+      <div class="toc">
+        <h3>Steps in Flow B</h3>
+        <ol>
+          <li><a href="#b-step-1">Choose the format</a></li>
+          <li><a href="#b-step-2">Frame the audience</a></li>
+          <li><a href="#b-step-3">Draft SCQA and Governing Thought</a></li>
+          <li><a href="#b-step-4">Build the pyramid</a></li>
+          <li><a href="#b-step-5">Pressure-test the argument</a></li>
+          <li><a href="#b-step-6">Design the exhibits</a></li>
+          <li><a href="#b-step-7">Write the narrative</a></li>
+          <li><a href="#b-step-8">Run the lint check</a></li>
+          <li><a href="#b-step-9">Storyboard the slides</a></li>
+          <li><a href="#b-step-10">Test against the audience</a></li>
+          <li><a href="#b-step-11">Deliver and capture the outcome</a></li>
+        </ol>
+      </div>
+
+      <!-- B1: Format (NEW) -->
+      <div id="b-step-1" class="step">
+        <div class="step-header">
+          <div class="step-number">B1</div>
+          <div>
+            <h3 class="step-title">Choose the format</h3>
+            <p class="step-subtitle">The reader's state of mind determines the document shape — decide before building anything</p>
+          </div>
+        </div>
+        <div class="step-io"><strong>Input:</strong> recommendation (A5 or direct) + reader context · <strong>Output:</strong> chosen format + structural implications</div>
+
+        <div class="process-box">
+          <h4>Copilot's process — follow in order</h4>
+          <ol>
+            <li>Establish the reader's state: do they know there is a problem? Are they aligned or conflicted? Committed or uncertain?</li>
+            <li>Map to a format using the table below. The format decides the key-line pattern — building the wrong format costs the full rebuild.</li>
+            <li>State the structural implications: what the key-lines will look like, what the ask slide is.</li>
+          </ol>
+          <table>
+            <tr><th>Format</th><th>Reader's state</th><th>Key-line pattern</th><th>The ask</th></tr>
+            <tr><td><strong>Recommendation</strong></td><td>Knows the problem, needs a solution</td><td>Desirable / Feasible / Viable (or Why / How / What-it's-worth)</td><td>Approve the action</td></tr>
+            <tr><td><strong>Options paper</strong></td><td>Conflicted between paths</td><td>Criteria → options → scorecard → recommended option</td><td>Choose (with a steer)</td></tr>
+            <tr><td><strong>Diagnostic</strong></td><td>Surprised by an event, needs explanation</td><td>What happened → why (evidence) → implications</td><td>Accept the explanation, agree next step</td></tr>
+            <tr><td><strong>Project update</strong></td><td>Aligned, wants progress check</td><td>Status vs. plan → variances → decisions needed</td><td>Note progress, unblock decisions</td></tr>
+            <tr><td><strong>Strategic plan</strong></td><td>Committed, needs the roadmap</td><td>Where we play → how we win → what it takes</td><td>Endorse the plan and resourcing</td></tr>
+          </table>
+        </div>
+
+        <div class="prompt-box">
+          <h4>Prompt to give Copilot</h4>
+          <pre>You are running Step B1 (Format Selection) of a Minto presentation build.
+
+Recommendation: [PASTE]
+Reader: [role, what they know, what they believe]
+Occasion: [board meeting / exec review / email / etc.]
+
+Do this:
+1. Classify the reader's state: problem-aware? aligned or conflicted?
+   committed or uncertain?
+2. Choose the format: Recommendation / Options paper / Diagnostic /
+   Project update / Strategic plan. Justify in 2 sentences.
+3. State the key-line pattern this format implies, and the ask slide.
+4. If two formats are plausible, present both with the trade-off.</pre>
+        </div>
+
+        <div class="check-box">
+          <h4>Your review checklist</h4>
+          <ul>
+            <li>✓ The reader-state classification matches what you actually know of them</li>
+            <li>✓ Format matches state (conflicted reader + Recommendation format = they'll relitigate the options you didn't show)</li>
+            <li>✓ You know what the final ask slide will say before any content is built</li>
+          </ul>
+        </div>
+
+        <label class="output-label">Chosen format + key-line pattern + the ask:</label>
+        <div class="output-box"><textarea placeholder="Format, why, implied key-line pattern, what the final slide asks for."></textarea></div>
+
+        <div class="checkpoint"><p class="checkpoint-text">GATE: format matches reader state; ask is known upfront</p></div>
+        <div class="next-step"><strong>Next:</strong> <a href="#b-step-2">B2 — Frame the audience</a></div>
+      </div>
+
+      <!-- B2: Audience -->
+      <div id="b-step-2" class="step">
+        <div class="step-header">
+          <div class="step-number">B2</div>
+          <div>
+            <h3 class="step-title">Frame the audience</h3>
+            <p class="step-subtitle">What the reader believes determines where the argument must start</p>
+          </div>
+        </div>
+        <div class="step-io"><strong>Input:</strong> format (B1) + reader knowledge · <strong>Output:</strong> reader profile: beliefs, decision sought, skeptics, presence</div>
+
+        <div class="process-box">
+          <h4>Copilot's process — follow in order</h4>
+          <ol>
+            <li>Profile the decision-maker: role, what they already know (this defines what the Situation may assume), what they currently believe about the cause (this defines what must be dismantled), what they care about most (this defines the lead argument).</li>
+            <li>Map the room: who else attends, who is skeptical and of what, who influences the decision-maker.</li>
+            <li>Confirm presence: live pitch (SCQA delivered verbally, slides exhibit-led) vs. standalone document (SCQA in full prose, self-sufficient).</li>
+            <li>Write the belief gap: "Reader currently believes [X]; the argument must move them to [Y]." This gap is what the whole pyramid exists to close.</li>
+          </ol>
+        </div>
+
+        <div class="prompt-box">
+          <h4>Prompt to give Copilot</h4>
+          <pre>You are running Step B2 (Audience Frame).
+
+Format: [PASTE from B1]   Recommendation: [PASTE]
+What I know about the reader and room: [PASTE]
+
+Do this:
+1. Reader profile: role / knows / believes / cares-about-most.
+2. Room map: attendees, skeptics + what each is skeptical of.
+3. Presence: live or standalone, duration/length limit.
+4. Belief gap: "Reader believes [X]; argument must move them to [Y]."
+
+Output the four items. Flag anything about the reader I need to confirm.</pre>
+        </div>
+
+        <div class="check-box">
+          <h4>Your review checklist</h4>
+          <ul>
+            <li>✓ "Knows" list is accurate — anything wrongly assumed known will make the Situation fail its Nod Test</li>
+            <li>✓ "Believes" captures the belief you must dismantle (e.g. "it's a pricing problem")</li>
+            <li>✓ Every named skeptic has a stated skepticism — feeds B5 pressure-testing</li>
+            <li>✓ The belief gap is honest about the distance to travel</li>
+          </ul>
+        </div>
+
+        <label class="output-label">Reader profile + room map + belief gap:</label>
+        <div class="output-box"><textarea placeholder="Role, knows, believes, cares-about. Skeptics. Live/standalone. Belief gap X→Y."></textarea></div>
+
+        <div class="checkpoint"><p class="checkpoint-text">GATE: belief gap explicit; skeptics named with their skepticisms</p></div>
+        <div class="next-step"><strong>Next:</strong> <a href="#b-step-3">B3 — Draft SCQA and Governing Thought</a></div>
+      </div>
+
+      <!-- B3: SCQA -->
+      <div id="b-step-3" class="step">
+        <div class="step-header">
+          <div class="step-number">B3</div>
+          <div>
+            <h3 class="step-title">Draft SCQA and Governing Thought</h3>
+            <p class="step-subtitle">The hook that earns the reader's attention before you prove anything</p>
+          </div>
+        </div>
+        <div class="step-io"><strong>Input:</strong> reader profile (B2) + Situation/Complication (A2 if available) · <strong>Output:</strong> SCQA + Governing Thought + tone order</div>
+
+        <div class="process-box">
+          <h4>Copilot's process — follow in order</h4>
+          <ol>
+            <li>Draft the Situation FROM THE READER'S KNOWLEDGE (B2's "knows" list) — it may differ from the analysis-phase Situation. Only what this reader accepts belongs here.</li>
+            <li>Draft the Complication so it creates tension against what this reader cares about most.</li>
+            <li>Derive the Question the reader would now ask. It must be the question your recommendation answers — if it isn't, either the SCQA or the recommendation is wrong.</li>
+            <li>Draft the Governing Thought — three drafts, converging:
+              <ul>
+                <li>Draft 1: say what you want to happen (usually a WHAT)</li>
+                <li>Draft 2: add what it produces (the SO-WHAT: revenue, retention, cost, strategic position)</li>
+                <li>Draft 3: compress to ≤25 words, active voice, verb-led</li>
+              </ul>
+            </li>
+            <li>Choose the <strong>tone order</strong>: S-C-A (standard, builds tension), A-S-C (direct — lead with the answer for impatient senior readers), C-S-A (alarm first — for urgency). Justify against the reader profile.</li>
+            <li>Run the full <strong>Nod Test</strong>: for each element, write the reader's predicted internal response. All four must be nods.</li>
+          </ol>
+        </div>
+
+        <div class="prompt-box">
+          <h4>Prompt to give Copilot</h4>
+          <pre>You are running Step B3 (SCQA + Governing Thought).
+
+Reader profile: [PASTE from B2]
+Analysis Situation/Complication (if available): [PASTE from A2]
+Recommendation: [PASTE]
+
+Do this:
+1. Draft Situation from what THIS reader already accepts (their "knows"
+   list). 2–3 sentences, no controversy.
+2. Draft Complication creating tension against what they care about most.
+3. Derive the Question. Verify: does my recommendation answer exactly this
+   question?
+4. Governing Thought in 3 converging drafts (WHAT → +SO-WHAT → ≤25 words,
+   active, verb-led). Show all three drafts.
+5. Recommend tone order (S-C-A / A-S-C / C-S-A) for this reader. Justify.
+6. Nod Test: for each element, write the reader's predicted internal
+   response. Flag any non-nod and propose the repair.</pre>
+        </div>
+
+        <div class="check-box">
+          <h4>Your review checklist — the Nod Test in full</h4>
+          <ul>
+            <li>✓ Situation → reader thinks "yes, that's where we are" (not "who says?")</li>
+            <li>✓ Complication → reader thinks "yes, that's a real problem" (not "is it though?")</li>
+            <li>✓ Question → reader thinks "yes, that's exactly what I'm now wondering"</li>
+            <li>✓ Answer → reader thinks "if that's true, it resolves my question" (belief comes later — the pyramid's job)</li>
+            <li>✓ Governing Thought: ≤25 words, starts with a verb, states what it PRODUCES, falsifiable</li>
+            <li>✓ Tone order fits the reader (senior/impatient → consider A-S-C)</li>
+          </ul>
+        </div>
+
+        <div class="reference-box">
+          <h4>Governing Thought: three-draft example (FFM)</h4>
+          <p><span class="bad">Draft 1 (WHAT):</span> "We should build an AI food assistant for families."</p>
+          <p><span class="bad">Draft 2 (better, wordy):</span> "We should launch Fairy Food Mother, an AI-powered food assistant that drives habit over discount dependency, converts 20% of Segment B, and generates £3.9M..."</p>
+          <p><span class="good">Draft 3 (≤25 words, SO-WHAT):</span> "Launch Fairy Food Mother: a family food assistant converting young families from discount-dependent to habit-driven, generating £3.9M annual revenue at 60%+ retention."</p>
+        </div>
+
+        <label class="output-label">Approved SCQA (all four elements):</label>
+        <div class="output-box"><textarea placeholder="S / C / Q / A — reader-calibrated versions."></textarea></div>
+        <label class="output-label">Approved Governing Thought (≤25 words) + tone order:</label>
+        <div class="output-box"><textarea placeholder="Final draft + chosen tone order and why."></textarea></div>
+
+        <div class="checkpoint"><p class="checkpoint-text">GATE: four nods; Governing Thought ≤25 words, verb-led, SO-WHAT</p></div>
+        <div class="next-step"><strong>Next:</strong> <a href="#b-step-4">B4 — Build the pyramid</a></div>
+      </div>
+
+      <!-- B4: Pyramid -->
+      <div id="b-step-4" class="step">
+        <div class="step-header">
+          <div class="step-number">B4</div>
+          <div>
+            <h3 class="step-title">Build the pyramid</h3>
+            <p class="step-subtitle">Key-lines and sub-points, audited against vertical logic, horizontal logic, MECE and order</p>
+          </div>
+        </div>
+        <div class="step-io"><strong>Input:</strong> Governing Thought (B3) + evidence register (A2/A3) · <strong>Output:</strong> audited pyramid: 3–5 key-lines, each with 3–5 sub-points</div>
+
+        <div class="process-box">
+          <h4>Copilot's process — follow in order</h4>
+          <ol>
+            <li>Ask of the Governing Thought: <em>"Why is this true?"</em> (or for an action: <em>"Why should we do this?"</em>). The answers are candidate key-lines. Use the format's pattern from B1 (e.g. Desirable/Feasible/Viable).</li>
+            <li>Decide the grouping logic and keep it consistent:
+              <ul>
+                <li><strong>Inductive</strong> (usual for recommendations): parallel independent reasons, each sufficient to matter alone. Test each pair: "are these the same KIND of idea?"</li>
+                <li><strong>Deductive</strong> (for logical chains): premise → premise → therefore. Test: does the conclusion actually require both premises? Never mix deductive and inductive in one grouping.</li>
+              </ul>
+            </li>
+            <li>Run <strong>MECE</strong> on the key-line set:
+              <ul>
+                <li>Mutually exclusive: no two key-lines are the same argument reworded ("improve retention" + "reduce churn" = one argument twice). Test: could one exhibit prove both? Then merge.</li>
+                <li>Collectively exhaustive: nothing the reader needs is missing. Test: "if all key-lines are true, MUST the reader accept the Governing Thought?" If they could accept all three and still say no, something is missing.</li>
+              </ul>
+            </li>
+            <li>Choose ONE order and state it: <strong>time</strong> (first to last), <strong>structure</strong> (by part), or <strong>degree</strong> (most important first). Recommendations usually take degree order.</li>
+            <li>Under each key-line, place 3–5 sub-points from the evidence register. Test <strong>vertical logic</strong> at every joint: the sub-points must ANSWER the question the key-line raises ("why?"/"how?"), and the key-line must genuinely summarise them — not merely introduce them.</li>
+            <li>Kill orphans: any sub-point that doesn't support its key-line moves or dies. Any assertion with no evidence beneath it gets flagged for B6 (exhibit needed) or cut.</li>
+            <li>Output the audit explicitly: MECE result, order chosen, logic type per grouping, vertical-logic check per key-line.</li>
+          </ol>
+        </div>
+
+        <div class="prompt-box">
+          <h4>Prompt to give Copilot</h4>
+          <pre>You are running Step B4 (Pyramid Build).
+
+Governing Thought: [PASTE]
+Format key-line pattern: [PASTE from B1]
+Evidence register: [PASTE from A2/A3]
+
+Do this:
+1. Generate 3–5 key-lines answering "why is the Governing Thought true?"
+   following the format pattern.
+2. Declare grouping logic (inductive or deductive) and keep it consistent.
+3. MECE audit: (a) any two key-lines provable by the same exhibit? merge.
+   (b) If all key-lines are true, MUST the reader accept the Governing
+   Thought? If not, what's missing?
+4. Declare ONE order (time / structure / degree) and apply it.
+5. Place 3–5 sub-points per key-line from the evidence register only.
+6. Vertical logic check per key-line: do the sub-points answer the "why?"
+   the key-line raises? Does the key-line SUMMARISE (not introduce) them?
+7. Flag orphan sub-points and unevidenced assertions.
+
+Output: the pyramid + explicit audit results for 3, 4, 6, 7.</pre>
+        </div>
+
+        <div class="check-box">
+          <h4>Your review checklist</h4>
+          <ul>
+            <li>✓ <strong>Vertical logic:</strong> read each key-line, ask "why?", read its sub-points — do they answer it completely?</li>
+            <li>✓ <strong>Summary test:</strong> each key-line could be reconstructed from its sub-points alone</li>
+            <li>✓ <strong>MECE:</strong> no overlap (one-exhibit test) and no gap (if-all-true-must-accept test)</li>
+            <li>✓ <strong>One order</strong>, stated, and it serves the reader (degree order for busy executives)</li>
+            <li>✓ <strong>Same kind:</strong> all key-lines are arguments (not a mix of argument + evidence + plan)</li>
+            <li>✓ No orphan sub-points; every assertion has evidence beneath it or a flag for B6</li>
+          </ul>
+        </div>
+
+        <div class="reference-box">
+          <h4>Vertical logic worked example</h4>
+          <p>Key-line: "Churn is perception-driven, not price-driven." Reader asks: <em>"why do you say that?"</em> Sub-points must answer exactly that: (a) existing customers stable — price pain would hit them first; (b) price objections down 30%; (c) all 10 lost deals cite the competitor by name; (d) deal sizes unchanged — closers accept current pricing. Each sub-point answers the "why". That is vertical logic holding.</p>
+        </div>
+
+        <label class="output-label">Approved pyramid (key-lines + sub-points):</label>
+        <div class="output-box"><textarea placeholder="KL1 + sub-points / KL2 + sub-points / KL3 + sub-points. Note the order chosen."></textarea></div>
+        <label class="output-label">Audit results (MECE / order / logic type / orphans):</label>
+        <div class="output-box"><textarea placeholder="Record what was merged, what was missing, what was cut."></textarea></div>
+
+        <div class="checkpoint"><p class="checkpoint-text">GATE: vertical logic holds at every joint; MECE passes both tests; one order</p></div>
+        <div class="next-step"><strong>Next:</strong> <a href="#b-step-5">B5 — Pressure-test the argument</a></div>
+      </div>
+
+      <!-- B5: Pressure-test -->
+      <div id="b-step-5" class="step">
+        <div class="step-header">
+          <div class="step-number">B5</div>
+          <div>
+            <h3 class="step-title">Pressure-test the argument</h3>
+            <p class="step-subtitle">Attack every key-line with the room's actual skeptics before they do</p>
+          </div>
+        </div>
+        <div class="step-io"><strong>Input:</strong> pyramid (B4) + skeptic map (B2) + contradicted hypotheses (A3) · <strong>Output:</strong> objection matrix, repairs applied, revised ask</div>
+
+        <div class="process-box">
+          <h4>Copilot's process — follow in order</h4>
+          <ol>
+            <li>For each key-line, generate the strongest objection — voiced as the NAMED skeptic from B2 would voice it, not a generic devil's advocate.</li>
+            <li>Draft the counter for each. A counter must cite evidence from the register; a counter that is just louder assertion fails.</li>
+            <li>Classify each counter: <strong>HOLDS</strong> (evidence exists), <strong>NEEDS EVIDENCE</strong> (obtainable — add to B6 list), <strong>CONCEDE &amp; REFRAME</strong> (objection is right — revise the pyramid now, don't defend the indefensible).</li>
+            <li>Identify the least-evidenced argument in the whole pyramid. Decide: strengthen it, or shrink its role (a weak moat argument can become "table stakes" rather than a pillar).</li>
+            <li>Use A3's contradicted hypotheses offensively: the reader's likely belief was tested and failed — plan where that lands (usually early, to clear the ground).</li>
+            <li>Revise the ask if pressure-testing exposed risk: add the decision gate to the ask itself ("approve X; gate at 90 days on metric Y") — a gated ask is easier to approve.</li>
+          </ol>
+        </div>
+
+        <div class="prompt-box">
+          <h4>Prompt to give Copilot</h4>
+          <pre>You are running Step B5 (Pressure-Test).
+
+Pyramid: [PASTE from B4]
+Skeptics + their skepticisms: [PASTE from B2]
+Contradicted hypotheses + evidence: [PASTE from A3]
+
+Do this:
+1. For each key-line: strongest objection AS THE NAMED SKEPTIC would voice
+   it. No generic objections.
+2. Counter each, citing evidence from the register. No assertion-only
+   counters.
+3. Classify each counter: HOLDS / NEEDS EVIDENCE (add to exhibit list) /
+   CONCEDE &amp; REFRAME (propose the pyramid revision).
+4. Name the least-evidenced argument. Recommend: strengthen or shrink.
+5. Plan where the contradicted stakeholder belief gets dismantled in the
+   flow (usually early).
+6. Revise the ask to include the decision gate.
+
+Output: objection matrix, revisions to pyramid, revised ask.</pre>
+        </div>
+
+        <div class="check-box">
+          <h4>Your review checklist</h4>
+          <ul>
+            <li>✓ Objections sound like your actual room, not a textbook</li>
+            <li>✓ Every HOLDS counter cites evidence you could produce live</li>
+            <li>✓ CONCEDE items actually changed the pyramid (check B4 output was revised)</li>
+            <li>✓ The weakest argument is now either strengthened or demoted — not left load-bearing</li>
+            <li>✓ The ask now contains its own decision gate</li>
+          </ul>
+        </div>
+
+        <label class="output-label">Objection matrix (key-line | objection | counter | status):</label>
+        <div class="output-box"><textarea placeholder="One row per key-line minimum. Status: HOLDS / NEEDS EVIDENCE / CONCEDED."></textarea></div>
+        <label class="output-label">Pyramid revisions made + revised ask:</label>
+        <div class="output-box"><textarea placeholder="What changed and the gated ask."></textarea></div>
+
+        <div class="checkpoint"><p class="checkpoint-text">GATE: every counter evidenced or conceded; ask is gated</p></div>
+        <div class="next-step"><strong>Next:</strong> <a href="#b-step-6">B6 — Design the exhibits</a></div>
+      </div>
+
+      <!-- B6: Exhibits (MASSIVELY EXPANDED) -->
+      <div id="b-step-6" class="step">
+        <div class="step-header">
+          <div class="step-number">B6</div>
+          <div>
+            <h3 class="step-title">Design the exhibits</h3>
+            <p class="step-subtitle">Message first, chart second — the discipline that separates consulting-grade exhibits from decorated data</p>
+          </div>
+        </div>
+        <div class="step-io"><strong>Input:</strong> revised pyramid (B5) + evidence register · <strong>Output:</strong> exhibit specification sheet, one spec per exhibit</div>
+
+        <div class="rule-box">
+          <h4>The iron rule: the message determines the chart</h4>
+          <p>Never start from the data ("what chart fits these numbers?"). Start from the assertion ("what must this exhibit prove?"), then pick the one chart form that shows exactly that comparison. If you cannot write the assertion title first, you are not ready to build the exhibit.</p>
+        </div>
+
+        <div class="process-box">
+          <h4>Copilot's process — follow in order, per exhibit</h4>
+          <ol>
+            <li><strong>Write the assertion title first.</strong> Take the sub-point. Write the title as a full-sentence claim with the "so what" included. This title is fixed BEFORE any chart choice.
+              <ul>
+                <li><span class="bad">Label:</span> "Q4 lost-deal analysis"</li>
+                <li><span class="good">Assertion:</span> "All 10 Q4 lost deals cite the competitor — none cite price"</li>
+              </ul>
+            </li>
+            <li><strong>Classify the comparison.</strong> Every quantitative message is one of five comparison types. The type dictates the chart family:
+              <table>
+                <tr><th>Comparison type</th><th>Message keywords</th><th>Chart form</th></tr>
+                <tr><td><strong>Component</strong> (share of a whole)</td><td>"share of", "percentage of", "X% of total"</td><td>Pie (≤5 slices) or 100% stacked bar</td></tr>
+                <tr><td><strong>Item</strong> (ranking things)</td><td>"larger than", "ranked", "more/less than"</td><td>Horizontal bar</td></tr>
+                <tr><td><strong>Time series</strong> (change over time)</td><td>"grew", "declined", "since", "trend"</td><td>Column (few periods) or line (many)</td></tr>
+                <tr><td><strong>Frequency</strong> (distribution)</td><td>"concentration", "range", "most fall between"</td><td>Histogram / column</td></tr>
+                <tr><td><strong>Correlation</strong> (relationship)</td><td>"relates to", "increases with", "depends on"</td><td>Scatter or paired horizontal bar</td></tr>
+              </table>
+            </li>
+            <li><strong>One message per exhibit.</strong> If the assertion contains "and" joining two claims, split into two exhibits. A chart proving two things proves neither memorably.</li>
+            <li><strong>Choose the evidence type</strong> where the claim is not quantitative: quote strip (verbatim customer/analyst quotes with attribution), comparison table (us vs. them on named dimensions), mockup (for product propositions), process/flywheel diagram (for mechanisms), scenario table (for financial cases — always pessimistic/central/optimistic, never a single point estimate).</li>
+            <li><strong>Specify the highlight.</strong> Every exhibit has one visual emphasis matching the title's claim: the one bar coloured differently, the divergence circled, the row bolded. If everything is emphasised, nothing is.</li>
+            <li><strong>Strip the decoration:</strong> no 3D, no background fills, no legend where direct labels fit, no gridline clutter, sensible rounding (£3.9M, not £3,912,447), axis starting at zero unless the deviation IS the message (then annotate the break).</li>
+            <li><strong>Add source and units</strong> to every exhibit: "Source: CRM lost-deal records, Oct–Dec 2025. n=10." An unsourced exhibit is an anecdote.</li>
+            <li><strong>Write the spec sheet row</strong> for each exhibit: ID, sub-point served, assertion title, comparison type, chart form, data needed, highlight, source, status (data ready / to gather).</li>
+          </ol>
+        </div>
+
+        <div class="prompt-box">
+          <h4>Prompt to give Copilot</h4>
+          <pre>You are running Step B6 (Exhibit Design) using the message-first method.
+
+Pyramid with sub-points: [PASTE from B5]
+Evidence register: [PASTE]
+NEEDS-EVIDENCE items from pressure-test: [PASTE from B5]
+
+For EVERY sub-point, produce one exhibit spec:
+1. Assertion title FIRST: full-sentence claim including the so-what.
+   Reject any label-style title.
+2. Classify the comparison: component / item / time series / frequency /
+   correlation — or non-quantitative (quote strip, comparison table,
+   mockup, mechanism diagram, scenario table).
+3. Chart form from the comparison type. One message per exhibit — split
+   any "and" titles.
+4. Specify: the single highlight (what gets visual emphasis), data
+   required, source + units line, rounding.
+5. Financial exhibits must be scenario tables (pess/central/opt), never
+   single-point.
+6. Status: DATA READY / TO GATHER (with where-from).
+
+Output: spec sheet table, one row per exhibit, plus a to-gather list.</pre>
+        </div>
+
+        <div class="check-box">
+          <h4>Your review checklist</h4>
+          <ul>
+            <li>✓ Every title is a full-sentence assertion — read the titles column alone: it should read as the evidence layer of your argument</li>
+            <li>✓ Chart form matches comparison type (time series on a pie = fail)</li>
+            <li>✓ No exhibit carries two messages</li>
+            <li>✓ Each exhibit has ONE specified highlight matching its title</li>
+            <li>✓ Financial exhibits show ranges, not point estimates</li>
+            <li>✓ Every exhibit has a source you could defend; TO GATHER items have owners</li>
+          </ul>
+        </div>
+
+        <div class="reference-box">
+          <h4>Common exhibit defects — and fixes</h4>
+          <table>
+            <tr><th>Defect</th><th>Fix</th></tr>
+            <tr><td>Label title ("Revenue by segment")</td><td>Rewrite as the claim the data proves</td></tr>
+            <tr><td>Two messages on one chart</td><td>Split into two exhibits</td></tr>
+            <tr><td>Chart mismatched to message</td><td>Reclassify the comparison type, re-derive the form</td></tr>
+            <tr><td>Legend hunting (reader decodes colours)</td><td>Label data directly</td></tr>
+            <tr><td>Precision theatre (£3,912,447.23)</td><td>Round to message-relevant digits (£3.9M)</td></tr>
+            <tr><td>Truncated axis exaggerating a trend</td><td>Start at zero, or annotate the break honestly</td></tr>
+            <tr><td>Everything emphasised</td><td>One highlight per exhibit, matching the title</td></tr>
+            <tr><td>No source line</td><td>Add source, date, n= — or don't show the exhibit</td></tr>
+          </table>
+        </div>
+
+        <label class="output-label">Exhibit spec sheet:</label>
+        <div class="output-box"><textarea placeholder="ID | sub-point | assertion title | comparison type | chart form | highlight | source | status"></textarea></div>
+        <label class="output-label">To-gather list (data gaps with owners and dates):</label>
+        <div class="output-box"><textarea placeholder="What's missing, who gets it, by when. Presentation date depends on this list."></textarea></div>
+
+        <div class="checkpoint"><p class="checkpoint-text">GATE: titles-column reads as the argument's evidence layer; every chart form derived from its comparison type</p></div>
+        <div class="next-step"><strong>Next:</strong> <a href="#b-step-7">B7 — Write the narrative</a></div>
+      </div>
+
+      <!-- B7: Narrative -->
+      <div id="b-step-7" class="step">
+        <div class="step-header">
+          <div class="step-number">B7</div>
+          <div>
+            <h3 class="step-title">Write the narrative</h3>
+            <p class="step-subtitle">SCQA introduction, body by key-line, Minto conclusion — under full copy standards</p>
+          </div>
+        </div>
+        <div class="step-io"><strong>Input:</strong> pyramid (B5) + exhibit specs (B6) + SCQA (B3) · <strong>Output:</strong> complete narrative + speaker notes</div>
+
+        <div class="process-box">
+          <h4>Copilot's process — follow in order</h4>
+          <ol>
+            <li>Write the introduction as the SCQA in the chosen tone order. In prose, the introduction must be readable in under 30 seconds and end with the Governing Thought.</li>
+            <li>Preview the key-lines in one sentence immediately after the Governing Thought ("Three things make this the right move: it is desirable, deliverable and defensible.").</li>
+            <li>Write the body: one section per key-line, in the pyramid's order. Section pattern: <em>heading = the key-line assertion → why it matters (2–3 sentences) → the evidence, referencing exhibits by their assertion titles → transition planting the next key-line's question</em>.</li>
+            <li>Write the conclusion in Minto's three-part structure — no other structure is acceptable:
+              <ul>
+                <li><strong>Restate</strong> the Governing Thought (fresh words, same claim)</li>
+                <li><strong>Name the key assumption</strong>: "This rests on [assumption]; if [signal] we revisit at [gate]" — naming it disarms the skeptic who was waiting to raise it</li>
+                <li><strong>Next action</strong>: who does what, starting when</li>
+              </ul>
+            </li>
+            <li>Apply the copy standards below to every sentence — mechanically, not impressionistically.</li>
+            <li>Split speaker notes from narrative: details, statistics and story colour that support delivery but would clutter the page.</li>
+          </ol>
+        </div>
+
+        <div class="rule-box">
+          <h4>Copy standards — apply mechanically (Minto Part 12)</h4>
+          <ol style="margin: 8px 0 0 20px;">
+            <li><strong>Active voice.</strong> Subject acts. "We will reposition" not "repositioning will be undertaken".</li>
+            <li><strong>Kill nominalisations.</strong> Words ending -tion/-ment/-ance hiding a verb: "utilisation of" → "use"; "implementation of X requires" → "to implement X, we must".</li>
+            <li><strong>≤25 words per sentence.</strong> Count. Break at subordinate clauses.</li>
+            <li><strong>One idea per sentence.</strong> An "and" joining two claims = two sentences.</li>
+            <li><strong>Numbers:</strong> spell one–nine; numerals 10+; dates as 8 May 2026; every % has a referent ("35% of SME accounts", never bare "35%").</li>
+            <li><strong>Punctuation:</strong> no exclamation marks; no Oxford comma; em dashes spaced and rare.</li>
+            <li><strong>Capitals:</strong> proper nouns only. "the chief financial officer", "the repositioning campaign".</li>
+            <li><strong>No hedging without content.</strong> "It could be argued that" = delete. Either make the argument or cut it.</li>
+          </ol>
+        </div>
+
+        <div class="prompt-box">
+          <h4>Prompt to give Copilot</h4>
+          <pre>You are running Step B7 (Narrative) of a Minto presentation build.
+
+SCQA + tone order: [PASTE from B3]
+Pyramid (revised): [PASTE from B5]
+Exhibit spec sheet: [PASTE from B6]
+
+Do this:
+1. Introduction: SCQA in the chosen tone order, ≤30-second read, ending
+   with the Governing Thought + one-sentence key-line preview.
+2. Body: one section per key-line. Pattern: heading = the assertion →
+   why it matters (2–3 sentences) → evidence referencing exhibits by
+   their assertion titles → transition planting the next section's
+   question.
+3. Conclusion in Minto's three parts ONLY: restate Governing Thought /
+   name the key assumption + revisit gate / next action with owner and
+   start date.
+4. Copy standards, mechanically: active voice; no nominalisations;
+   ≤25-word sentences (count them); one idea per sentence; numbers
+   (one–nine spelled, 10+ numerals, dates as 8 May 2026, every % has a
+   referent); no exclamation marks; no Oxford comma; capitals for proper
+   nouns only; no empty hedging.
+5. Separate speaker notes from narrative.
+
+Output: narrative, then speaker notes, then a self-audit line confirming
+each copy standard was applied.</pre>
+        </div>
+
+        <div class="check-box">
+          <h4>Your review checklist</h4>
+          <ul>
+            <li>✓ Introduction readable in 30 seconds, ends on the Governing Thought</li>
+            <li>✓ Section headings ARE the key-line assertions (not "Background", "Analysis")</li>
+            <li>✓ Transitions plant the next question ("Desirability alone doesn't fund itself — can we build it?")</li>
+            <li>✓ Conclusion has all three Minto parts — check the key assumption is the A5 one</li>
+            <li>✓ Spot-check five sentences against the copy standards; if two fail, send the whole draft back</li>
+          </ul>
+        </div>
+
+        <label class="output-label">Approved narrative:</label>
+        <div class="output-box"><textarea placeholder="Introduction / body sections / three-part conclusion."></textarea></div>
+        <label class="output-label">Speaker notes:</label>
+        <div class="output-box"><textarea placeholder="Delivery detail kept off the page."></textarea></div>
+
+        <div class="checkpoint"><p class="checkpoint-text">GATE: conclusion has all three parts; copy standards pass spot-check</p></div>
+        <div class="next-step"><strong>Next:</strong> <a href="#b-step-8">B8 — Run the lint check</a></div>
+      </div>
+
+      <!-- B8: Lint (NEW) -->
+      <div id="b-step-8" class="step">
+        <div class="step-header">
+          <div class="step-number">B8</div>
+          <div>
+            <h3 class="step-title">Run the lint check</h3>
+            <p class="step-subtitle">Sixteen mechanical rules + six diagnostics — the pre-flight inspection before anything is built or sent</p>
+          </div>
+        </div>
+        <div class="step-io"><strong>Input:</strong> everything produced so far · <strong>Output:</strong> lint report — every rule PASS or repaired</div>
+
+        <div class="rule-box">
+          <h4>The 16 lint rules</h4>
+          <ol style="margin: 8px 0 0 20px;">
+            <li>Governing Thought ≤25 words, active voice, verb-led</li>
+            <li>Governing Thought states a SO-WHAT (what it produces), not a WHAT</li>
+            <li>SCQA contains exactly one Question</li>
+            <li>Situation contains no contested claim and no "but/however"</li>
+            <li>Every heading and slide title is a full-sentence assertion — testable, falsifiable</li>
+            <li>3–5 key-lines, never more</li>
+            <li>Key-lines are MECE (one-exhibit overlap test; if-all-true-must-accept gap test)</li>
+            <li>Every key-line summarises its sub-points (reconstructable-from-below test)</li>
+            <li>Each grouping is purely inductive or purely deductive — never mixed</li>
+            <li>Each grouping follows ONE declared order: time, structure or degree</li>
+            <li>No orphan assertions — every claim has evidence beneath it</li>
+            <li>Every exhibit title is an assertion, not a label</li>
+            <li>One message per exhibit; every exhibit has source + units</li>
+            <li>Sentences ≤25 words, active voice, no nominalisations</li>
+            <li>Numbers formatted: one–nine spelled, 10+ numerals, dates as 8 May 2026, every % has a referent</li>
+            <li>Conclusion restates Governing Thought + names key assumption + next action</li>
+          </ol>
+        </div>
+
+        <div class="rule-box">
+          <h4>The 6-check final diagnostic</h4>
+          <ol style="margin: 8px 0 0 20px;">
+            <li><strong>Title-read test:</strong> read ONLY the headings/slide titles in sequence. Does the full argument hold with nothing else?</li>
+            <li><strong>Nod test:</strong> SCQA still earns four nods from the named reader?</li>
+            <li><strong>So-what test:</strong> for every section/slide ask "so what?" — anything without an answer gets cut</li>
+            <li><strong>Skeptic pass:</strong> every named skeptic's objection has an evidenced counter placed in the flow</li>
+            <li><strong>Evidence trace:</strong> every number traces to the register; every register source could be produced live</li>
+            <li><strong>Single ask:</strong> the document asks for exactly one decision, gated, with owner and date</li>
+          </ol>
+        </div>
+
+        <div class="prompt-box">
+          <h4>Prompt to give Copilot</h4>
+          <pre>You are running Step B8 (Lint Check) on the full Minto work product.
+
+Materials: [PASTE Governing Thought, SCQA, pyramid, exhibit spec sheet,
+narrative]
+
+Run all 16 lint rules and the 6-check diagnostic (listed in my workbook).
+For each: PASS, or FAIL with the exact offending text and a proposed
+repair. Apply repairs for pure mechanics (sentence length, numbers,
+titles). Escalate to me anything whose repair changes meaning
+(MECE failures, missing evidence, so-what cuts).
+
+Output: numbered lint report 1–16 + diagnostics 1–6, repairs applied,
+escalations listed separately.</pre>
+        </div>
+
+        <div class="check-box">
+          <h4>Your review checklist</h4>
+          <ul>
+            <li>✓ Report covers all 22 checks — a skipped check is a fail</li>
+            <li>✓ Mechanical repairs applied silently are fine; verify escalations personally</li>
+            <li>✓ The title-read test result is included verbatim — read it yourself; this is the single best 60-second check of the whole product</li>
+          </ul>
+        </div>
+
+        <label class="output-label">Lint report summary (fails found, repairs made, escalations):</label>
+        <div class="output-box"><textarea placeholder="Which rules failed, what was repaired, what needed your call."></textarea></div>
+
+        <div class="checkpoint"><p class="checkpoint-text">GATE: all 16 rules + 6 diagnostics PASS after repair</p></div>
+        <div class="next-step"><strong>Next:</strong> <a href="#b-step-9">B9 — Storyboard the slides</a></div>
+      </div>
+
+      <!-- B9: Storyboard (EXPANDED) -->
+      <div id="b-step-9" class="step">
+        <div class="step-header">
+          <div class="step-number">B9</div>
+          <div>
+            <h3 class="step-title">Storyboard the slides</h3>
+            <p class="step-subtitle">Dot-dash the titles first, then hang exhibits on them — never the other way round</p>
+          </div>
+        </div>
+        <div class="step-io"><strong>Input:</strong> linted narrative (B8) + exhibit specs (B6) · <strong>Output:</strong> slide-by-slide storyboard with anatomy per slide</div>
+
+        <div class="process-box">
+          <h4>Copilot's process — follow in order</h4>
+          <ol>
+            <li><strong>Dot-dash the deck first.</strong> Before any slide is designed, write the title sequence alone — one assertion per line, in order. Read it aloud. This IS the presentation; slides merely evidence it. If the sequence has a gap or a jump, fix it here, at zero cost.</li>
+            <li>Standard sequence for a Recommendation deck: cover → Governing Thought → context (situation) → complication → key-line 1 (1 intro + 1–3 exhibit slides) → transition → key-line 2 (same) → key-line 3 (same) → conclusion/assumption → the gated ask. Target: 20-minute pitch ≈ 12–16 slides.</li>
+            <li>Build each slide to the standard anatomy:
+              <ul>
+                <li><strong>Title zone:</strong> the assertion, ≤2 lines. The only element that MUST be read.</li>
+                <li><strong>Exhibit zone:</strong> ~90% of the body — the exhibit from its B6 spec, with its single highlight.</li>
+                <li><strong>Source line:</strong> bottom, small: source, date, n=, units.</li>
+              </ul>
+              <div class="anatomy">
+                <div class="a-title">TITLE = full-sentence assertion (≤2 lines) — the only must-read element</div>
+                <div class="a-kicker">optional kicker: one orienting clause</div>
+                <div class="a-exhibit">EXHIBIT — fills ~90% of body<br>one message · one highlight · direct labels</div>
+                <div class="a-source">Source: [system], [date range], n=[..] · units: [..]</div>
+              </div>
+            </li>
+            <li>Enforce per-slide discipline: one slide = one assertion = one exhibit. A slide needing two exhibits is two slides. A slide whose title contains "and" joining claims is two slides.</li>
+            <li>Push all explanation to speaker notes. Bullet text on the slide competes with the exhibit and loses.</li>
+            <li>Design the two text-only slides deliberately: the Governing Thought slide (large type, clean background, nothing else) and the ask slide (the decision, the gate, the date — nothing else).</li>
+            <li>Re-run the <strong>title-read test</strong> on the final storyboard: titles alone, in order, must carry the complete argument.</li>
+          </ol>
+        </div>
+
+        <div class="prompt-box">
+          <h4>Prompt to give Copilot</h4>
+          <pre>You are running Step B9 (Storyboard) of a Minto presentation build.
+
+Linted narrative: [PASTE from B8]
+Exhibit spec sheet: [PASTE from B6]
+Time budget: [X minutes]
+
+Do this:
+1. DOT-DASH FIRST: write the title sequence alone — one assertion per
+   slide, in order. Read as a standalone argument. Fix gaps before
+   designing anything.
+2. Build the storyboard table: slide # | assertion title | exhibit (from
+   spec ID) + its highlight | source line | speaker notes.
+3. Anatomy per slide: title ≤2 lines; exhibit ~90% of body; source line.
+   One slide = one assertion = one exhibit. Split any violations.
+4. Two text-only slides: Governing Thought (large type, alone) and the
+   gated ask (decision + gate + date, alone).
+5. Slide count sanity: [X]-minute pitch ≈ [X*0.7] slides max.
+6. Re-run the title-read test on the finished sequence; output it
+   verbatim.
+
+Output: dot-dash sequence, storyboard table, title-read test result.</pre>
+        </div>
+
+        <div class="check-box">
+          <h4>Your review checklist</h4>
+          <ul>
+            <li>✓ Read the dot-dash sequence aloud — it should sound like you making the argument to a colleague in 90 seconds</li>
+            <li>✓ Every slide: one assertion, one exhibit, one highlight</li>
+            <li>✓ No bullet-text slides in the body (text belongs in speaker notes)</li>
+            <li>✓ Governing Thought and ask slides are clean text-only</li>
+            <li>✓ Slide count fits the time budget with room for interruption</li>
+          </ul>
+        </div>
+
+        <label class="output-label">Dot-dash title sequence (the argument in titles):</label>
+        <div class="output-box"><textarea placeholder="One assertion per line, in order. This is the presentation."></textarea></div>
+        <label class="output-label">Storyboard table:</label>
+        <div class="output-box"><textarea placeholder="Slide # | title | exhibit + highlight | source | speaker notes"></textarea></div>
+
+        <div class="checkpoint"><p class="checkpoint-text">GATE: title-read test passes; every slide one-assertion-one-exhibit</p></div>
+        <div class="next-step"><strong>Next:</strong> <a href="#b-step-10">B10 — Test against the audience</a></div>
+      </div>
+
+      <!-- B10: Audience test -->
+      <div id="b-step-10" class="step">
+        <div class="step-header">
+          <div class="step-number">B10</div>
+          <div>
+            <h3 class="step-title">Test against the audience</h3>
+            <p class="step-subtitle">Simulate the room slide-by-slide; refine for the people who will actually be in it</p>
+          </div>
+        </div>
+        <div class="step-io"><strong>Input:</strong> storyboard (B9) + room map (B2) + objection matrix (B5) · <strong>Output:</strong> refined storyboard + Q&amp;A prep sheet</div>
+
+        <div class="process-box">
+          <h4>Copilot's process — follow in order</h4>
+          <ol>
+            <li>Walk the storyboard as each named attendee: at every slide, write their predicted internal reaction, question or push-back — in their voice.</li>
+            <li>Check objection placement: every objection from the B5 matrix must land AFTER its counter-evidence has appeared. If the CFO's price question arrives at slide 3 and your counter sits at slide 7, reorder.</li>
+            <li>Check the reader's lead concern: what they care about most (B2) should appear early — reorder if the storyboard buries it.</li>
+            <li>Identify redundancy: slides where the simulated room is already nodding — candidates for the appendix.</li>
+            <li>Build the Q&amp;A prep sheet: the ten hardest questions, each with a one-sentence answer plus the exhibit or appendix slide to jump to.</li>
+            <li>Propose the appendix: pressure-test detail, scenario tables, methodology — everything a hard question needs that the main flow shouldn't carry.</li>
+          </ol>
+        </div>
+
+        <div class="prompt-box">
+          <h4>Prompt to give Copilot</h4>
+          <pre>You are running Step B10 (Audience Simulation).
+
+Storyboard: [PASTE from B9]
+Room map + belief gap: [PASTE from B2]
+Objection matrix: [PASTE from B5]
+
+Do this:
+1. Walk the deck as each named attendee; per slide, their reaction in
+   their voice.
+2. Flag any objection that fires BEFORE its counter-evidence has appeared;
+   propose reordering.
+3. Verify the decision-maker's lead concern appears in the first third.
+4. Flag redundant slides for the appendix.
+5. Q&amp;A prep: 10 hardest questions | one-sentence answer | jump-to slide.
+6. Propose the appendix contents.
+
+Output: reaction walk, reorder proposals, Q&amp;A sheet, appendix list.</pre>
+        </div>
+
+        <div class="check-box">
+          <h4>Your review checklist</h4>
+          <ul>
+            <li>✓ Reactions ring true to the actual people (you know them; Copilot doesn't)</li>
+            <li>✓ No objection fires before its counter has landed</li>
+            <li>✓ Decision-maker's top concern is in the first third</li>
+            <li>✓ Q&amp;A sheet: you could deliver each answer in one breath</li>
+          </ul>
+        </div>
+
+        <label class="output-label">Refinements made (reorders, cuts, additions):</label>
+        <div class="output-box"><textarea placeholder="What moved and why."></textarea></div>
+        <label class="output-label">Q&amp;A prep sheet:</label>
+        <div class="output-box"><textarea placeholder="Question | one-breath answer | jump-to slide"></textarea></div>
+
+        <div class="checkpoint"><p class="checkpoint-text">GATE: objections land after counters; Q&amp;A sheet complete</p></div>
+        <div class="next-step"><strong>Next:</strong> <a href="#b-step-11">B11 — Deliver and capture the outcome</a></div>
+      </div>
+
+      <!-- B11: Deliver -->
+      <div id="b-step-11" class="step">
+        <div class="step-header">
+          <div class="step-number">B11</div>
+          <div>
+            <h3 class="step-title">Deliver and capture the outcome</h3>
+            <p class="step-subtitle">Present, record the decision, harvest the lessons</p>
+          </div>
+        </div>
+        <div class="step-io"><strong>Input:</strong> final deck + Q&amp;A sheet (B10) · <strong>Output:</strong> outcome record + lessons</div>
+
+        <div class="process-box">
+          <h4>Process</h4>
+          <ol>
+            <li><strong>Before:</strong> confirm logistics (time, room, attendees — any surprise stakeholder changes the B2 frame); rehearse the dot-dash sequence aloud once; re-read the Q&amp;A sheet.</li>
+            <li><strong>During (live):</strong> deliver SCQA verbally over the opening slides; reference exhibits, never read them; when a Q&amp;A-sheet question lands, answer in one breath and jump to the prepared slide.</li>
+            <li><strong>After — capture within 24 hours:</strong> decision (approved / conditional + trigger / rejected + reason / deferred + date); objections raised vs. predicted; which exhibits did the work; next actions with owners.</li>
+            <li><strong>Lessons:</strong> which step of this workbook would have caught what surprised you — that is the process improvement to make before next time.</li>
+          </ol>
+        </div>
+
+        <label class="output-label">Outcome record (decision / conditions / objections vs. predicted):</label>
+        <div class="output-box"><textarea placeholder="What was decided; what fired that you didn't predict; what did the work."></textarea></div>
+        <label class="output-label">Next actions (owner / date):</label>
+        <div class="output-box"><textarea placeholder="Who does what, by when."></textarea></div>
+        <label class="output-label">Process lessons (which workbook step to improve):</label>
+        <div class="output-box"><textarea placeholder="What surprised you and which step should have caught it."></textarea></div>
+
+        <div class="checkpoint"><p class="checkpoint-text">GATE: decision unambiguous; actions owned and dated; lessons fed back</p></div>
+        <div class="next-step"><strong>Complete.</strong> Archive this workbook with the outcome — it is the audit trail of the argument.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function selectFlow(flow) {
+      document.getElementById('flow-a').classList.remove('active');
+      document.getElementById('flow-b').classList.remove('active');
+      document.getElementById('flow-' + flow).classList.add('active');
+      window.scrollTo(0, 0);
+    }
+    document.getElementById('flow-a').classList.add('active');
+  </script>
+</body>
+</html>
