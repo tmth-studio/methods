@@ -1275,32 +1275,39 @@ in a separate list.</pre>
           <div class="step-number">B9</div>
           <div>
             <h3 class="step-title">Storyboard the slides</h3>
-            <p class="step-subtitle">Write the title sequence first. Then attach the exhibits. Never in the other direction.</p>
+            <p class="step-subtitle">Write the title sequence first. Build slides that stand alone without a speaker.</p>
           </div>
         </div>
         <div class="step-io"><strong>Input:</strong> narrative after lint (B8) + exhibit specifications (B6) · <strong>Output:</strong> storyboard, slide by slide, with the anatomy of each slide</div>
 
+        <div class="rule-box">
+          <h4>Standalone is the default mode</h4>
+          <p>Minto's slide advice assumes a speaker in the room: minimal text, the voice carries the explanation. Most corporate decks do not work that way. They travel by email and SharePoint, and nobody speaks over them. This process builds <strong>standalone slides</strong> by default: each slide must carry its full message to a cold reader with no presenter. The compression tool is emphasis discipline (bold the load-bearing words), not text deletion. Use the live-pitch variant (minimal text, notes carry the explanation) only when you will present in the room AND the deck will not travel alone. The presence type from B2 decides the mode.</p>
+        </div>
+
         <div class="process-box">
           <h4>Copilot procedure — do the steps in sequence</h4>
           <ol>
-            <li><strong>Write the dot-dash sequence first.</strong> Before you design a slide, write the title sequence alone: one claim on each line, in order. Read it aloud. This sequence IS the presentation. The slides only give the evidence. If the sequence has a gap or a jump, repair it here, at zero cost.</li>
-            <li>Standard sequence for a Recommendation deck: cover → Governing Thought → context (Situation) → Complication → key-line 1 (1 intro + 1–3 exhibit slides) → transition → key-line 2 (same) → key-line 3 (same) → conclusion and assumption → the ask with its gate. Target: a 20-minute pitch has 12 to 16 slides.</li>
-            <li>Build each slide to the standard anatomy:
+            <li><strong>Write the dot-dash sequence first.</strong> Before you design a slide, write the title sequence alone: one claim on each line, in order. Read it aloud. This sequence IS the document. The slide bodies prove it. If the sequence has a gap or a jump, repair it here, at zero cost.</li>
+            <li>Standard sequence for a standalone Recommendation deck: cover → <strong>executive summary</strong> (the SCQA in full prose, one slide) → <strong>agenda</strong> → context (Situation) → Complication → key-line 1 section (1 summary slide + 1–3 evidence slides) → agenda repeat (next section highlighted) → key-line 2 section → key-line 3 section → conclusion and key assumption → the ask with its gate. A standalone read deck can run longer than a pitch deck — completeness beats brevity.</li>
+            <li>Build each slide to the standalone anatomy:
               <ul>
-                <li><strong>Title zone:</strong> the claim, 2 lines maximum. The only element the reader MUST read.</li>
-                <li><strong>Exhibit zone:</strong> about 90% of the body — the exhibit from its B6 specification, with its one highlight.</li>
-                <li><strong>Source line:</strong> at the bottom, small: source, date, n=, units.</li>
+                <li><strong>Kicker:</strong> the section name, small italic grey.</li>
+                <li><strong>Title zone:</strong> the claim, 2 lines maximum.</li>
+                <li><strong>Body:</strong> the proof of the claim, complete in itself. Four body forms: (a) exhibit with short framing bullets, (b) label-and-content rows (category labels left, bullets right), (c) quote cards, (d) the case template (Opportunity / Best practices / Result). The body must answer the title's claim with no voice-over.</li>
+                <li><strong>Source line:</strong> at the bottom: SOURCE, date range, n=, units.</li>
               </ul>
               <div class="anatomy">
-                <div class="a-title">TITLE = full-sentence claim (2 lines maximum) — the only element the reader must read</div>
-                <div class="a-kicker">optional lead line: one clause for orientation</div>
-                <div class="a-exhibit">EXHIBIT — about 90% of the body<br>one message · one highlight · labels on the data</div>
-                <div class="a-source">Source: [system], [date range], n=[..] · units: [..]</div>
+                <div class="a-kicker">kicker: section name (small italic grey)</div>
+                <div class="a-title">TITLE = full-sentence claim (2 lines maximum)</div>
+                <div class="a-exhibit">BODY — proves the claim, complete in itself<br>exhibit + framing bullets · label rows · quotes · case template<br>bold ONLY the load-bearing words</div>
+                <div class="a-source">SOURCE: [system], [date range], n=[..] · units: [..]</div>
               </div>
             </li>
-            <li>Apply the slide discipline: one slide = one claim = one exhibit. A slide that needs two exhibits is two slides. A title with "and" between claims is two slides.</li>
-            <li>Move all explanation to the speaker notes. Bullet text on a slide competes with the exhibit. The exhibit must win.</li>
+            <li>Apply the slide discipline: one slide = one claim = one body. A slide that needs two messages is two slides. A title with "and" between claims is two slides.</li>
+            <li><strong>Make each slide self-sufficient.</strong> A cold reader with no presenter must get the full message from the slide alone. Compress with emphasis discipline: bold only the load-bearing words, so the bold words alone carry the message. Do not compress by moving required content to the notes — for a standalone deck, the notes hold only extra colour, never required content.</li>
             <li>Design the two text-only slides with care. The Governing Thought slide: large type, clean background, nothing else. The ask slide: the decision, the gate, the date — nothing else.</li>
+            <li><strong>Live-pitch variant (exception):</strong> if B2 says you present in the room and the deck does not travel, strip the body to the exhibit and move the explanation to the speaker notes. Say so explicitly in the B11 build.</li>
             <li>Do the <strong>title-read test</strong> again on the finished storyboard. The titles alone, in order, must carry the complete argument.</li>
           </ol>
         </div>
@@ -1311,26 +1318,38 @@ in a separate list.</pre>
 
 Narrative after lint: [PASTE from B8]
 Exhibit specification sheet: [PASTE from B6]
-Time budget: [X minutes]
+Mode from B2: [STANDALONE (default) or LIVE PITCH]
 
 Do this:
 1. DOT-DASH FIRST: write the title sequence alone — one claim for
    each slide, in order. Read it as an argument that stands alone.
    Repair the gaps before you design a slide.
-2. Build the storyboard table: slide # | claim title | exhibit (from
-   the specification ID) + its highlight | source line | speaker
-   notes.
-3. Anatomy for each slide: title 2 lines maximum; exhibit about 90%
-   of the body; source line. One slide = one claim = one exhibit.
-   Divide each slide that breaks this rule.
-4. Two text-only slides: the Governing Thought (large type, alone)
+2. Sequence for a STANDALONE deck: cover, executive summary (the
+   SCQA in full prose), agenda, context, complication, then one
+   section per key-line (1 summary slide + 1-3 evidence slides,
+   agenda repeated between sections), conclusion + key assumption,
+   the ask with its gate.
+3. Build the storyboard table: slide # | kicker (section) | claim
+   title | body plan (exhibit ID + framing bullets, label rows,
+   quotes, or case template) | source line | notes (extra colour
+   only, never required content).
+4. STANDALONE rule: each slide's body must carry the full message
+   to a cold reader with no presenter. Compress with bold on the
+   load-bearing words only — never by moving required content to
+   the notes. One slide = one claim = one body. Divide each slide
+   that breaks this rule.
+   (LIVE PITCH variant only: strip bodies to the exhibit, move
+   explanation to notes, 12-16 slides for 20 minutes.)
+5. Two text-only slides: the Governing Thought (large type, alone)
    and the ask with its gate (decision + gate + date, alone).
-5. Slide count check: a [X]-minute pitch has about [X*0.7] slides
-   maximum.
-6. Do the title-read test on the finished sequence. Output the result
-   word for word.
+6. Do the title-read test on the finished sequence. Output the
+   result word for word.
+7. Self-sufficiency test: for three slides chosen at random, write
+   what a cold reader learns from the slide alone. If the reader
+   misses part of the message, repair the body.
 
-Output: dot-dash sequence, storyboard table, title-read test result.</pre>
+Output: dot-dash sequence, storyboard table, title-read result,
+self-sufficiency test result.</pre>
         </div>
 
         <div class="reference-box">
@@ -1351,11 +1370,12 @@ Output: dot-dash sequence, storyboard table, title-read test result.</pre>
           <h4>Your review checklist</h4>
           <ul>
             <li>✓ Read the dot-dash sequence aloud. It must sound like your argument to a colleague, in 90 seconds.</li>
-            <li>✓ Each slide: one claim, one exhibit, one highlight.</li>
-            <li>✓ No bullet-text slides in the body. Text goes in the speaker notes.</li>
+            <li>✓ <strong>The standalone test:</strong> open three slides at random. A cold reader with no presenter must get the full message from the slide alone.</li>
+            <li>✓ Each slide: one claim, one body, one highlight.</li>
+            <li>✓ Emphasis discipline: bold key words only, never full sentences. Read only the bold words — the message must survive.</li>
+            <li>✓ The executive summary slide carries the full SCQA in prose. The agenda repeats at section breaks.</li>
             <li>✓ The Governing Thought slide and the ask slide are clean text-only slides.</li>
-            <li>✓ The slide count fits the time budget, with space for interruptions.</li>
-            <li>✓ The design rules are applied: kicker lines, bold-only-key-words, values on bars, sources on evidence slides.</li>
+            <li>✓ The design rules are applied: kicker lines, values on bars, sources on evidence slides.</li>
           </ul>
         </div>
 
@@ -1450,7 +1470,8 @@ Output: reaction walk, order changes, Q&amp;A sheet, appendix list.</pre>
             <li>One HTML file. No external libraries. No fonts, images, or scripts from the network. The file must work without a network connection.</li>
             <li>System fonts only: 'Segoe UI' with sans-serif fallback. Corporate machines block font downloads.</li>
             <li>Charts as HTML/CSS or inline SVG. Bar charts: div elements with widths from the data. Line and scatter charts: inline SVG. Tables: HTML tables.</li>
-            <li>One slide = one claim = one exhibit, from the B10 storyboard. Do not add slides. Do not remove slides.</li>
+            <li>One slide = one claim = one body, from the B10 storyboard. Do not add slides. Do not remove slides.</li>
+            <li><strong>Standalone by default:</strong> each slide carries its full message to a reader with no presenter. The notes hold extra colour only, never required content.</li>
           </ul>
         </div>
 
@@ -1483,16 +1504,25 @@ Rules:
 1. No external libraries, fonts, images, or scripts. The file must
    work without a network connection.
 2. One slide for each storyboard row, in order. One slide = one claim
-   = one exhibit.
-3. Charts: bar charts as div elements with widths from the data;
+   = one body. Include the fixed slides: cover, executive summary
+   (class "summary": the SCQA in full prose), agenda (class
+   "agenda", current section class "cur", repeated at each section
+   break), conclusion, the ask.
+3. STANDALONE by default: each slide's body carries the full message
+   to a reader with no presenter. Body forms: exhibit + short
+   framing bullets; label rows (class "row" with "lab" and "cont");
+   quote cards; case template. Bold ONLY the load-bearing words.
+   Set var LIVE=false in the script. (Live pitch only: set
+   LIVE=true, strip bodies to the exhibit, move explanation to the
+   notes.)
+4. Charts: bar charts as div elements with widths from the data;
    line/scatter as inline SVG; tables as HTML tables. Use the real
    numbers from the evidence register. Do not invent data.
-4. Highlight: the one highlighted element gets #1f4fa8. All other
+5. Highlight: the one highlighted element gets #1f4fa8. All other
    data elements get #b0b8c4.
-5. Each slide: claim title at the top (2 lines maximum), exhibit in
-   the centre (about 90% of the body), source line at the bottom.
-6. Speaker notes in a hidden block on each slide. The 'n' key shows
-   and hides them.
+6. Each slide: kicker, claim title (2 lines maximum), body, source
+   line at the bottom. Notes hold extra colour only; the 'n' key
+   shows them.
 7. Use this skeleton. Keep the tokens and the script. Add the slides.
 
 &lt;!DOCTYPE html&gt;
@@ -1520,6 +1550,17 @@ margin:10px 0;}
 .quote .attr{font-size:13px;color:var(--muted);}
 .sowhat{border:1px solid var(--accent);background:#e8eef8;
 padding:14px;font-size:15px;}
+.summary{border:1px solid var(--accent);padding:24px;
+font-size:16px;line-height:1.7;}
+.agenda{list-style:none;font-size:20px;max-width:600px;
+margin:0 auto;}
+.agenda li{padding:10px 16px;margin:6px 0;}
+.agenda li.cur{background:#dbe7f8;font-weight:600;}
+.row{display:flex;gap:16px;padding:10px 0;
+border-bottom:1px dotted var(--border);}
+.row .lab{flex:0 0 200px;background:#dbe7f8;padding:10px;
+font-weight:600;font-size:15px;}
+.row .cont{flex:1;font-size:15px;}
 .exhibit{flex:1;display:flex;align-items:center;
 justify-content:center;}
 .exhibit&gt;*{width:100%;max-width:1000px;}
@@ -1565,6 +1606,7 @@ white-space:pre-line;}
   &lt;button onclick="mv(1)"&gt;&amp;rarr;&lt;/button&gt;
 &lt;/div&gt;
 &lt;script&gt;
+var LIVE=false;
 var s=document.querySelectorAll('.slide'),i=0;
 function show(n){s[i].classList.remove('active');
 i=(n+s.length)%s.length;s[i].classList.add('active');
@@ -1587,8 +1629,8 @@ out.push('Slide '+n+': exhibit uses under 40% of its space'+
 so=sl.querySelector('.source');
 if(!so||5&gt;so.textContent.replace('Source:','').trim().length)
 out.push('Slide '+n+': no source line');
-if(!sl.querySelector('.notes')||
-!sl.querySelector('.notes').textContent.trim())
+if(LIVE&amp;&amp;(!sl.querySelector('.notes')||
+!sl.querySelector('.notes').textContent.trim()))
 out.push('Slide '+n+': no speaker notes');}
 show(k);var q=document.getElementById('qa');
 q.textContent='QA CHECK — '+s.length+' slides\n'+
@@ -1623,8 +1665,9 @@ show(0);
    18px labels. Tables: use class "x". If a slide shows a large
    empty area, the exhibit is too small. Make it larger.
 10. Keep the QA script. It runs on the 'q' key and checks each
-    slide: title present and 2 lines maximum, exhibit present and
-    large, source line present, speaker notes present.
+    slide: title present and 2 lines maximum, body present and
+    large, source line present, speaker notes present (live mode
+    only).
 11. Before you give the output: test your work against rules 1-10.
     Add a table at the end: rule | PASS or FAIL | repair made.
     Repair each FAIL before you give the output.
@@ -1653,7 +1696,7 @@ continue in a second code block from the exact cut point.</pre>
             <li>✓ Each exhibit matches its B6 specification. One message. One highlight in the accent colour. No large empty areas.</li>
             <li>✓ <strong>Data check:</strong> check five numbers against the evidence register. If one is wrong, check all. Copilot cannot do this check — only you know the true data.</li>
             <li>✓ The file works without a network connection. Turn the network off and open it again.</li>
-            <li>✓ The 'n' key shows the correct notes on each slide.</li>
+            <li>✓ <strong>Standalone test:</strong> read three slides with the notes hidden. The full message must arrive from the slide alone.</li>
             <li>✓ <strong>Independent check (optional, for high-stakes decks):</strong> new Copilot chat, verifier prompt from the Verification protocol, paste the storyboard + the deck's title list. The verifier confirms the deck matches the storyboard.</li>
           </ul>
         </div>
