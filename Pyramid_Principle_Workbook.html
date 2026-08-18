@@ -553,7 +553,8 @@ Output: options table, recommendation, metrics, gate, assumption.</pre>
           <li><a href="#b-step-8">Do the lint check</a></li>
           <li><a href="#b-step-9">Storyboard the slides</a></li>
           <li><a href="#b-step-10">Test against the audience</a></li>
-          <li><a href="#b-step-11">Deliver and record the outcome</a></li>
+          <li><a href="#b-step-11">Build the HTML deck</a></li>
+          <li><a href="#b-step-12">Deliver and record the outcome</a></li>
         </ol>
       </div>
 
@@ -1368,19 +1369,178 @@ Output: reaction walk, order changes, Q&amp;A sheet, appendix list.</pre>
         <div class="output-box"><textarea placeholder="Question | one-sentence answer | slide to open"></textarea></div>
 
         <div class="checkpoint"><p class="checkpoint-text">GATE: objections come after their counters. The Q&amp;A sheet is complete.</p></div>
-        <div class="next-step"><strong>Next:</strong> <a href="#b-step-11">B11 — Deliver and record the outcome</a></div>
+        <div class="next-step"><strong>Next:</strong> <a href="#b-step-11">B11 — Build the HTML deck</a></div>
       </div>
 
-      <!-- B11: Deliver -->
+      <!-- B11: HTML deck build -->
       <div id="b-step-11" class="step">
         <div class="step-header">
           <div class="step-number">B11</div>
+          <div>
+            <h3 class="step-title">Build the HTML deck</h3>
+            <p class="step-subtitle">Change the adjusted storyboard into one HTML file with the full deck</p>
+          </div>
+        </div>
+        <div class="step-io"><strong>Input:</strong> adjusted storyboard (B10) + exhibit specifications (B6) + speaker notes · <strong>Output:</strong> one self-contained HTML file with the complete deck</div>
+
+        <div class="rule-box">
+          <h4>Rules for the file</h4>
+          <ul style="margin: 8px 0 0 20px;">
+            <li>One HTML file. No external libraries. No fonts, images, or scripts from the network. The file must work without a network connection.</li>
+            <li>System fonts only: 'Segoe UI' with sans-serif fallback. Corporate machines block font downloads.</li>
+            <li>Charts as HTML/CSS or inline SVG. Bar charts: div elements with widths from the data. Line and scatter charts: inline SVG. Tables: HTML tables.</li>
+            <li>One slide = one claim = one exhibit, from the B10 storyboard. Do not add slides. Do not remove slides.</li>
+          </ul>
+        </div>
+
+        <div class="process-box">
+          <h4>Copilot procedure — do the steps in sequence</h4>
+          <ol>
+            <li>Take the adjusted storyboard table from B10. Make one slide section for each row, in order.</li>
+            <li>Use the HTML skeleton in the prompt. Do not change the design tokens or the navigation script.</li>
+            <li>Put the claim title at the top of each slide. Two lines maximum.</li>
+            <li>Build each exhibit from its B6 specification. Use the real data from the evidence register. Apply the one highlight: the highlighted element gets the accent colour, all other elements get grey.</li>
+            <li>Put the source line at the bottom of each slide: source, date range, n=, units.</li>
+            <li>Put the speaker notes for each slide in a notes block. The 'n' key shows and hides the notes.</li>
+            <li>Make the two text-only slides: the Governing Thought (large type, alone) and the ask (decision + gate + date, alone).</li>
+            <li>Output the complete file in one code block. Do not cut the file. If the chat cuts the output, continue in a second code block from the exact cut point.</li>
+          </ol>
+        </div>
+
+        <div class="prompt-box">
+          <h4>Prompt for Copilot</h4>
+          <pre>You do Step B11 (HTML Deck Build) of a Minto presentation build.
+
+Adjusted storyboard: [PASTE from B10]
+Exhibit specifications: [PASTE from B6]
+Evidence register (the real numbers): [PASTE]
+Speaker notes: [PASTE]
+
+Build ONE self-contained HTML file with the complete deck.
+
+Rules:
+1. No external libraries, fonts, images, or scripts. The file must
+   work without a network connection.
+2. One slide for each storyboard row, in order. One slide = one claim
+   = one exhibit.
+3. Charts: bar charts as div elements with widths from the data;
+   line/scatter as inline SVG; tables as HTML tables. Use the real
+   numbers from the evidence register. Do not invent data.
+4. Highlight: the one highlighted element gets #1f4fa8. All other
+   data elements get #b0b8c4.
+5. Each slide: claim title at the top (2 lines maximum), exhibit in
+   the centre (about 90% of the body), source line at the bottom.
+6. Speaker notes in a hidden block on each slide. The 'n' key shows
+   and hides them.
+7. Use this skeleton. Keep the tokens and the script. Add the slides.
+
+&lt;!DOCTYPE html&gt;
+&lt;html lang="en"&gt;&lt;head&gt;&lt;meta charset="UTF-8"&gt;
+&lt;title&gt;[DECK TITLE]&lt;/title&gt;
+&lt;style&gt;
+:root{--bg:#f5f4f1;--surface:#ffffff;--text:#0f1923;
+--muted:#718096;--border:#dde1e7;--accent:#1f4fa8;
+--grey:#b0b8c4;--panel:#0f2744;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',system-ui,sans-serif;
+background:var(--bg);color:var(--text);}
+.slide{display:none;min-height:100vh;padding:48px 64px;
+flex-direction:column;background:var(--surface);}
+.slide.active{display:flex;}
+.slide h1{font-size:26px;line-height:1.3;max-width:960px;
+margin-bottom:24px;}
+.exhibit{flex:1;display:flex;align-items:center;
+justify-content:center;}
+.source{font-size:11px;color:var(--muted);
+border-top:1px solid var(--border);padding-top:8px;}
+.notes{display:none;position:fixed;bottom:56px;left:16px;
+right:16px;background:var(--panel);color:#fff;padding:16px;
+font-size:13px;border-radius:4px;}
+.notes.show{display:block;}
+.nav{position:fixed;bottom:16px;right:16px;font-size:13px;
+color:var(--muted);}
+.nav button{padding:6px 14px;border:1px solid var(--border);
+background:var(--surface);cursor:pointer;}
+.bar-row{display:flex;align-items:center;gap:12px;
+margin:10px 0;font-size:14px;}
+.bar-row .label{width:180px;text-align:right;}
+.bar-row .bar{height:26px;background:var(--grey);}
+.bar-row .bar.hl{background:var(--accent);}
+.bar-row .val{font-weight:600;}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+
+&lt;section class="slide active"&gt;
+  &lt;h1&gt;[CLAIM TITLE]&lt;/h1&gt;
+  &lt;div class="exhibit"&gt;[EXHIBIT]&lt;/div&gt;
+  &lt;div class="source"&gt;Source: [..]&lt;/div&gt;
+  &lt;div class="notes"&gt;[SPEAKER NOTES]&lt;/div&gt;
+&lt;/section&gt;
+&lt;!-- more slides --&gt;
+
+&lt;div class="nav"&gt;
+  &lt;button onclick="mv(-1)"&gt;&amp;larr;&lt;/button&gt;
+  &lt;span id="ctr"&gt;&lt;/span&gt;
+  &lt;button onclick="mv(1)"&gt;&amp;rarr;&lt;/button&gt;
+&lt;/div&gt;
+&lt;script&gt;
+var s=document.querySelectorAll('.slide'),i=0;
+function show(n){s[i].classList.remove('active');
+i=(n+s.length)%s.length;s[i].classList.add('active');
+document.getElementById('ctr').textContent=(i+1)+' / '+s.length;}
+function mv(d){show(i+d);}
+document.addEventListener('keydown',function(e){
+if(e.key==='ArrowRight')mv(1);
+if(e.key==='ArrowLeft')mv(-1);
+if(e.key==='n')s[i].querySelector('.notes')
+.classList.toggle('show');});
+show(0);
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;
+
+Output: the complete file in one code block. If the output is cut,
+continue in a second code block from the exact cut point.</pre>
+        </div>
+
+        <div class="process-box">
+          <h4>How to save and open the file</h4>
+          <ol>
+            <li>Copy the full code block from Copilot.</li>
+            <li>Paste it into Notepad.</li>
+            <li>Save as <strong>deck.html</strong>. Set "Save as type" to "All files". Set the encoding to UTF-8.</li>
+            <li>Open the file in Edge. Use the arrow keys to move. Use the 'n' key for the notes.</li>
+          </ol>
+        </div>
+
+        <div class="check-box">
+          <h4>Your review checklist</h4>
+          <ul>
+            <li>✓ The file opens and all slides show. The counter shows the correct total.</li>
+            <li>✓ Step through the full deck with the titles only. The argument stands. This is the title-read test in the browser.</li>
+            <li>✓ Each exhibit matches its B6 specification. One message. One highlight in the accent colour.</li>
+            <li>✓ Check five numbers against the evidence register. If one is wrong, check all.</li>
+            <li>✓ The file works without a network connection. Turn the network off and open it again.</li>
+            <li>✓ The 'n' key shows the correct notes on each slide.</li>
+          </ul>
+        </div>
+
+        <label class="output-label">Deck file name + location:</label>
+        <div class="output-box"><textarea placeholder="File name, folder, and the date of the build."></textarea></div>
+        <label class="output-label">Defects found + repairs (return to Copilot with the exact slide and defect):</label>
+        <div class="output-box"><textarea placeholder="Slide # | defect | repair requested | repaired?"></textarea></div>
+
+        <div class="checkpoint"><p class="checkpoint-text">GATE: the deck opens without a network. The numbers match the register. The titles carry the argument.</p></div>
+        <div class="next-step"><strong>Next:</strong> <a href="#b-step-12">B12 — Deliver and record the outcome</a></div>
+      </div>
+
+      <!-- B12: Deliver -->
+      <div id="b-step-12" class="step">
+        <div class="step-header">
+          <div class="step-number">B12</div>
           <div>
             <h3 class="step-title">Deliver and record the outcome</h3>
             <p class="step-subtitle">Present. Record the decision. Collect the lessons.</p>
           </div>
         </div>
-        <div class="step-io"><strong>Input:</strong> final deck + Q&amp;A sheet (B10) · <strong>Output:</strong> outcome record + lessons</div>
+        <div class="step-io"><strong>Input:</strong> HTML deck (B11) + Q&amp;A sheet (B10) · <strong>Output:</strong> outcome record + lessons</div>
 
         <div class="process-box">
           <h4>Procedure</h4>
