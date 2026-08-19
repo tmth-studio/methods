@@ -1,0 +1,12 @@
+# Working copies with client data — never commit these
+private/
+*-client.pptx
+*-confidential.pptx
+*.draft.pptx
+
+# Build and OS noise
+node_modules/
+*.pdf
+slide-*.jpg
+~$*
+.DS_Store

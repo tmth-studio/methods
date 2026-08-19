@@ -1,0 +1,55 @@
+flowchart TD
+
+  subgraph INTRO[" Introduction — S · C · Q "]
+    direction TB
+    S["SITUATION<br/>N candidate proposition features<br/>on the roadmap; finite build and<br/>launch capacity this cycle"]
+    C["COMPLICATION<br/>They cannot all ship. Choosing by<br/>conviction or loudest voice risks<br/>spending the cycle on features<br/>that will not pay back"]
+    Q["QUESTION<br/>Which features do we launch,<br/>and in what order?"]
+    S --> C --> Q
+  end
+
+  Q ==> GT
+
+  GT["ANSWER / GOVERNING THOUGHT<br/>Launch A and C this cycle.<br/>Stage B behind a capability build.<br/>Drop D and E."]
+
+  GT ==> K1
+  GT ==> K2
+  GT ==> K3
+
+  K1["KEY LINE 1<br/>Only A and C show proven customer pull<br/>— they clear the OCV threshold,<br/>D and E fall below it"]
+  K2["KEY LINE 2<br/>Their economics hold up — positive<br/>risk-adjusted return that survives<br/>the long-run defensibility test"]
+  K3["KEY LINE 3<br/>Nothing in delivery breaks them —<br/>capabilities exist or are buyable<br/>inside the launch window"]
+
+  K1 --> D1["OCV score by feature, ranked<br/>across all N candidates"]
+  K1 --> D2["Where the threshold sits,<br/>and why it sits there"]
+  K1 --> D3["Evidence behind the scores:<br/>research base, sample, recency"]
+  K1 --> D4["Why D and E fell out<br/>— stated, not implied"]
+
+  K2 --> V1["Base-case revenue and margin<br/>forecast per surviving feature"]
+  K2 --> V2["Adjusted for time-to-launch<br/>and delivery confidence"]
+  K2 --> V3["Zook's 3 checks: does the<br/>advantage repeat, or erode?"]
+  K2 --> V4["What would have to be true<br/>to change the call"]
+
+  K3 --> F1["Capabilities each feature requires"]
+  K3 --> F2["Have / buy / build, per capability"]
+  K3 --> F3["Time-to-launch + confidence band"]
+  K3 --> F4["Dependencies and gating risks<br/>— why B is staged, not dropped"]
+
+  F3 -.->|"feeds the discount"| V2
+
+  K1 --> SW
+  K2 --> SW
+  K3 --> SW
+  SW["SO WHAT<br/>Sequencing, owners, and the<br/>decisions needed this week"]
+
+  classDef intro fill:#F4F1EC,stroke:#B8AFA2,color:#3D3A34
+  classDef answer fill:#2F4858,stroke:#2F4858,color:#FFFFFF
+  classDef key fill:#5B8A9E,stroke:#3E6A7D,color:#FFFFFF
+  classDef support fill:#FFFFFF,stroke:#B8C4CC,color:#2F4858
+  classDef sowhat fill:#C9A227,stroke:#9C7C15,color:#2B2308
+
+  class S,C,Q intro
+  class GT answer
+  class K1,K2,K3 key
+  class D1,D2,D3,D4,V1,V2,V3,V4,F1,F2,F3,F4 support
+  class SW sowhat
