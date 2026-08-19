@@ -38,13 +38,13 @@ def connector(yy, h=26):
     return yy + h + 8
 
 # ---------- INTRO ----------
-intro = [("SITUATION", ["The bank serves [segment]. N candidate features;",
-                        "fixed capacity and an earnings mandate this cycle."]),
-         ("COMPLICATION", ["They cannot all ship — and a feature list is not",
-                           "a proposition. What it earns turns on price,",
-                           "incentives, memory and delivery route; chosen",
-                           "by conviction, the cycle is spent on the wrong one."]),
-         ("QUESTION", ["What proposition do we take to [segment]?"])]
+intro = [("SITUATION", ["The bank serves exporting SMEs.",
+                        "Five features compete for one build cycle."]),
+         ("COMPLICATION", ["They cannot all ship. And a feature list is not a",
+                           "proposition — price, incentives, memory and the",
+                           "build-or-partner choice decide what it earns.",
+                           "Chosen on gut feel, the cycle is wasted."]),
+         ("QUESTION", ["What proposition do we take to exporting SMEs?"])]
 
 y = M
 rows_h = 0
@@ -64,9 +64,10 @@ y = y + box_h
 y = connector(y)
 
 # ---------- ANSWER ----------
-ans = ["Take [P] to [segment]: A and C, configured",
-       "[levers] under [wrapper], A built, C partnered —",
-       "[£X]m at [Y]% margin by year 3. Drop D and E."]
+ans = ["Take 'Trade Ready' to exporting SMEs:",
+       "FX payments and invoice finance, with a switch",
+       "incentive. Build FX; partner for invoice finance.",
+       "£6m a year by year 3. Drop crypto and rewards."]
 h = 34 + 30*len(ans) + 18
 rect(M, y, BODY_W, h, ANS_F, rx=12)
 text(W/2, y+30, "ANSWER  ·  GOVERNING THOUGHT", 13, "#9EC3D4", "700", "middle", ls="2")
@@ -79,22 +80,22 @@ y = connector(y, 30)
 
 # ---------- KEY LINES ----------
 keys = [
- ("KEY LINE 1 · DEMAND", ["[Segment] will take it up: proven", "pull, made present at the moment"],
-  [("OCV score by feature: A and C clear the gate", None),
-   ("Threshold and evidence base — limits stated", None),
-   ("Why D and E fell out — stated, not implied", None),
-   ("The wrapper closes the entry-point memory gap", None)]),
- ("KEY LINE 2 · ECONOMICS", ["It pays: [£X]m at [Y]% margin,", "after the route timing is priced"],
-  [("Base earnings per surviving feature", None),
-   ("Bridge: levers + wrapper add, net of their cost", None),
-   ("Incentives only where they beat defaults", None),
-   ("NPV discounted for route timing", "k2s3"),
-   ("Built-instead counterfactual prices the choice", None)]),
- ("KEY LINE 3 · DELIVERY", ["Delivery holds, and the", "advantage stays ours"],
-  [("Build A, partner C — inside the window", None),
-   ("Time-to-launch + confidence band", "k3s1"),
-   ("Partner bounds: what they hold, what we keep", None),
-   ("Re-internalise trigger, with its review date", None)]),
+ ("KEY LINE 1 · DEMAND", ["Exporters want it — and will", "think of us when the need hits"],
+  [("Demand scores: FX 78, invoice finance 72 — gate is 60", None),
+   ("Crypto (41) and rewards (33) fall well short", None),
+   ("Evidence: 320 exporter interviews; limits stated", None),
+   ("'Trade Ready' name: recalled at the first export order", None)]),
+ ("KEY LINE 2 · ECONOMICS", ["It pays: £6m a year at 40%", "margin, after delivery timing"],
+  [("Base case: £4m a year from the two features", None),
+   ("Levers add £3m; the incentive costs £0.7m back", None),
+   ("Incentives only where a free default cannot work", None),
+   ("Returns discounted for each route's timing", "k2s3"),
+   ("Built in-house, invoice finance would miss the hurdle", None)]),
+ ("KEY LINE 3 · DELIVERY", ["We can ship it, and the", "advantage stays ours"],
+  [("FX built in-house — it deepens our core platform", None),
+   ("Invoice finance partnered: live in 5 months, not 18", "k3s1"),
+   ("Partner terms: we keep the customer and the data", None),
+   ("Review at 5,000 users: bring it in-house, or stay", None)]),
 ]
 
 marks = {}
@@ -131,8 +132,8 @@ gutter_arrow(marks["k3s1"], marks["k2s3"], "feeds the discount")
 y = connector(y, 30)
 
 # ---------- SO WHAT ----------
-sw = ["Approve the build · sign the partner terms · fund",
-      "B's re-entry · stop D and E — owners and dates."]
+sw = ["Approve the build. Sign the partner terms.",
+      "Stop crypto and rewards. Owners and dates set."]
 h = 34 + 27*len(sw) + 16
 rect(M, y, BODY_W, h, SW_F, SW_S, rx=12)
 text(W/2, y+30, "SO WHAT", 13, "#5E4A08", "700", "middle", ls="2")
@@ -140,7 +141,9 @@ ty = y+60
 for ln in sw:
     text(W/2, ty, ln, 20, SW_T, "600", "middle")
     ty += 27
-y = y + h + M
+y = y + h + 10
+text(W/2, y+14, "Worked example with dummy numbers — replace every name and figure with your own.", 12.5, "#8B8578", "400", "middle")
+y = y + 24 + M
 
 H = int(y)
 svg = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" '
