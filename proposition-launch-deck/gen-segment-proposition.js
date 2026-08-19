@@ -419,6 +419,31 @@ note(divider("02", "The configuration that pays", "Which levers actually drive e
   note(s, "Configuration is decided per feature, not as a blanket pricing policy. Rejected levers are named - that is what makes the accepted ones credible.");
 }
 
+/* ---------------- 13b. THE MARKETING WRAPPER ---------------- */
+{
+  const s = slide();
+  eyebrow(s, "CONFIGURATION  \u00b7  02  \u00b7  PROPOSITION LEVEL", GOLDD);
+  title(s, "[Wrapper name] buys memory at the moments the job arises");
+  const rows = [
+    ["The gap", "[At the segment's category entry points \u2014 [name the moments] \u2014 the bank is recalled by [00]% vs [competitor]'s [00]%. A feature no one thinks of at the moment of need earns nothing.]"],
+    ["The wrapper", "[One name over the launched features, with distinctive assets ([list]) linked to [N] entry points. Product communications ladder up to it, not alongside it.]"],
+    ["The economics", "[\u00a30.0m]/yr fixed \u2014 amortised across every launched feature, unlike per-redemption incentives. Pays if entry-point consideration lifts [00]bps: [break-even arithmetic].]"],
+    ["The multiplier rule", "A wrapper multiplies what is there. It cannot rescue a feature that failed the demand gate \u2014 weak features wrapped are weak features remembered."],
+  ];
+  let y = 1.78;
+  rows.forEach((r)=>{
+    card(s, M, y, CW, 0.98);
+    s.addText(r[0], { x:M+0.42, y:y+0.11, w:3.4, h:0.76, fontFace:FB, fontSize:14, bold:true,
+      color:SLATE, margin:0, valign:"middle" });
+    s.addText(r[1], { x:M+4.1, y:y+0.11, w:CW-4.6, h:0.76, fontFace:FB, fontSize:12.5,
+      color:BODY, margin:0, valign:"middle", lineSpacing:16 });
+    y += 1.12;
+  });
+  s.addText("Mental availability: propositions are bought when they are thought of at the entry point. The wrapper is promotion spend aimed at memory, not price \u2014 which is why it faces a reach test, not the incentive dead-weight test.",
+    { x:M, y:y+0.10, w:CW, h:0.6, fontFace:FB, fontSize:13, italic:true, color:MUTE, margin:0, valign:"top", lineSpacing:18 });
+  note(s, "The wrapper is the proposition-level layer of the configuration decision. Its test is different from incentives: fixed cost against a lift in entry-point association, with a stated break-even. It also strengthens the route decision - under a partner-delivered feature, the wrapper is part of what we keep.");
+}
+
 /* ---------------- 14. DIVIDER 03 ---------------- */
 note(divider("03", "The route that survives", "Build, buy or partner — per feature?",
   "Each route priced for time, margin share and defensibility. The route sets the discount on the earnings case."),
@@ -530,6 +555,7 @@ note(divider("03", "The route that survives", "Build, buy or partner — per fea
   const rows = [
     ["[OCV overstates demand — adoption runs 00% below case]", "[A] still clears; [C] falls below hurdle", "Watch [activation rate] at [month 3]"],
     ["[Incentive dead-weight exceeds 00%]", "Configuration case halves; revert to defaults-only", "[Incentive redemption vs. new-to-feature mix, monthly]"],
+    ["[Wrapper does not move entry-point association by month [6]]", "Fixed spend stops; comms revert to product level", "[Entry-point association tracking, quarterly]"],
     ["[Partner slips, or captures the customer relationship]", "[C] launch misses the window; moat erodes", "[Contract milestones + data-flow audit at month 2]"],
   ];
   const heads = ["If this turns out to be true…", "…then this changes", "…and how we would know early"];
@@ -540,16 +566,16 @@ note(divider("03", "The route that survives", "Build, buy or partner — per fea
     fontSize:11.5, bold:true, color:GOLDD, margin:0, valign:"bottom" }));
   y += 0.5;
   rows.forEach((r)=>{
-    card(s, M, y, CW, 1.10);
-    s.addText(r[0], { x:colX[0]+0.34, y:y+0.15, w:colW[0]-0.6, h:0.8, fontFace:FB, fontSize:13.5,
-      bold:true, color:INK, margin:0, valign:"middle", lineSpacing:18 });
-    s.addText(r[1], { x:colX[1], y:y+0.15, w:colW[1]-0.3, h:0.8, fontFace:FB, fontSize:13,
-      color:BODY, margin:0, valign:"middle", lineSpacing:18 });
-    s.addText(r[2], { x:colX[2], y:y+0.15, w:colW[2]-0.3, h:0.8, fontFace:FB, fontSize:13,
-      color:BODY, margin:0, valign:"middle", lineSpacing:18 });
-    y += 1.26;
+    card(s, M, y, CW, 0.95);
+    s.addText(r[0], { x:colX[0]+0.34, y:y+0.11, w:colW[0]-0.6, h:0.74, fontFace:FB, fontSize:12.5,
+      bold:true, color:INK, margin:0, valign:"middle", lineSpacing:16 });
+    s.addText(r[1], { x:colX[1], y:y+0.11, w:colW[1]-0.3, h:0.74, fontFace:FB, fontSize:12,
+      color:BODY, margin:0, valign:"middle", lineSpacing:16 });
+    s.addText(r[2], { x:colX[2], y:y+0.11, w:colW[2]-0.3, h:0.74, fontFace:FB, fontSize:12,
+      color:BODY, margin:0, valign:"middle", lineSpacing:16 });
+    y += 1.08;
   });
-  s.addText("One row per decision. Each has an observable early signal — a risk with no signal is decoration.",
+  s.addText("One row per decision, plus the wrapper. Each has an observable early signal — a risk with no signal is decoration.",
     { x:M, y:y+0.16, w:CW, h:0.5, fontFace:FB, fontSize:13.5, italic:true, color:MUTE, margin:0, valign:"middle" });
   note(s, "The sensitivity slide covers all three decisions, one row each. If a decision has no condition that could overturn it, either the evidence is overwhelming or the row was dodged - the client will know which.");
 }
@@ -562,8 +588,8 @@ note(divider("03", "The route that survives", "Build, buy or partner — per fea
   s.addText("What we need from you this week", { x:M, y:1.08, w:CW, h:0.8, fontFace:FH,
     fontSize:34, bold:true, color:WHITE, margin:0, valign:"middle" });
   const asks = [
-    ["Approve", "[A] and [C] into the [cycle] build, configured as slide [13]", "[Owner]", "[Date]"],
-    ["Sign", "[Partner] heads of terms for [C] — exclusivity, data, exit as slide [16]", "[Owner]", "[Date]"],
+    ["Approve", "[A] and [C] into the [cycle] build, configured as slides [13\u201314]", "[Owner]", "[Date]"],
+    ["Sign", "[Partner] heads of terms for [C] — exclusivity, data, exit as slide [17]", "[Owner]", "[Date]"],
     ["Fund", "[The capability build behind Feature B's re-entry]", "[Owner]", "[Date]"],
     ["Stop", "Work on [D] and [E]; retire the [rejected levers] from the plan", "[Owner]", "[Date]"],
   ];
@@ -587,31 +613,107 @@ note(divider("03", "The route that survives", "Build, buy or partner — per fea
   note(s, "Four asks because there are three decisions plus a stop. Every line: verb, owner, date. The partner heads-of-terms is its own ask - it is the one item on this slide the client cannot delegate downward.");
 }
 
-/* ---------------- 20. APPENDIX ---------------- */
+/* ---------------- 20. APPENDIX CONTENTS ---------------- */
 {
   const s = slide();
   eyebrow(s, "APPENDIX", GOLDD);
-  title(s, "Supporting detail");
+  title(s, "Supporting detail — and how each analysis was run");
   const items = [
-    ["OCV methodology", "How the metric is constructed, weighted and calibrated"],
-    ["Full research findings", "Segment-level results and verbatim evidence"],
+    ["OCV methodology + full research findings", "Metric construction, calibration, segment-level results"],
     ["Pricing and incentive model", "Lever assumptions, dead-weight estimates, clawback terms"],
-    ["Behavioural evidence base", "Defaults vs. persuasion trials; incentive selection effects"],
-    ["Partner due diligence", "Counterparty assessment, term sheet detail, exit mechanics"],
-    ["Route model", "Build/partner/buy economics per feature, version history"],
+    ["Wrapper / mental availability study", "Entry-point research, association tracking, break-even"],
+    ["Partner due diligence + route model", "Counterparty assessment, terms, route economics"],
+    ["Method: the four analyses", "Step-by-step, next four pages — reproducible with Copilot"],
+    ["Features considered and excluded earlier", "Anything cut before the shortlist, and why"],
   ];
-  const cw = (CW-0.35)/2;
+  const cw2 = (CW-0.35)/2;
   items.forEach((it,i)=>{
-    const x = M + (i%2)*(cw+0.35);
+    const x = M + (i%2)*(cw2+0.35);
     const y = 1.85 + Math.floor(i/2)*1.28;
-    card(s, x, y, cw, 1.10);
-    s.addText(it[0], { x:x+0.4, y:y+0.16, w:cw-0.8, h:0.4, fontFace:FB, fontSize:15, bold:true,
+    card(s, x, y, cw2, 1.10);
+    s.addText(it[0], { x:x+0.4, y:y+0.16, w:cw2-0.8, h:0.4, fontFace:FB, fontSize:14.5, bold:true,
       color:INK, margin:0, valign:"middle" });
-    s.addText(it[1], { x:x+0.4, y:y+0.56, w:cw-0.8, h:0.42, fontFace:FB, fontSize:12.5,
+    s.addText(it[1], { x:x+0.4, y:y+0.56, w:cw2-0.8, h:0.42, fontFace:FB, fontSize:12,
       color:BODY, margin:0, valign:"top" });
   });
-  note(s, "Anything a client might challenge has a page here. The behavioural evidence base matters most in this variant - the incentive discipline on slide 12 rests on it.");
+  note(s, "Appendix contents. The method pages that follow make the deck reproducible: a colleague with Copilot and the inputs can re-run every analysis behind the summary slides.");
 }
+
+/* ---------------- METHOD SLIDES ---------------- */
+function methodSlide(numTxt, titleTxt, inputs, steps, feeds, copilotLine){
+  const s = slide();
+  eyebrow(s, "APPENDIX  \u00b7  METHOD " + numTxt, GOLDD);
+  title(s, titleTxt, { size: 24 });
+  card(s, M, 1.72, 3.5, 3.85);
+  s.addText("Inputs required", { x:M+0.32, y:1.92, w:2.9, h:0.34, fontFace:FB, fontSize:11.5,
+    bold:true, color:GOLDD, charSpacing:2, margin:0, valign:"middle" });
+  bullets(s, inputs, M+0.32, 2.32, 2.95, { h:3.1, size:11.5, ls:16 });
+  let y = 1.78;
+  steps.forEach((st,i)=>{
+    numCircle(s, M+3.85, y, i+1, 0.4);
+    s.addText(st, { x:M+4.42, y:y-0.06, w:CW-4.55, h:0.72, fontFace:FB, fontSize:12,
+      color:BODY, margin:0, valign:"top", lineSpacing:16 });
+    y += 0.78;
+  });
+  card(s, M, 5.78, CW, 1.0, "F3EEDD");
+  s.addText("Run it with Copilot", { x:M+0.42, y:5.92, w:3.0, h:0.3, fontFace:FB, fontSize:11,
+    bold:true, color:GOLDD, charSpacing:2, margin:0, valign:"middle" });
+  s.addText(copilotLine + "   \u00b7   Output feeds: " + feeds, { x:M+0.42, y:6.22, w:CW-1.0, h:0.5,
+    fontFace:FB, fontSize:12, color:"5C4E28", margin:0, valign:"top", lineSpacing:16 });
+  return s;
+}
+
+note(methodSlide("1 OF 4", "How the OCV analysis was run",
+  ["[Segment interviews / research, n and dates]", "[Incumbent solution facts and prices]", "[Feature specs and price points]", "[Past-launch calibration data]"],
+  [
+    "Derive the segment's outcomes: build the outcome ladder for the job; keep the minimal covering set (OCV standard, step 1a).",
+    "Score each feature against the incumbent per component: financial, time and stress deltas, time priced at the standard's conventions.",
+    "Subtract switching costs (the standard's taxonomy). Adjust each component for visibility and credibility \u2014 contractual anchors beat claimed ones.",
+    "Sum to the OCV score. Map to predicted uptake with the calibration table; set the threshold from past launches, not from the answer you want.",
+    "Rank the features. Record every input in the evidence register with source and date \u2014 the register is what makes slide [8] defensible.",
+  ],
+  "slides [8\u20139]",
+  "Attach objective-customer-value-standard.md (same repository). One chat per feature. Paste the step, the feature spec and the register; require evidence for AND against."),
+  "Method page. The OCV standard in the repository is the authority; this page is the operator card. A colleague with Copilot, the standard and these inputs reproduces slide 8.");
+
+note(methodSlide("2 OF 4", "How the configuration levers were sized",
+  ["[Past campaign results, by lever]", "[Price elasticity evidence]", "[Channel cost cards]", "[Margin model per feature]"],
+  [
+    "Build the base case per surviving feature: OCV-predicted uptake \u00d7 price \u00d7 margin, before any lever.",
+    "Long-list levers across the 4Ps. Classify each: default / friction removal / price move / paid incentive / channel shift.",
+    "Apply the two-part test to every paid lever: would the behaviour happen anyway, and could a default achieve it free? Estimate dead-weight from past campaigns.",
+    "Size the survivors: uplift \u00d7 margin \u2212 cost including dead-weight. Name the rejected levers and keep their earnings OUT of the forecast.",
+    "Assemble the bridge (slide [11]) and run sensitivity on dead-weight and uptake \u2014 the two assumptions a sceptic attacks first.",
+  ],
+  "slides [11\u201313]",
+  "One chat per lever class. Paste past campaign data and the two-part test; require the dead-weight estimate with its evidence before any sizing."),
+  "Method page for the lever analysis. The discipline is in step 3 - most incentive business cases die there, which is the point.");
+
+note(methodSlide("3 OF 4", "How the wrapper case was built",
+  ["[Brand tracking data]", "[Entry-point research: when the job arises, in customer words]", "[Media / channel cost cards]", "[Competitor association benchmarks]"],
+  [
+    "Identify the segment's category entry points: the moments the job arises, phrased in the customer's words, from research \u2014 not from the marketing plan.",
+    "Measure current unaided association at each entry point, for the bank and for competitors. The gap is the wrapper's job description.",
+    "Design the wrapper: one name, distinctive assets, explicit linkage to the entry points. Span only the LAUNCHED features \u2014 never wrap what failed the demand gate.",
+    "Price it: fixed annual cost against a consideration-uplift band. State the break-even in association points \u2014 the honest version of a brand business case.",
+    "Set the tracking: entry-point association, quarterly, with the stop rule \u2014 this is the wrapper's row on the what-would-have-to-be-true slide.",
+  ],
+  "slide [14] + the sensitivity slide",
+  "Paste the entry-point list and tracking data. Require the break-even arithmetic shown, and a stated stop rule \u2014 refuse a case that only asserts awareness value."),
+  "Method page for the wrapper. Mental availability spend gets the same discipline as incentive spend: a stated mechanism, a break-even, and a stop rule.");
+
+note(methodSlide("4 OF 4", "How the delivery routes were priced",
+  ["[Delivery team estimates, with ranges]", "[Partner term sheets / indicative terms]", "[Capability register]", "[Hurdle rate and horizon]"],
+  [
+    "Inventory the capabilities each feature requires \u2014 capabilities, not tasks. Keep the same names end to end or the slides will not reconcile.",
+    "Classify each capability have / buy / build. Name real partner candidates with indicative terms \u2014 an unnamed partner is a build with optimism attached.",
+    "Price each route: time to launch, capex, margin share, and a confidence band from the delivery team and the partner's committed dates.",
+    "Discount the configured NPV by route timing and confidence. Keep the built-instead counterfactual row \u2014 it is what prices the partner decision.",
+    "Bound the partner routes: what the partner holds, what we keep, contract terms, and the re-internalise trigger with its review date.",
+  ],
+  "slides [15\u201318]",
+  "One chat per feature. Paste the capability inventory and terms; require the counterfactual row and the defensibility bounds before accepting a verdict."),
+  "Method page for the route analysis. Confidence bands come from the people who deliver, not the people who recommend.");
 
 p.writeFile({ fileName: "segment-proposition-template.pptx" })
  .then(f => console.log("written", f));
