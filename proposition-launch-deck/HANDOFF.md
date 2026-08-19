@@ -59,6 +59,17 @@ The generator stays home-side as the source of truth; edits round-trip as: Copil
 drafts the change client-side → the change is applied to the generator at home →
 regenerated `.pptx` crosses the boundary. Do not ship the script and expect it to run.
 
+## Variants
+
+- `gen.js` -> `proposition-launch-template.pptx` — the base archetype: feature selection only (26 slides).
+- `gen-segment-proposition.js` -> `segment-proposition-template.pptx` — adapted variant (20 slides):
+  one governing thought carrying THREE decisions — right features / configuration that pays
+  (price, incentives, 4Ps, with the defaults-beat-persuasion discipline) / delivery route
+  (build vs partner per feature, with partner-defensibility bounds and the counterfactual
+  timing row). Built 19 Aug 2026 for an SME-bank segment-proposition engagement shape.
+  Helper functions are duplicated across the two generators — extract `lib/deck.js` on the
+  next variant, per the original plan.
+
 ## Repo layout
 
 ```
