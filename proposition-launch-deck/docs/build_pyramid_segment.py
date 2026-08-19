@@ -65,10 +65,9 @@ y = y + box_h
 y = connector(y)
 
 # ---------- ANSWER ----------
-ans = ["Run 'Trade Ready' as the standing proposition.",
-       "Fill it in return order: FX + invoice finance now,",
-       "trade insurance next cycle, crypto and rewards off",
-       "the list. Re-score the backlog every quarter."]
+ans = ["Fill 'Trade Ready' in return order: FX and",
+       "invoice finance take this cycle's two slots —",
+       "£6m a year by year 3."]
 h = 34 + 30*len(ans) + 18
 rect(M, y, BODY_W, h, ANS_F, rx=12)
 text(W/2, y+30, "ANSWER  ·  GOVERNING THOUGHT", 13, "#9EC3D4", "700", "middle", ls="2")
