@@ -17,6 +17,9 @@ every engagement. This is the first one. The archetype set identified was:
 3. **Why is this happening?** — diagnostic tree
 4. **How do we get there?** — sequencing / roadmap
 5. **What's going on?** — informational, no recommendation
+6. **What do we build, in what order?** — prioritisation: a sorting rule + a backlog with a
+   cut-line, re-scored on a cadence *(built: `gen-proposition-backlog.js`)*. Distinct from
+   #1 because the answer is a standing rule plus a sorted list, not a one-off verdict.
 
 ## Decisions already made (locked unless revisited deliberately)
 
