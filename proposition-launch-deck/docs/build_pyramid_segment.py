@@ -38,13 +38,14 @@ def connector(yy, h=26):
     return yy + h + 8
 
 # ---------- INTRO ----------
-intro = [("SITUATION", ["The bank serves exporting SMEs.",
-                        "Five features compete for one build cycle."]),
-         ("COMPLICATION", ["They cannot all ship. And a feature list is not a",
-                           "proposition — price, incentives, memory and the",
-                           "build-or-partner choice decide what it earns.",
-                           "Chosen on gut feel, the cycle is wasted."]),
-         ("QUESTION", ["What proposition do we take to exporting SMEs?"])]
+intro = [("SITUATION", ["The bank serves exporting SMEs. Five candidate",
+                        "features; capacity for two builds per cycle."]),
+         ("COMPLICATION", ["A one-off pick answers this cycle and nothing",
+                           "after it. The features differ in demand, return",
+                           "and build cost — and the evidence moves as we",
+                           "learn. Gut feel cannot hold an order."]),
+         ("QUESTION", ["What do we build into the exporting-SME",
+                       "proposition — and in what order?"])]
 
 y = M
 rows_h = 0
@@ -64,10 +65,10 @@ y = y + box_h
 y = connector(y)
 
 # ---------- ANSWER ----------
-ans = ["Take 'Trade Ready' to exporting SMEs:",
-       "FX payments and invoice finance, with a switch",
-       "incentive. Build FX; partner for invoice finance.",
-       "£6m a year by year 3. Drop crypto and rewards."]
+ans = ["Run 'Trade Ready' as the standing proposition.",
+       "Fill it in return order: FX + invoice finance now,",
+       "trade insurance next cycle, crypto and rewards off",
+       "the list. Re-score the backlog every quarter."]
 h = 34 + 30*len(ans) + 18
 rect(M, y, BODY_W, h, ANS_F, rx=12)
 text(W/2, y+30, "ANSWER  ·  GOVERNING THOUGHT", 13, "#9EC3D4", "700", "middle", ls="2")
@@ -80,22 +81,22 @@ y = connector(y, 30)
 
 # ---------- KEY LINES ----------
 keys = [
- ("KEY LINE 1 · DEMAND", ["Exporters want it — and will", "think of us when the need hits"],
-  [("Demand scores: FX 78, invoice finance 72 — gate is 60", None),
-   ("Crypto (41) and rewards (33) fall well short", None),
+ ("KEY LINE 1 · DEMAND ADMITS", ["Demand decides what enters the", "backlog — three of five get in"],
+  [("Demand gate is 60: FX 78, invoice finance 72, insurance 64", None),
+   ("Crypto (41) and rewards (33) leave the list for good", None),
    ("Evidence: 320 exporter interviews; limits stated", None),
-   ("'Trade Ready' name: recalled at the first export order", None)]),
- ("KEY LINE 2 · ECONOMICS", ["It pays: £6m a year at 40%", "margin, after delivery timing"],
-  [("Base case: £4m a year from the two features", None),
-   ("Levers add £3m; the incentive costs £0.7m back", None),
-   ("Incentives only where a free default cannot work", None),
+   ("'Trade Ready' is the standing shell features ship into", None)]),
+ ("KEY LINE 2 · RETURN SORTS", ["Return per build slot sets the", "order — FX first, insurance third"],
+  [("Sort key: risk-adjusted return per build slot, not raw NPV", None),
+   ("FX £2.1m a slot; invoice finance £1.6m; insurance £0.9m", None),
+   ("Levers add £3m; incentives only where defaults fail", None),
    ("Returns discounted for each route's timing", "k2s3"),
-   ("Built in-house, invoice finance would miss the hurdle", None)]),
- ("KEY LINE 3 · DELIVERY", ["We can ship it, and the", "advantage stays ours"],
-  [("FX built in-house — it deepens our core platform", None),
-   ("Invoice finance partnered: live in 5 months, not 18", "k3s1"),
-   ("Partner terms: we keep the customer and the data", None),
-   ("Review at 5,000 users: bring it in-house, or stay", None)]),
+   ("Re-scored quarterly — the order moves when evidence does", None)]),
+ ("KEY LINE 3 · CAPACITY CUTS", ["Two slots this cycle set the", "cut-line; routes keep the edge"],
+  [("This cycle: FX built in-house, invoice finance partnered", None),
+   ("Partnering makes invoice finance live in 5 months, not 18", "k3s1"),
+   ("Insurance waits on the claims capability — next cycle", None),
+   ("Partner terms: we keep the customer and the data", None)]),
 ]
 
 marks = {}
@@ -132,8 +133,8 @@ gutter_arrow(marks["k3s1"], marks["k2s3"], "feeds the discount")
 y = connector(y, 30)
 
 # ---------- SO WHAT ----------
-sw = ["Approve the build. Sign the partner terms.",
-      "Stop crypto and rewards. Owners and dates set."]
+sw = ["Approve the cycle-1 slate and the sorting rule.",
+      "Sign the partner terms. Quarterly re-score set."]
 h = 34 + 27*len(sw) + 16
 rect(M, y, BODY_W, h, SW_F, SW_S, rx=12)
 text(W/2, y+30, "SO WHAT", 13, "#5E4A08", "700", "middle", ls="2")
