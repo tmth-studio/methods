@@ -51,6 +51,14 @@ Slide 17 states this distinction explicitly. Do not collapse it back.
 - [x] **OCV metric** — defined in [`../objective-customer-value-standard.md`](../objective-customer-value-standard.md)
       (this repo hosts the full OCV standard one directory up). Resolved 19 Aug 2026.
 
+## Transport decision (tested, closed)
+
+**19 Aug 2026:** Python does not run on the Barclays estate — no runtime, so no
+`python-pptx`/generator route client-side. Transport is the **committed `.pptx` only**.
+The generator stays home-side as the source of truth; edits round-trip as: Copilot
+drafts the change client-side → the change is applied to the generator at home →
+regenerated `.pptx` crosses the boundary. Do not ship the script and expect it to run.
+
 ## Repo layout
 
 ```
