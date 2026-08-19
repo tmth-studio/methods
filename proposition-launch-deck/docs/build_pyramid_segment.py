@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-# Logic diagram for the segment-proposition variant (three decisions).
+# Logic diagram for the segment-proposition variant — Minto reasons cut:
+# one question (what proposition?), one integrated answer, key line =
+# three reasons about the WHOLE proposition (demand / economics / delivery).
 W = 780
 M = 22
 BODY_W = W - 2*M
@@ -38,12 +40,11 @@ def connector(yy, h=26):
 # ---------- INTRO ----------
 intro = [("SITUATION", ["The bank serves [segment]. N candidate features;",
                         "fixed capacity and an earnings mandate this cycle."]),
-         ("COMPLICATION", ["They cannot all ship — and features alone do not",
-                           "set earnings. Price, incentives and build-vs-partner",
-                           "change what each returns. Decided separately,",
-                           "they get decided inconsistently."]),
-         ("QUESTION", ["Which features do we take to [segment],",
-                       "configured how, and delivered how?"])]
+         ("COMPLICATION", ["They cannot all ship — and a feature list is not",
+                           "a proposition. What it earns turns on price,",
+                           "incentives, memory and delivery route; chosen",
+                           "by conviction, the cycle is spent on the wrong one."]),
+         ("QUESTION", ["What proposition do we take to [segment]?"])]
 
 y = M
 rows_h = 0
@@ -63,9 +64,9 @@ y = y + box_h
 y = connector(y)
 
 # ---------- ANSWER ----------
-ans = ["Launch A and C. Configure: price move + targeted",
-       "incentive, [wrapper] over the proposition.",
-       "Deliver A in-house, C via [partner]. Drop D and E."]
+ans = ["Take [P] to [segment]: A and C, configured",
+       "[levers] under [wrapper], A built, C partnered —",
+       "[£X]m at [Y]% margin by year 3. Drop D and E."]
 h = 34 + 30*len(ans) + 18
 rect(M, y, BODY_W, h, ANS_F, rx=12)
 text(W/2, y+30, "ANSWER  ·  GOVERNING THOUGHT", 13, "#9EC3D4", "700", "middle", ls="2")
@@ -78,21 +79,22 @@ y = connector(y, 30)
 
 # ---------- KEY LINES ----------
 keys = [
- ("DECISION 1 · THE RIGHT FEATURES", ["Only A and C show proven", "customer pull"],
-  [("OCV score by feature, ranked across all N", "k1s0"),
-   ("Where the threshold sits, and why", None),
-   ("Evidence base — and its stated limits", None),
-   ("Why D and E fell out — stated, not implied", None)]),
- ("DECISION 2 · THE CONFIGURATION THAT PAYS", ["Levers + wrapper add [£X]m", "without buying dead weight"],
-  [("Base earnings per surviving feature", "k2s0"),
-   ("Earnings bridge: what each lever adds and costs", "k2s1"),
+ ("KEY LINE 1 · DEMAND", ["[Segment] will take it up: proven", "pull, made present at the moment"],
+  [("OCV score by feature: A and C clear the gate", None),
+   ("Threshold and evidence base — limits stated", None),
+   ("Why D and E fell out — stated, not implied", None),
+   ("The wrapper closes the entry-point memory gap", None)]),
+ ("KEY LINE 2 · ECONOMICS", ["It pays: [£X]m at [Y]% margin,", "after the route timing is priced"],
+  [("Base earnings per surviving feature", None),
+   ("Bridge: levers + wrapper add, net of their cost", None),
    ("Incentives only where they beat defaults", None),
-   ("The wrapper: memory at the entry points", None)]),
- ("DECISION 3 · THE ROUTE THAT SURVIVES", ["Build A, partner C — shipped in", "the window, advantage kept"],
-  [("Routes priced: time, margin share, control", None),
-   ("Partner bounds: what they hold, what we keep", None),
-   ("Configured NPV, discounted by route timing", "k3s2"),
+   ("NPV discounted for route timing", "k2s3"),
    ("Built-instead counterfactual prices the choice", None)]),
+ ("KEY LINE 3 · DELIVERY", ["Delivery holds, and the", "advantage stays ours"],
+  [("Build A, partner C — inside the window", None),
+   ("Time-to-launch + confidence band", "k3s1"),
+   ("Partner bounds: what they hold, what we keep", None),
+   ("Re-internalise trigger, with its review date", None)]),
 ]
 
 marks = {}
@@ -124,8 +126,7 @@ def gutter_arrow(frm, to, label):
     parts.append(f'<polygon points="{M+BODY_W-30},{to} {M+BODY_W-19},{to-5.5} {M+BODY_W-19},{to+5.5}" fill="{GOLD}"/>')
     parts.append(f'<text x="{gx+12}" y="{(frm+to)/2}" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" font-size="13" font-weight="700" fill="{GOLDD}" text-anchor="middle" transform="rotate(90 {gx+12} {(frm+to)/2})">{esc(label)}</text>')
 
-gutter_arrow(marks["k1s0"], marks["k2s0"], "sets adoption")
-gutter_arrow(marks["k2s1"], marks["k3s2"], "prices the route")
+gutter_arrow(marks["k3s1"], marks["k2s3"], "feeds the discount")
 
 y = connector(y, 30)
 
