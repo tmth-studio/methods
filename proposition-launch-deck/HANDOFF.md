@@ -13,7 +13,13 @@ a consulting practice can carry a small library of them rather than rebuilding a
 every engagement. This is the first one. The archetype set identified was:
 
 1. **Which of these?** — options → criteria → recommendation *(this template)*
-2. **Should we, yes/no?** — single-option case with risks
+2. **Should we, yes/no?** — single-option case with risks *(built as the partner-decision
+   deck: `generate_partner_decision_deck.py`, 19 slides — "should we partner to launch
+   [feature]?" Key line: worth launching now / the route wins the money / the deal is
+   bounded. Yes-if-bounded structure; all four routes priced including the do-nothing
+   floor; the re-internalise trigger is COMPUTED from capex ÷ margin delta. Worked
+   example continues the backlog deck's invoice-finance verdict. Diagram:
+   docs/pyramid-partner.svg/.png)*
 3. **Why is this happening?** — diagnostic tree
 4. **How do we get there?** — sequencing / roadmap
 5. **What's going on?** — informational, no recommendation
