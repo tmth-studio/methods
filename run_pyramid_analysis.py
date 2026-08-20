@@ -22,6 +22,14 @@ HOW TO USE (in Copilot, Claude, or any assistant with a code interpreter):
 
 STAGED PROMPTS — the assistant follows these in order and STOPS at each gate.
 
+  STAGE A0 — APPLY THE CLIENT'S BRAND (optional). All brand values live in
+  the THEME dict at the top of the DATA section; the shipped default is the
+  neutral TMTH palette. Two routes to a client brand: (i) paste the client's
+  palette hexes and font names into THEME; (ii) attach any existing client
+  .pptx and run extract_theme.py (same repository) — it prints a
+  ready-to-paste THEME dict with a suggested role mapping. Client brand
+  arrives at runtime; never commit a client THEME to the public repository.
+
   STAGE A1 — FRAME THE PROBLEM. From the user's raw material, find four
   elements: the symptom (observable, with numbers), the evidence (data,
   timeframe, baseline), the decision that waits (with its cost), and the
@@ -47,23 +55,48 @@ STAGED PROMPTS — the assistant follows these in order and STOPS at each gate.
   missing data item that would move confidence most. GATE: show the table,
   get a yes.
 
-  STAGE A4 — QUESTION AND ANSWER. Write THE one question the reader asks
+  STAGE A4 — EVIDENCE SWEEP (ADVERSARIAL). Attach the engagement's source
+  materials. For EVERY claim that will carry weight — the surviving
+  hypothesis, the emerging answer, and each load-bearing supporting fact:
+  (1) find the best supporting evidence and cite the source; (2) actively
+  search for DISCONFIRMING evidence and record what was looked for AND what
+  was found, even when nothing was found — an unrecorded search is
+  indistinguishable from no search; (3) mark the status honestly:
+  EVIDENCED / GAP_RISK_ACCEPTED (with a stated reason) / GAP_OPEN. Fill the
+  EVIDENCE_SWEEP register. The build REFUSES while any row is GAP_OPEN —
+  every claim must be evidenced or its gap explicitly risk-accepted.
+  GATE: show the register, get a yes.
+
+  STAGE A5 — QUESTION AND ANSWER. Write THE one question the reader asks
   knowing the Situation, Complication and the surviving hypothesis. Check
   its level — the real question usually sits above the surface debate.
   Answer it in one sentence from the surviving evidence only. Show the
   chain: answer ← hypothesis ← evidence. GATE: show both, get a yes.
 
-  STAGE A5 — RECOMMENDATION. Write 3–4 real options including "do nothing"
+  STAGE A6 — RECOMMENDATION. Write 3–4 real options including "do nothing"
   with its honest cost. Score them (fit / cost / time / reversibility /
   risk-if-wrong). Recommend one: what, why (pointing at the answer),
   resources, timeline, owner. Attach 3–4 metrics each with baseline, target
   and DATE; a decision gate; and the key assumption. GATE: show it, get a
   yes.
 
-  STAGE A6 — HAND OFF. Run the script. The final section of the .docx maps
+  STAGE A7 — HAND OFF. Run the script. The final section of the .docx maps
   this analysis onto the PYRAMID fields of the three presentation
   generators. Carry the failed hypotheses forward — they are the prepared
-  answers to the room's objections.
+  answers to the room's objections — and carry the evidence sweep into the
+  memo/deck EVIDENCE_REGISTER.
+
+ENGAGEMENT ASSETS: a filled EVIDENCE_SWEEP register is client work product.
+It lives in the client tenant. Never commit a filled register to the public
+repository — the shipped register holds fictional demonstration content only.
+
+VERSION NOTES
+  v1.1 — 20 Aug 2026: brand moved from code to data (THEME dict, neutral
+         TMTH default; validation gate on hex/fonts). Adversarial evidence
+         sweep added as Stage A4 with the EVIDENCE_SWEEP register and a
+         GAP_OPEN build gate; stages renumbered A4→A5, A5→A6, A6→A7 to
+         match the workbook.
+  v1.0 — 20 Aug 2026: first published version.
 
 Requires: python-docx.  Output: pyramid-analysis.docx
 """
@@ -72,6 +105,24 @@ Requires: python-docx.  Output: pyramid-analysis.docx
 # DATA — EDIT THIS SECTION ONLY
 # All demonstration content is fictional (Meridian Office Services).
 # ============================================================================
+
+# --- THEME: all brand values live here, as data. Ship = neutral TMTH palette.
+# To apply a client's brand: (i) paste their palette hexes + font names below,
+# or (ii) attach any existing client .pptx and run extract_theme.py (same
+# repository) — it prints a ready-to-paste THEME dict. Hex: 6 chars, no '#',
+# no alpha. Never commit a client THEME to the public repository.
+THEME = {
+    "dominant":      "2F4858",  # lead brand colour — section heads, table header fills
+    "accent":        "4E7C90",  # secondary brand colour — sub-headings
+    "highlight":     "C9A227",  # the one-highlight colour — inconclusive/attention marks
+    "card_fill":     "EEF3F6",  # panel / label-cell background tint
+    "ink":           "1F2A31",  # near-black body ink
+    "ink_soft":      "3C4C57",  # softer body ink (used by the deck generators)
+    "muted":         "6B7A85",  # secondary text, sources, footers
+    "chart_compare": "B9C6CD",  # non-highlighted chart elements (deck generators)
+    "font_heading":  "Cambria",
+    "font_body":     "Calibri",
+}
 
 META = {
     "title": "SME contract churn — root-cause diagnostic",
@@ -202,6 +253,66 @@ RESEARCH_GAPS = [
      "Commercial lead", "5 Sep 2026"),
 ]
 
+# --- EVIDENCE SWEEP (Stage A4) — one row per claim that carries weight:
+# every hypothesis (claim_id = its label) and the answer (claim_id = "ANSWER").
+# status: "EVIDENCED" | "GAP_RISK_ACCEPTED" (status_reason required) |
+# "GAP_OPEN" (blocks the build). counter_evidence_search records what was
+# looked for AND what was found — even when nothing was found.
+# ENGAGEMENT ASSET: never commit a filled register to the public repository.
+EVIDENCE_SWEEP = [
+    {"claim_id": "H1",
+     "claim": ("Pricing is cleared as the cause — the churn rise is not "
+               "price-driven"),
+     "best_supporting_evidence": ("Price objections fell 46 to 32 a quarter "
+                                  "while churn rose 13 points; deal sizes "
+                                  "stable at £4.2k"),
+     "source": "CRM objection log 2023–2026; billing extract, Jul 2026",
+     "counter_evidence_search": ("Looked for: discount pressure in renewal "
+                                 "notes; price-led losses in the 2025–26 "
+                                 "lost-deal file. Found: two competitor rate "
+                                 "cards below ours — and zero lost deals "
+                                 "citing them."),
+     "status": "EVIDENCED", "status_reason": ""},
+    {"claim_id": "H2",
+     "claim": ("Service quality is not the driver of the churn rise"),
+     "best_supporting_evidence": ("Complaint volumes flat across the period; "
+                                  "churn concentrated in competitor-bid "
+                                  "renewals, not across the base"),
+     "source": "Complaints log 2023–2026; renewal records, Jul 2026",
+     "counter_evidence_search": ("Looked for: missed-callout complaints "
+                                 "preceding non-renewal. Found: two churned "
+                                 "Q3 2025 accounts with logged complaints — "
+                                 "signal too thin to close either way."),
+     "status": "GAP_RISK_ACCEPTED",
+     "status_reason": ("Win-loss interviews with 12 lapsed accounts not yet "
+                       "run (due 12 Sep 2026); risk bounded because the "
+                       "recommendation does not depend on H2's verdict")},
+    {"claim_id": "H3",
+     "claim": ("The competitor's four-hour guarantee reset what renewals "
+               "are judged on"),
+     "best_supporting_evidence": ("10 of 10 Q4 2025 lost-deal reviews cite "
+                                  "the guarantee; churn concentrated in "
+                                  "competitor-bid renewals"),
+     "source": "Lost-deal reviews Oct–Dec 2025, n=10; renewal records",
+     "counter_evidence_search": ("Looked for: elevated churn among accounts "
+                                 "with no competitor bid (H3's negative "
+                                 "prediction). Found: none — existing-"
+                                 "contract churn stable at 21–23%."),
+     "status": "EVIDENCED", "status_reason": ""},
+    {"claim_id": "ANSWER",
+     "claim": ("Churn is a framing problem: the guarantee reset the renewal "
+               "test and Meridian does not yet answer it"),
+     "best_supporting_evidence": ("Surviving H3 evidence chain: unanimous "
+                                  "lost-deal citations plus the stable "
+                                  "no-bid churn floor"),
+     "source": "A3 hypothesis tests against the A2 register",
+     "counter_evidence_search": ("Looked for: an alternative explanation "
+                                 "fitting the same pattern (price, service, "
+                                 "relationship churn). Found: each one "
+                                 "contradicted or orthogonal in A3."),
+     "status": "EVIDENCED", "status_reason": ""},
+]
+
 QUESTION = ("How does Meridian win renewals in a market that now judges "
             "providers on response time?")
 
@@ -287,8 +398,25 @@ def _collect_strings(obj, out):
         for v in obj:
             _collect_strings(v, out)
 
+SWEEP_STATUSES = ("EVIDENCED", "GAP_RISK_ACCEPTED", "GAP_OPEN")
+
+def _theme_defects():
+    defects = []
+    for k, v in THEME.items():
+        if k.startswith("font_"):
+            if not str(v).strip():
+                defects.append("THEME['%s'] is empty — name a real font" % k)
+        elif not re.fullmatch(r"[0-9A-Fa-f]{6}", str(v)):
+            defects.append("THEME['%s'] = %r is not a 6-char hex "
+                           "(no '#', no alpha)" % (k, v))
+    return defects
+
 def run_self_check():
     checks, warnings = [], []
+
+    td = _theme_defects()
+    checks.append(("THEME: colours are 6-char hex and fonts are named"
+                   + ("" if not td else " — " + "; ".join(td)), not td))
 
     fr = PROBLEM_FRAME
     checks.append(("frame has all four elements: symptom, evidence, "
@@ -344,6 +472,40 @@ def run_self_check():
                    len(strongest) == 1
                    and strongest[0]["verdict"] == "SUPPORTED"))
 
+    # --- evidence sweep (Stage A4): adversarial register, gated
+    row_defects = []
+    for r in EVIDENCE_SWEEP:
+        rid = r.get("claim_id", "?")
+        for fld in ("claim", "best_supporting_evidence", "source",
+                    "counter_evidence_search"):
+            if not str(r.get(fld, "")).strip():
+                row_defects.append("%s missing %s" % (rid, fld))
+        if r.get("status") not in SWEEP_STATUSES:
+            row_defects.append("%s status must be EVIDENCED / "
+                               "GAP_RISK_ACCEPTED / GAP_OPEN" % rid)
+        if (r.get("status") == "GAP_RISK_ACCEPTED"
+                and not str(r.get("status_reason", "")).strip()):
+            row_defects.append("%s is GAP_RISK_ACCEPTED with no stated "
+                               "reason" % rid)
+    checks.append(("every sweep row is complete: claim, best evidence, "
+                   "source, counter-evidence search, valid status"
+                   + ("" if not row_defects else
+                      " — " + "; ".join(row_defects)), not row_defects))
+    open_gaps = [r["claim_id"] for r in EVIDENCE_SWEEP
+                 if r.get("status") == "GAP_OPEN"]
+    checks.append(("no GAP_OPEN rows — every claim is EVIDENCED or "
+                   "explicitly GAP_RISK_ACCEPTED with a reason"
+                   + ("" if not open_gaps else
+                      " — resolve or risk-accept: " + ", ".join(open_gaps)),
+                   not open_gaps))
+    need_ids = set(h["label"] for h in HYPOTHESES) | {"ANSWER"}
+    have_ids = set(r.get("claim_id") for r in EVIDENCE_SWEEP)
+    missing_ids = sorted(need_ids - have_ids)
+    checks.append(("the sweep covers every hypothesis and the answer"
+                   + ("" if not missing_ids else
+                      " — missing rows: " + ", ".join(missing_ids)),
+                   not missing_ids))
+
     checks.append(("exactly one question, ending in a question mark",
                    QUESTION.count("?") == 1
                    and QUESTION.strip().endswith("?")))
@@ -375,8 +537,8 @@ def run_self_check():
 
     strings = []
     for blob in (META, PROBLEM_FRAME, SITUATION, COMPLICATION,
-                 EVIDENCE_REGISTER, HYPOTHESES, RESEARCH_GAPS, QUESTION,
-                 ANSWER, RECOMMENDATION):
+                 EVIDENCE_REGISTER, HYPOTHESES, EVIDENCE_SWEEP,
+                 RESEARCH_GAPS, QUESTION, ANSWER, RECOMMENDATION):
         _collect_strings(blob, strings)
     placeholders = sorted(set(m for s in strings
                               for m in re.findall(r"\[[^\]]+\]", s)))
@@ -422,15 +584,19 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 
-SLATE = RGBColor(0x2F, 0x48, 0x58)
-BLUE = RGBColor(0x4E, 0x7C, 0x90)
-GOLD = RGBColor(0xC9, 0xA2, 0x27)
-INK = RGBColor(0x1F, 0x2A, 0x31)
-MUTE = RGBColor(0x6B, 0x7A, 0x85)
-GREEN = RGBColor(0x2F, 0x6B, 0x4F)
-RED = RGBColor(0xA8, 0x44, 0x3C)
-TINT_HEX = "EEF3F6"
-HEAD_FONT, BODY_FONT = "Cambria", "Calibri"
+def _rgb(h):
+    return RGBColor(int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16))
+
+SLATE = _rgb(THEME["dominant"])
+BLUE = _rgb(THEME["accent"])
+GOLD = _rgb(THEME["highlight"])
+INK = _rgb(THEME["ink"])
+MUTE = _rgb(THEME["muted"])
+GREEN = RGBColor(0x2F, 0x6B, 0x4F)   # functional verdict colour — not brand
+RED = RGBColor(0xA8, 0x44, 0x3C)     # functional verdict colour — not brand
+TINT_HEX = THEME["card_fill"]
+DOMINANT_HEX = THEME["dominant"]
+HEAD_FONT, BODY_FONT = THEME["font_heading"], THEME["font_body"]
 
 doc = Document()
 for sec in doc.sections:
@@ -488,7 +654,7 @@ def data_table(headers, rows, widths=None, colors=None):
             for row in t.rows:
                 row.cells[j].width = Inches(wd)
     for j, hd in enumerate(headers):
-        shade(t.cell(0, j), "2F4858")
+        shade(t.cell(0, j), DOMINANT_HEX)
         cell_text(t.cell(0, j), hd, size=9.5,
                   color=RGBColor(0xFF, 0xFF, 0xFF), bold=True,
                   font=HEAD_FONT)
@@ -574,16 +740,45 @@ if RESEARCH_GAPS:
                widths=[4.2, 1.6, 1.0])
 para("", space_after=8)
 
-# --- A4
-h1("A4 — Question and answer")
-panel([("The question", QUESTION), ("The answer", ANSWER)])
-para("Chain: answer ← %s ← the register rows tested in A3. The question "
-     "sits above the surface debate (cut the price or not) — answering it "
-     "sets the action." % STRONGEST, size=9, color=MUTE, italic=True,
-     space_after=12)
+# --- A4: evidence sweep (adversarial)
+h1("A4 — Evidence sweep (adversarial)")
+para("Every claim that carries weight holds a register row: its best "
+     "supporting evidence with a source, AND a recorded search for "
+     "disconfirming evidence — what was looked for, and what was found, "
+     "even when nothing was found. No claim proceeds as GAP_OPEN: it is "
+     "evidenced, or its gap is accepted with a stated reason.",
+     space_after=8)
+sweep_rows, sweep_colors = [], []
+for r in EVIDENCE_SWEEP:
+    sweep_rows.append((r["claim_id"] + " — " + r["claim"],
+                       r["best_supporting_evidence"], r["source"],
+                       r["counter_evidence_search"], r["status"]))
+    scol = (GREEN if r["status"] == "EVIDENCED" else GOLD)
+    sweep_colors.append([INK, INK, INK, INK, scol])
+data_table(["Claim", "Best supporting evidence", "Source",
+            "Counter-evidence search", "Status"],
+           sweep_rows, widths=[1.5, 1.4, 1.0, 1.8, 1.0],
+           colors=sweep_colors)
+accepted = [r for r in EVIDENCE_SWEEP if r["status"] == "GAP_RISK_ACCEPTED"]
+if accepted:
+    para("", space_after=2)
+    h2("Risk-accepted gaps — stated limits, not silent ones")
+    panel([(r["claim_id"], r["status_reason"]) for r in accepted])
+para("", space_after=2)
+para("The filled register is an engagement asset — it stays in the client "
+     "tenant and is never committed to the public repository.", size=9,
+     color=MUTE, italic=True, space_after=12)
 
 # --- A5
-h1("A5 — Recommendation")
+h1("A5 — Question and answer")
+panel([("The question", QUESTION), ("The answer", ANSWER)])
+para("Chain: answer ← %s ← the register rows tested in A3, swept "
+     "adversarially in A4. The question sits above the surface debate (cut "
+     "the price or not) — answering it sets the action." % STRONGEST,
+     size=9, color=MUTE, italic=True, space_after=12)
+
+# --- A6
+h1("A6 — Recommendation")
 h2("Options examined (the selected option in bold)")
 opt_rows, opt_colors = [], []
 for o in RECOMMENDATION["options"]:
@@ -604,7 +799,7 @@ for i, o in enumerate(RECOMMENDATION["options"]):
 para("", space_after=4)
 h2("The recommendation")
 panel([("What", RECOMMENDATION["what"]),
-       ("Why", RECOMMENDATION["why"] + " (points at the A4 answer)"),
+       ("Why", RECOMMENDATION["why"] + " (points at the A5 answer)"),
        ("Resources", RECOMMENDATION["resources"]),
        ("Timeline", RECOMMENDATION["timeline"]),
        ("Owner", RECOMMENDATION["owner"])])
@@ -619,8 +814,8 @@ panel([("Decision gate", RECOMMENDATION["decision_gate"]),
        ("Key assumption", RECOMMENDATION["key_assumption"])])
 para("", space_after=10)
 
-# --- A6: hand-off map onto the shared PYRAMID schema
-h1("A6 — Hand-off to the presentation generators")
+# --- A7: hand-off map onto the shared PYRAMID schema
+h1("A7 — Hand-off to the presentation generators")
 para("The fields below map this analysis onto the shared PYRAMID schema "
      "used by generate_pyramid_memo.py, generate_presentation_deck.py and "
      "generate_standalone_deck.py. The failed hypotheses travel too — they "
@@ -635,13 +830,17 @@ handoff_rows = [
     ("KEY_LINE seed 1 (diagnosis)", ANSWER),
     ("KEY_LINE seed 2 (remedy)", RECOMMENDATION["what"]),
     ("KEY_LINE seed 3 (economics)",
-     "Metrics, gate and options table from A5 — price the case in ranges"),
+     "Metrics, gate and options table from A6 — price the case in ranges"),
     ("KEY_LINE[i]['supports'][j]['source']",
      "Evidence register rows (A2) — one source per support"),
+    ("EVIDENCE_REGISTER (memo generator)",
+     "The A4 sweep rows travel as-is — claims stay EVIDENCED or "
+     "risk-accepted with their reasons; the memo renders accepted gaps as "
+     "stated limits"),
     ("ASK['decision']", RECOMMENDATION["what"]),
     ("ASK['gate']", RECOMMENDATION["decision_gate"]),
     ("ASK['owner'] / ASK['date']",
-     "%s / from the A5 timeline" % RECOMMENDATION["owner"]),
+     "%s / from the A6 timeline" % RECOMMENDATION["owner"]),
     ("CONCLUSION['key_assumption']", RECOMMENDATION["key_assumption"]),
     ("Objection bank (not a schema field — keep for B5/Q&A)",
      "; ".join("%s (%s): %s" % (h["label"], h["verdict"], h["statement"])
