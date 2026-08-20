@@ -53,8 +53,9 @@ Slide 17 states this distinction explicitly. Do not collapse it back.
 - [ ] **Weighted trade-off variant.** Hard gates can kill a standout feature on one weak
       dimension. If the client's constraint is capital rather than capacity, a weighted
       model is more honest. Not built. Would be an alternate slide 6 + a rule change on slide 2.
-- [ ] **Licence.** `README.md` has a placeholder. MIT or CC BY 4.0 are the usual choices
-      for a method you want credited.
+- [x] **Licence** — resolved 20 Aug 2026: **CC BY 4.0 repo-wide** (root `LICENSE.md`),
+      matching the pyramid-method repo. Attribution is the credit mechanism the
+      publish-for-credibility decision wanted.
 - [ ] **Publishing the method publicly gives it away.** Decided in principle (credibility /
       inbound), never formally confirmed.
 - [x] **OCV metric** — defined in [`../objective-customer-value-standard.md`](../objective-customer-value-standard.md)
