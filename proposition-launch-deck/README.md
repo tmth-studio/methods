@@ -118,4 +118,4 @@ node gen.js
 
 ## Licence
 
-[Choose one — MIT and CC BY 4.0 are the usual options for a method you want credited.]
+**CC BY 4.0** — see [`LICENSE.md`](../LICENSE.md) at the repository root. Reuse freely with credit to TMTH; your filled-in copies and client outputs are your own.
