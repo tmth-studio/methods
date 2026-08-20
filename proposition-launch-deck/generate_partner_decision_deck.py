@@ -1,10 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PARTNER DECISION DECK GENERATOR — client-branded, Copilot-executable.
+PARTNER DECISION DECK GENERATOR — theme-driven, Copilot-executable.
 Archetype #2: "Should we partner to launch this specific feature?"
 
 HOW TO USE (in the Copilot app):
+  STAGE 0 — APPLY THE CLIENT'S BRAND (optional). Two routes: (i) paste the
+     client palette hexes and font names into THEME in the DATA section;
+     (ii) attach any existing client .pptx and run extract_theme.py
+     (repository root) — it prints a ready-to-paste THEME dict with a
+     suggested role mapping. The shipped default is the neutral TMTH
+     palette; client brand arrives at runtime and must never be committed
+     to the public repository.
   1. Attach this file. Say: "Run this script and give me the .pptx it creates."
   2. To change the deck: edit ONLY the DATA section below, then re-run.
      Do not edit anything under LAYOUT — DO NOT EDIT.
@@ -13,12 +20,33 @@ Self-computing: the recommended route is checked against the route table,
 the re-internalise crossover is CALCULATED from build capex and the margin
 delta, and a self-check refuses to write a deck that fails.
 
+VERSION NOTES: v1.1 — 20 Aug 2026: brand moved from code to data (THEME
+dict, neutral TMTH default); client palette and font removed from code;
+theme validation gate added; heading/body font split introduced.
+
 Requires: python-pptx.  Output: partner-decision-template-branded.pptx
 """
 
 # ============================================================================
 # DATA — EDIT THIS SECTION ONLY
 # ============================================================================
+
+# --- THEME: all brand values live here, as data. Ship = neutral TMTH palette.
+# To apply a client's brand: (i) paste their palette hexes + font names below,
+# or (ii) attach any existing client .pptx and run extract_theme.py (repository
+# root) — it prints a ready-to-paste THEME dict. Hex: 6 chars, no '#', no alpha.
+THEME = {
+    "dominant":      "2F4858",  # lead brand colour — emphasis text, headline data, table header fills
+    "accent":        "4E7C90",  # secondary brand colour — slide titles, big display text
+    "highlight":     "C9A227",  # the one-highlight colour — eyebrows, numbered circles, key callouts
+    "card_fill":     "EEF3F6",  # card / panel background tint
+    "ink":           "1F2A31",  # near-black headings ink
+    "ink_soft":      "3C4C57",  # body text ink
+    "muted":         "6B7A85",  # secondary text, sources, footers
+    "chart_compare": "B9C6CD",  # non-highlighted chart bars / comparison elements
+    "font_heading":  "Cambria",
+    "font_body":     "Calibri",
+}
 
 META = {
     "feature": "invoice finance",
@@ -131,14 +159,48 @@ from pptx.enum.shapes import MSO_SHAPE
 from pptx.chart.data import CategoryChartData
 from pptx.enum.chart import XL_CHART_TYPE, XL_LABEL_POSITION
 
-NAVY = RGBColor(0x00, 0x39, 0x5D); CYAN = RGBColor(0x00, 0xAE, 0xEF)
-CYAND = RGBColor(0x00, 0x83, 0xC5); TINT = RGBColor(0xD9, 0xEE, 0xF9)
-TINT2 = RGBColor(0xCD, 0xE9, 0xF8); GREY = RGBColor(0xBF, 0xBF, 0xBF)
-BODY = RGBColor(0x3F, 0x55, 0x63); MUTE = RGBColor(0x6E, 0x7F, 0x8D)
-RULE = RGBColor(0xC9, 0xDD, 0xE8); WHITE = RGBColor(0xFF, 0xFF, 0xFF)
+def _rgb(h):
+    return RGBColor(int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16))
+
+def _blend(base_hex, mix_hex, f):
+    """f = share of mix_hex blended into base_hex."""
+    b = [int(base_hex[i:i+2], 16) for i in (0, 2, 4)]
+    m = [int(mix_hex[i:i+2], 16) for i in (0, 2, 4)]
+    return RGBColor(*(round(b[i] * (1 - f) + m[i] * f) for i in range(3)))
+
+# --- THEME validation gate: refuse to build on malformed values ---
+_theme_defects = []
+for _k, _v in THEME.items():
+    if _k.startswith("font_"):
+        if not str(_v).strip():
+            _theme_defects.append("THEME['%s'] is empty — name a real font" % _k)
+    else:
+        import re as _re_t
+        if not _re_t.fullmatch(r"[0-9A-Fa-f]{6}", str(_v)):
+            _theme_defects.append("THEME['%s'] = %r is not a 6-char hex (no '#', no alpha)" % (_k, _v))
+if _theme_defects:
+    print("=" * 60)
+    print("SELF-CHECK — THEME")
+    for d in _theme_defects:
+        print("  [FAIL] %s" % d)
+    print("=" * 60)
+    raise SystemExit("SELF-CHECK FAILED — no file written. Fix THEME in the DATA section.")
+
+# --- palette: derived from THEME (constant names kept so body code stands) ---
+NAVY = _rgb(THEME["dominant"]); CYAN = _rgb(THEME["accent"])
+CYAND = _rgb(THEME["highlight"]); TINT = _rgb(THEME["card_fill"])
+TINT2 = _blend(THEME["card_fill"], THEME["accent"], 0.12)
+GREY = _rgb(THEME["chart_compare"])
+BODY = _rgb(THEME["ink_soft"]); MUTE = _rgb(THEME["muted"])
+PALE = _blend("FFFFFF", THEME["dominant"], 0.30)
+RULE = _blend("FFFFFF", THEME["dominant"], 0.20)
+# Functional colours (pass/fail semantics, zebra striping), not brand — never remapped.
+WHITE = RGBColor(0xFF, 0xFF, 0xFF); ZEBRA = RGBColor(0xF5, 0xF8, 0xFA)
 GREEN = RGBColor(0x2F, 0x6B, 0x4F); RED = RGBColor(0xA8, 0x44, 0x3C)
-PALE = RGBColor(0xBF, 0xE4, 0xF7); ZEBRA = RGBColor(0xF5, 0xF8, 0xFA)
-FONT = "Expert Sans"
+
+FONT_HEAD = THEME["font_heading"]
+FONT_BODY = THEME["font_body"]
+FONT = FONT_BODY  # default for body text; keep the name so existing calls stand
 
 W, H, M = 13.333, 7.5, 0.62
 CW = W - 2 * M
@@ -162,7 +224,7 @@ def rect(s, x, y, w, h, fill, line=None, rounded=False):
     return shp
 
 def txt(s, x, y, w, h, runs, size=13, color=BODY, bold=False, italic=False,
-        align=PP_ALIGN.LEFT, spacing=None, wrap=True):
+        align=PP_ALIGN.LEFT, spacing=None, wrap=True, font=FONT):
     tb = s.shapes.add_textbox(Inches(x), Inches(y), Inches(w), Inches(h))
     tf = tb.text_frame; tf.word_wrap = wrap
     if isinstance(runs, str): runs = [(runs, {})]
@@ -173,7 +235,7 @@ def txt(s, x, y, w, h, runs, size=13, color=BODY, bold=False, italic=False,
         para.alignment = opt.get("align", align)
         if spacing: para.line_spacing = Pt(spacing)
         r = para.add_run(); r.text = text
-        f = r.font; f.name = FONT
+        f = r.font; f.name = font
         f.size = Pt(opt.get("size", size)); f.bold = opt.get("bold", bold)
         f.italic = opt.get("italic", italic)
         f.color.rgb = opt.get("color", color)
@@ -193,7 +255,7 @@ def eyebrow(s, t, y=0.30):
     txt(s, M, y, 9, 0.3, t, size=11, color=CYAND, bold=True)
 
 def title(s, t, size=24):
-    txt(s, M, 0.60, CW - 1.6, 1.05, t, size=size, color=CYAN, bold=False, spacing=size + 5)
+    txt(s, M, 0.60, CW - 1.6, 1.05, t, size=size, color=CYAN, bold=False, spacing=size + 5, font=FONT_HEAD)
 
 def pagetag(s, n):
     txt(s, W - 3.4, 0.28, 2.8, 0.3, META["page_tag"] + "  |  " + str(n),
@@ -207,7 +269,7 @@ def num_circle(s, x, y, n, d=0.46):
     c.fill.solid(); c.fill.fore_color.rgb = CYAN; c.line.fill.background()
     tf = c.text_frame; p0 = tf.paragraphs[0]; p0.alignment = PP_ALIGN.CENTER
     r = p0.add_run(); r.text = str(n)
-    r.font.name = FONT; r.font.size = Pt(15); r.font.bold = True; r.font.color.rgb = WHITE
+    r.font.name = FONT_HEAD; r.font.size = Pt(15); r.font.bold = True; r.font.color.rgb = WHITE
 
 def pill(s, x, y, t, fill, w=0.92):
     shp = rect(s, x, y, w, 0.30, fill, rounded=True)
@@ -223,9 +285,9 @@ def notes(s, t):
 def divider(n, kicker, headline, sub):
     s = slide()
     rect(s, 0, 0, W, 0.14, CYAN)
-    txt(s, M, 2.05, 2.6, 1.6, n, size=88, color=PALE, bold=True)
+    txt(s, M, 2.05, 2.6, 1.6, n, size=88, color=PALE, bold=True, font=FONT_HEAD)
     txt(s, M + 2.55, 2.22, 9.4, 0.4, kicker.upper(), size=12, color=CYAND, bold=True)
-    txt(s, M + 2.55, 2.62, 9.4, 1.0, headline, size=32, color=NAVY)
+    txt(s, M + 2.55, 2.62, 9.4, 1.0, headline, size=32, color=NAVY, font=FONT_HEAD)
     txt(s, M + 2.55, 3.66, 9.2, 0.7, sub, size=14, color=BODY)
     return s
 
@@ -245,7 +307,7 @@ BOUNDS_ROWS = [(a, TRIGGER_TEXT if b == "COMPUTED_TRIGGER" else b) for a, b in B
 s = slide()
 rect(s, 0, 0, W, 0.22, CYAN)
 txt(s, M, 1.45, 8.6, 0.34, "PARTNER DECISION", size=12, color=CYAND, bold=True)
-txt(s, M, 1.95, 9.2, 2.1, "Should we partner to launch\n%s?" % META["feature"], size=44, color=CYAN, spacing=50)
+txt(s, M, 1.95, 9.2, 2.1, "Should we partner to launch\n%s?" % META["feature"], size=44, color=CYAN, spacing=50, font=FONT_HEAD)
 txt(s, M, 4.15, 8.6, 0.4, "One feature · four routes priced · the deal bounded", size=15, color=NAVY)
 txt(s, M, 4.65, 9.2, 0.4, "Worked example: %s for %s · all names and numbers are dummy values" % (META["feature"], META["segment"]), size=12, color=MUTE)
 txt(s, M, 6.55, 8, 0.4, META["team_line"], size=12, color=MUTE)
@@ -294,7 +356,7 @@ rect(s, M + 6.25, 1.55, CW - 6.25, 4.6, TINT, rounded=True)
 txt(s, M + 6.57, 1.72, 5.3, 0.34, "B — Fallback: edit this file directly", size=12.5, color=NAVY, bold=True)
 txt(s, M + 6.57, 2.10, CW - 6.85, 3.9, [
     ("4. ", {"bold": True, "color": CYAND}), ("Replace every example value. Reconcile: the headline NPV (5) = the chosen route's NPV (7, 12) · the trigger on 16 = the crossover arithmetic on 13.", {}),
-    ("5. ", {"bold": True, "color": CYAND}), ("The client brand palette is applied (cyan titles, navy data, pale-blue cards, grey comparisons). Do not remap. Font: Expert Sans.", {}),
+    ("5. ", {"bold": True, "color": CYAND}), ("Brand lives in the THEME dict in the DATA section (neutral TMTH default shipped). To apply a client brand, edit THEME or run extract_theme.py against a client .pptx — never hand-restyle individual shapes.", {}),
     ("6. ", {"bold": True, "color": CYAND}), ("Never restyle verdict colours or the one-highlight rule. Check titles fit two lines after edits.", {}),
 ], size=10.5, spacing=14)
 rect(s, M, 6.32, CW, 0.75, TINT2, rounded=True)
@@ -570,6 +632,7 @@ checks.append(("do-nothing floor present and beaten by the chosen route",
 checks.append(("crossover trigger computed and quoted in the bounds (~%s users)" % format(crossover_rounded, ","),
                any(format(crossover_rounded, ",") in b for _, b in BOUNDS_ROWS)))
 checks.append(("slide count == 19", len(prs.slides._sldIdLst) == 19))
+checks.append(("THEME values are valid hex and fonts are named", True))
 
 import re as _re
 _strings = []
