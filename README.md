@@ -107,3 +107,7 @@ still apply.
 Design system default: neutral TMTH palette (slate 2F4858, blue 4E7C90, gold
 C9A227, tint EEF3F6, ink 1F2A31), Cambria headings / Calibri body, 13.3in ×
 7.5in, 0.62in margins — now data, not code.
+
+## Licence
+
+Everything in this repository is **CC BY 4.0** — reuse freely with credit to TMTH. See [`LICENSE.md`](LICENSE.md). Your outputs are your own; client data and brand never enter this repository.
