@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+/*.pptx
+/*.pdf
+/*.docx
+exemplars/*.pdf
+qa/*.pdf

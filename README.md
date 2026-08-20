@@ -87,6 +87,38 @@ specific registers sit at the end of each DATA section — keep each script's
 own registers in place when pasting. `run_pyramid_analysis.py` ends its .docx
 with a hand-off section mapping the analysis field-for-field onto the schema.
 
+## The slide library (v1.3)
+
+Two halves, both regression-checked by `qa/run_qa.py`:
+
+- **Exemplars** (`exemplars/`) — one filled, fictional, self-check-passing
+  DATA block per Minto pattern (seeking approval, giving direction,
+  choosing among alternatives, explaining how). Assistants read the
+  matching exemplar before filling a new DATA section; the QA runner
+  splices every exemplar into both generators on every run, which keeps
+  the shared schema honest. See `exemplars/README.md`.
+- **Golden renders** (`qa/golden/`) — baseline PNG renders of both demo
+  decks. The QA runner rebuilds the decks, re-renders them and fails if
+  any page drifts past tolerance (mean pixel diff or changed-pixel
+  fraction). Baselines are environment-specific: re-baseline once on the
+  QA machine with `python3 qa/run_qa.py --update`.
+
+The library is regression fixtures and exemplars, deliberately not an
+acceptance benchmark for finished decks — the self-checks in the
+generators are the acceptance test, because rules generalise where
+examples do not.
+
+## QA record (20 Aug 2026, v1.3)
+
+**v1.3 (slide library):** `qa/run_qa.py` passes all three phases on the QA
+machine: both demo builds, all four exemplars spliced through both
+generators (eight builds), and golden renders at 0.00% drift. The golden
+gate was negative-tested: an accent-colour swap fails phase 3 at 3.93%
+changed pixels. The exemplars close v1.2's coverage gaps — single-series
+line, two-series column and a negative-delta waterfall now build and
+render correctly (verified by page inspection). New known limit: the
+value label on a very small waterfall segment can overflow its bar.
+
 ## QA record (20 Aug 2026, v1.2)
 
 **v1.2 (deck generators only — memo and analysis generators unchanged at
