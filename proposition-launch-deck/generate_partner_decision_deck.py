@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-PARTNER DECISION DECK GENERATOR — Barclays-branded, Copilot-executable.
+PARTNER DECISION DECK GENERATOR — client-branded, Copilot-executable.
 Archetype #2: "Should we partner to launch this specific feature?"
 
 HOW TO USE (in the Copilot app):
@@ -13,7 +13,7 @@ Self-computing: the recommended route is checked against the route table,
 the re-internalise crossover is CALCULATED from build capex and the margin
 delta, and a self-check refuses to write a deck that fails.
 
-Requires: python-pptx.  Output: partner-decision-template-barclays.pptx
+Requires: python-pptx.  Output: partner-decision-template-branded.pptx
 """
 
 # ============================================================================
@@ -118,7 +118,7 @@ APPENDIX_ITEMS = [
     ("The backlog context", "Why invoice finance holds slot 2 — the proposition backlog deck"),
 ]
 
-OUTPUT_FILE = "partner-decision-template-barclays.pptx"
+OUTPUT_FILE = "partner-decision-template-branded.pptx"
 
 # ============================================================================
 # LAYOUT — DO NOT EDIT BELOW THIS LINE
@@ -294,7 +294,7 @@ rect(s, M + 6.25, 1.55, CW - 6.25, 4.6, TINT, rounded=True)
 txt(s, M + 6.57, 1.72, 5.3, 0.34, "B — Fallback: edit this file directly", size=12.5, color=NAVY, bold=True)
 txt(s, M + 6.57, 2.10, CW - 6.85, 3.9, [
     ("4. ", {"bold": True, "color": CYAND}), ("Replace every example value. Reconcile: the headline NPV (5) = the chosen route's NPV (7, 12) · the trigger on 16 = the crossover arithmetic on 13.", {}),
-    ("5. ", {"bold": True, "color": CYAND}), ("The Barclays palette is applied (cyan titles, navy data, pale-blue cards, grey comparisons). Do not remap. Font: Expert Sans.", {}),
+    ("5. ", {"bold": True, "color": CYAND}), ("The client brand palette is applied (cyan titles, navy data, pale-blue cards, grey comparisons). Do not remap. Font: Expert Sans.", {}),
     ("6. ", {"bold": True, "color": CYAND}), ("Never restyle verdict colours or the one-highlight rule. Check titles fit two lines after edits.", {}),
 ], size=10.5, spacing=14)
 rect(s, M, 6.32, CW, 0.75, TINT2, rounded=True)
