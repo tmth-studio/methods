@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pyramid Workbook A — Analysis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f4f1;
+      --surface: #ffffff;
+      --text: #0f1923;
+      --text-secondary: #4a5568;
+      --text-muted: #718096;
+      --border: #dde1e7;
+      --border-strong: #b0b8c4;
+      --accent: #1f4fa8;
+      --accent-light: #e8eef8;
+      --panel-bg: #0f2744;
+      --panel-text: #ffffff;
+      --success: #166534;
+      --success-light: #e6f4ec;
+      --warning-bg: #fff8e6;
+      --warning-border: #d4820a;
+      --danger: #991b1b;
+      --danger-light: #fde8e8;
+      --purple: #5b21b6;
+      --purple-light: #f0ebfb;
+      --tag-radius: 3px;
+      --font-ui: 'DM Sans', system-ui, sans-serif;
+      --font-body: 'Lora', Georgia, serif;
+      --width: 960px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--bg); color: var(--text); font-family: var(--font-ui); font-size: 16px; line-height: 1.6; }
+    .container { max-width: var(--width); margin: 0 auto; padding: 40px 24px 80px; background: var(--surface); }
+    h1 { font-size: 30px; font-weight: 600; margin: 40px 0 12px; }
+    h2 { font-size: 22px; font-weight: 600; margin: 40px 0 16px; border-bottom: 2px solid var(--accent); padding-bottom: 8px; }
+    h3 { font-size: 18px; font-weight: 600; margin: 20px 0 12px; }
+    h4 { font-size: 13px; font-weight: 600; margin: 16px 0 8px; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.04em; }
+    p { margin: 12px 0; color: var(--text-secondary); }
+    li { color: var(--text-secondary); }
+    table { border-collapse: collapse; width: 100%; margin: 12px 0; font-size: 14px; }
+    th { font-weight: 600; text-align: left; border-bottom: 2px solid var(--border-strong); padding: 8px 10px; color: var(--text); }
+    td { border-bottom: 1px solid var(--border); padding: 8px 10px; vertical-align: top; color: var(--text-secondary); }
+    .intro-section { background: var(--accent-light); border-left: 4px solid var(--accent); padding: 24px; margin: 24px 0; }
+    .intro-section h3 { margin-top: 0; }
+    .flow-selector { display: flex; gap: 16px; margin: 24px 0; }
+    .flow-button { flex: 1; padding: 20px; border: 2px solid var(--border); border-radius: 4px; text-align: center; cursor: pointer; transition: all 0.2s; }
+    .flow-button:hover, .flow-button.active { border-color: var(--accent); background: var(--accent-light); }
+    .flow-button h3 { margin: 0 0 8px; }
+    .flow-button p { font-size: 13px; margin: 0; }
+    .step { border: 1px solid var(--border); border-radius: 4px; margin: 28px 0; padding: 24px; page-break-inside: avoid; }
+    .step-header { display: flex; align-items: baseline; gap: 12px; margin-bottom: 4px; }
+    .step-number { background: var(--panel-bg); color: var(--panel-text); min-width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 4px; font-weight: 600; font-size: 15px; flex-shrink: 0; }
+    .step-title { font-size: 18px; font-weight: 600; margin: 0; }
+    .step-subtitle { font-size: 13px; color: var(--text-muted); margin: 0; }
+    .step-io { font-size: 12px; color: var(--text-muted); background: #f1f3f5; border-radius: 3px; padding: 8px 12px; margin: 12px 0; }
+    .step-io strong { color: var(--text-secondary); }
+    .process-box { background: var(--success-light); border-left: 4px solid var(--success); padding: 16px; margin: 12px 0; border-radius: 2px; }
+    .process-box h4 { color: var(--success); margin-top: 0; }
+    .process-box p, .process-box li { font-size: 14px; }
+    .process-box ol, .process-box ul { margin: 8px 0 0 20px; }
+    .process-box li { margin: 6px 0; }
+    .check-box { background: var(--warning-bg); border-left: 4px solid var(--warning-border); padding: 16px; margin: 12px 0; border-radius: 2px; }
+    .check-box h4 { color: var(--warning-border); margin-top: 0; }
+    .check-box ul { margin: 8px 0 0 20px; }
+    .check-box li { font-size: 14px; margin: 4px 0; }
+    .prompt-box { background: var(--purple-light); border-left: 4px solid var(--purple); padding: 16px; margin: 12px 0; border-radius: 2px; }
+    .prompt-box h4 { color: var(--purple); margin-top: 0; }
+    .prompt-box pre { background: var(--surface); border: 1px solid var(--border); border-radius: 3px; padding: 12px; font-size: 12.5px; font-family: ui-monospace, Menlo, monospace; white-space: pre-wrap; line-height: 1.5; color: var(--text-secondary); }
+    .rule-box { background: var(--danger-light); border-left: 4px solid var(--danger); padding: 16px; margin: 12px 0; border-radius: 2px; }
+    .rule-box h4 { color: var(--danger); margin-top: 0; }
+    .rule-box p, .rule-box li { font-size: 14px; }
+    .output-box { border: 2px dashed var(--border-strong); padding: 16px; margin: 16px 0; background: rgba(31, 79, 168, 0.02); border-radius: 4px; }
+    .output-label { font-size: 12px; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; margin: 16px 0 4px; display: block; }
+    .output-box textarea { width: 100%; min-height: 80px; padding: 12px; border: 1px solid var(--border); border-radius: 4px; font-family: var(--font-body); font-size: 14px; resize: vertical; }
+    .reference-box { background: var(--accent-light); padding: 16px; margin: 12px 0; border-radius: 2px; border-left: 4px solid var(--accent); }
+    .reference-box h4 { color: var(--accent); margin-top: 0; }
+    .reference-box p, .reference-box li { font-size: 13.5px; margin: 4px 0; }
+    .reference-box ul, .reference-box ol { margin: 8px 0 0 20px; }
+    .good { color: var(--success); font-weight: 600; }
+    .bad { color: var(--danger); font-weight: 600; }
+    .checkpoint { background: var(--accent-light); border: 1px solid var(--accent); padding: 12px 16px; border-radius: 4px; margin: 16px 0; text-align: center; }
+    .checkpoint-text { font-weight: 600; color: var(--accent); font-size: 13px; }
+    .next-step { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 14px; }
+    .next-step a { color: var(--accent); text-decoration: none; font-weight: 500; }
+    .flow-section { display: none; }
+    .flow-section.active { display: block; }
+    .toc { background: var(--accent-light); padding: 20px; border-radius: 4px; margin: 24px 0; }
+    .toc h3 { margin-top: 0; }
+    .toc ol { margin: 12px 0 0 20px; }
+    .toc li { margin: 4px 0; font-size: 14px; }
+    .toc a { color: var(--accent); text-decoration: none; }
+    .flow-label { display: inline-block; padding: 4px 12px; border-radius: var(--tag-radius); font-size: 11px; font-weight: 600; margin-bottom: 8px; }
+    .flow-label.a { background: var(--success-light); color: var(--success); }
+    .flow-label.b { background: var(--danger-light); color: var(--danger); }
+    .anatomy { border: 1px solid var(--border-strong); border-radius: 4px; margin: 16px 0; font-size: 13px; }
+    .anatomy .a-title { background: var(--panel-bg); color: var(--panel-text); padding: 10px 14px; font-weight: 600; }
+    .anatomy .a-kicker { padding: 6px 14px; color: var(--text-muted); font-style: italic; border-bottom: 1px solid var(--border); }
+    .anatomy .a-exhibit { padding: 40px 14px; text-align: center; color: var(--text-muted); background: repeating-linear-gradient(45deg, #fafafa, #fafafa 10px, #f1f3f5 10px, #f1f3f5 20px); }
+    .anatomy .a-source { padding: 6px 14px; font-size: 11px; color: var(--text-muted); border-top: 1px solid var(--border); }
+    @media print {
+      body { background: white; }
+      .container { padding: 20px; }
+      .flow-selector { display: none; }
+      .flow-section { display: block !important; }
+      .prompt-box pre { white-space: pre-wrap; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Cover -->
+    <div style="text-align: center; margin-bottom: 48px; padding-bottom: 32px; border-bottom: 2px solid var(--border);">
+      <h1 style="margin-top: 0;">Pyramid Workbook A — Analysis</h1>
+      <p style="font-size: 17px;">Flow A: find the cause. Copilot does the work. You check the work.</p>
+      <p style="font-size: 13px; color: var(--text-muted); margin-top: 16px;">v4 — split edition, Simplified Technical English. This document is Flow A only: frame, situation and complication, hypotheses, evidence sweep, question and answer, recommendation, hand-off. Companion: <em>Pyramid_Workbook_B_Presentation.html</em> (Flow B — make the case).</p>
+    </div>
+
+    <!-- How to Use -->
+    <div class="intro-section">
+      <h3>How to use this workbook</h3>
+      <p><strong>Division of work.</strong> Copilot does the production work in each step: analysis, drafts, structure, and chart specification. You do three tasks only:</p>
+      <ol style="margin: 12px 0 0 20px;">
+        <li><strong>Paste the session state header, then the step prompt, into Copilot.</strong> Each step has a prepared prompt (purple box). The state header (below) tells Copilot what is already done. Attach your inputs.</li>
+        <li><strong>Check the output against the review checklist</strong> (amber box). Each check is a specific Minto rule.</li>
+        <li><strong>Write the approved output in the output box.</strong> The output is the input for the next step. Do not continue with an output that is not approved.</li>
+      </ol>
+      <p style="margin-top: 12px;"><strong>The gates are the method.</strong> The value of Minto is the test of each element before you build on it. If a check fails, Copilot must repair the work and send it again. A failed check never means "acceptable".</p>
+      <p style="margin-top: 12px;"><strong>Two layers.</strong> This workbook is the thinking layer: you fill it conversationally with an assistant, step by step, and a half-finished workbook is a legitimate state — park it and come back. The Python generators in the same repository (<em>run_pyramid_analysis.py</em>, <em>generate_pyramid_memo.py</em>, <em>generate_presentation_deck.py</em>, <em>generate_standalone_deck.py</em>) are the output layer: attach one to a code-interpreter assistant, move the approved content into its DATA section, and it builds the .docx or .pptx deterministically, with self-checks that refuse to build on rule failures.</p>
+    </div>
+
+    <!-- Session state header -->
+    <div class="rule-box">
+      <h4>Session state header — paste at the top of every prompt</h4>
+      <p>Copilot has no memory of your process. Without this header, it repeats completed work, proposes steps you have done, and does not ask for the information that would improve the output. Fill the brackets and paste this block above each step prompt:</p>
+      <pre style="background: var(--surface); border: 1px solid var(--border); border-radius: 3px; padding: 12px; font-size: 12.5px; font-family: ui-monospace, Menlo, monospace; white-space: pre-wrap; line-height: 1.5; color: var(--text-secondary);">SESSION STATE
+Completed steps: [example: A1-A3]
+Current step: [example: A4]
+Approved outputs attached below: [list them]
+
+Rules for this session:
+1. Do not repeat or redo work from the completed steps. Their outputs
+   are final unless I ask for a change.
+2. Do not propose next steps or a plan. The workbook sets the
+   sequence. Do only the current step.
+3. BEFORE you produce the output: if information is missing that
+   would make the output materially better, ask me numbered
+   questions first and stop. If you have enough, say "no questions"
+   and produce the output.
+4. If an instruction in this prompt conflicts with something you
+   assume, follow the prompt and flag the conflict.</pre>
+      <p style="margin-top: 8px;">Rule 3 is the important one. It changes Copilot from a passive producer into an active interviewer: it must ask for the missing budget figure, the missing attendee name, or the missing data source before it writes — instead of inventing around the gap.</p>
+    </div>
+
+    <!-- Verification protocol -->
+    <div class="rule-box">
+      <h4>Verification protocol — three checks catch the errors. Use all three.</h4>
+      <p><strong>1. Self-check — same chat.</strong> Add this line to the end of each prompt in this workbook:</p>
+      <pre style="background: var(--surface); border: 1px solid var(--border); border-radius: 3px; padding: 12px; font-size: 12.5px; font-family: ui-monospace, Menlo, monospace; white-space: pre-wrap; line-height: 1.5; color: var(--text-secondary);">Before you give the output: test your work against each rule in this
+prompt. Add a table at the end: rule | PASS or FAIL | repair made.
+Repair each FAIL before you give the output.</pre>
+      <p style="margin-top: 12px;"><strong>2. Independent check — new chat.</strong> The producer must not be the only checker of its own work. For the heavy gates (A3 hypotheses, A4 evidence sweep, A6 recommendation), open a NEW Copilot chat with no history. Paste this verifier prompt, with the output and the step's checklist:</p>
+      <pre style="background: var(--surface); border: 1px solid var(--border); border-radius: 3px; padding: 12px; font-size: 12.5px; font-family: ui-monospace, Menlo, monospace; white-space: pre-wrap; line-height: 1.5; color: var(--text-secondary);">You are a verifier. You did not make this work. Your task is to find
+defects. Do not repair them.
+
+Work product: [PASTE the output]
+Rules: [PASTE the step's review checklist and gate]
+
+Do this:
+1. Test the product against each rule. Try to make each rule fail.
+2. Quote the exact text of each failure.
+3. Do not accept a claim without evidence inside the product.
+4. Output a table: rule | PASS or FAIL | exact quote | proposed repair.
+5. End with one verdict: ACCEPT or RETURN FOR REPAIR.</pre>
+      <p style="margin-top: 12px;"><strong>3. Human checks — only you can do these.</strong> Copilot cannot see the rendered page, and it cannot know if your data is true. You must check: five numbers against the evidence register, that each register source is a document you can show, and that no GAP_OPEN row survived the sweep.</p>
+    </div>
+
+    <!-- ============================================================= -->
+    <!-- FLOW A -->
+    <!-- ============================================================= -->
+    <div id="flow-a" class="flow-section active">
+      <h2><span class="flow-label a">FLOW A: ANALYSIS</span> Find the cause</h2>
+
+      <div class="toc">
+        <h3>Steps in Flow A</h3>
+        <ol>
+          <li><a href="#a-step-1">Frame the problem</a></li>
+          <li><a href="#a-step-2">Write the Situation and the Complication</a></li>
+          <li><a href="#a-step-3">Make hypotheses and test them</a></li>
+          <li><a href="#a-step-4">Sweep the evidence (adversarial)</a></li>
+          <li><a href="#a-step-5">Write the Question and the Answer</a></li>
+          <li><a href="#a-step-6">Write the recommendation</a></li>
+          <li><a href="#a-step-7">Give the results to Document B</a></li>
+        </ol>
+      </div>
+
+      <!-- A1 -->
+      <div id="a-step-1" class="step">
+        <div class="step-header">
+          <div class="step-number">A1</div>
+          <div>
+            <h3 class="step-title">Frame the problem</h3>
+            <p class="step-subtitle">Identify the problem. Identify the decision that waits for the answer.</p>
+          </div>
+        </div>
+        <div class="step-io"><strong>Input:</strong> raw problem statement (email, meeting note, briefing) · <strong>Output:</strong> problem frame in one sentence</div>
+
+        <div class="process-box">
+          <h4>Copilot procedure — do the steps in sequence</h4>
+          <ol>
+            <li>Read the source material. Paste emails, briefing extracts, and meeting notes into the prompt.</li>
+            <li>Find four elements. The <strong>symptom</strong>: the problem you can see. The <strong>evidence</strong>: numbers, timeframe, baseline. The <strong>decision</strong>: the choice that waits. The <strong>reader</strong>: the person who decides.</li>
+            <li>Keep the symptom and the cause apart. "Churn increased" is a symptom. "The price is wrong" is a hypothesis. Do not put a hypothesis in the frame.</li>
+            <li>Calculate the stakes. What does the problem cost each year? What is the cost of a wrong decision?</li>
+            <li>Write one sentence: <em>[symptom + size + timeframe]; we must identify [X] before [decision + cost].</em></li>
+            <li>Show each missing element. Do not invent data.</li>
+          </ol>
+        </div>
+
+        <div class="prompt-box">
+          <h4>Prompt for Copilot</h4>
+          <pre>You do Step A1 (Frame the Problem) of a Minto Pyramid analysis.
+
+Source material: [PASTE emails / notes / briefing]
+
+Do this:
+1. Find: the symptom (observable, with numbers), the evidence (data,
+   timeframe, baseline), the decision that waits (with cost), the reader
+   (the person who decides).
+2. Do NOT give a diagnosis. If the source gives causes, put them in a
+   separate list: "candidate hypotheses for later". Keep them out of
+   the frame.
+3. Write a one-sentence problem frame:
+   "[Symptom + size + timeframe]; we must identify [X] before
+   [decision + cost]."
+4. List each item that is missing. I will supply it. Do not invent data.
+
+Output: the frame sentence, the four elements in a table, the missing
+items.</pre>
+        </div>
+
+        <div class="check-box">
+          <h4>Your review checklist</h4>
+          <ul>
+            <li>✓ The symptom is observable and has numbers. It is not an interpretation.</li>
+            <li>✓ The frame has no diagnosis. The word "because" is a fail.</li>
+            <li>✓ The decision and its cost are in the frame.</li>
+            <li>✓ The reader has a name.</li>
+            <li>✓ Each flagged gap is a true gap. Supply the data or accept the limit.</li>
+          </ul>
+        </div>
+
+        <div class="reference-box">
+          <h4>Reference example</h4>
+          <p><span class="good">Good:</span> "SME churn has risen from 22% to 35% over three years (£6M annual revenue impact); we need to identify the root cause before committing £2M to the product roadmap."</p>
+          <p><span class="bad">Bad:</span> "We have a churn problem because our prices are too high." (This has a diagnosis, no decision, and no stakes.)</p>
+        </div>
+
+        <label class="output-label">Approved problem frame:</label>
+        <div class="output-box"><textarea placeholder="Write the approved frame here. It is the input for A2."></textarea></div>
+
+        <div class="checkpoint"><p class="checkpoint-text">GATE: the frame is one sentence. It has only the symptom. It names the decision and the reader.</p></div>
+        <div class="next-step"><strong>Next:</strong> <a href="#a-step-2">A2 — Write the Situation and the Complication</a></div>
+      </div>
+
+      <!-- A2 -->
+      <div id="a-step-2" class="step">
+        <div class="step-header">
+          <div class="step-number">A2</div>
+          <div>
+            <h3 class="step-title">Write the Situation and the Complication</h3>
+            <p class="step-subtitle">Write the baseline that all persons accept. Then identify what changed.</p>
+          </div>
+        </div>
+        <div class="step-io"><strong>Input:</strong> problem frame (A1) + available data · <strong>Output:</strong> Situation statement, Complication statement, evidence register</div>
+
+        <div class="process-box">
+          <h4>Copilot procedure — do the steps in sequence</h4>
+          <ol>
+            <li>Collect the baseline facts from the sources: segment size, revenue, historical metrics, market context, and the items that did not change.</li>
+            <li>Sort each fact into two groups. Group 1: <strong>not controversial</strong> — the reader accepts it without proof. Group 2: <strong>contested</strong> — it needs evidence. Only Group 1 can go into the Situation.</li>
+            <li>Write the Situation. Use 2 to 4 sentences. Use facts only. Do not use "but" or "however". Do not use judgment words (failing, weak, poor).</li>
+            <li>Identify the change. What is different now? When did it start? What broke as a result?</li>
+            <li>Write the Complication. Start with "But". Name the change and the damage, with numbers. Do not give a solution. Do not give a cause.</li>
+            <li>Make the evidence register. It is a table with two columns: fact | source. Include each fact you used.</li>
+            <li>Do the <strong>Nod Test</strong> on both statements. For each sentence, ask: will the named reader agree without proof? Mark each sentence that fails.</li>
+          </ol>
+        </div>
+
+        <div class="prompt-box">
+          <h4>Prompt for Copilot</h4>
+          <pre>You do Step A2 (Situation and Complication) of a Minto analysis.
+
+Problem frame: [PASTE from A1]
+Available data: [PASTE data / attach files]
+
+Do this:
+1. Sort all facts into two groups: not controversial / contested. Only
+   facts that are not controversial can go into the Situation.
+2. Write the Situation (2–4 sentences): facts only, no "but/however",
+   no judgment words. Each claim must point to the data supplied.
+3. Write the Complication (2–3 sentences): start with "But", name the
+   change and the damage, with numbers. NO solution. NO diagnosis.
+4. Make the evidence register: fact | source | date.
+5. Do the Nod Test: for each sentence, say if [READER] will agree
+   without proof. Flag each failure and give a repair.
+
+Output: Situation, Complication, evidence register, Nod Test results.</pre>
+        </div>
+
+        <div class="check-box">
+          <h4>Your review checklist</h4>
+          <ul>
+            <li>✓ Each Situation sentence passes the Nod Test. The reader will not object.</li>
+            <li>✓ The Situation has zero interpretation. Adjectives such as "strong" or "weak" are a fail.</li>
+            <li>✓ The Complication follows from the Situation. The reader feels the tension.</li>
+            <li>✓ The Complication has no solution and no cause claim.</li>
+            <li>✓ Each number in the register has a source. You can show the source in the meeting.</li>
+          </ul>
+        </div>
+
+        <div class="reference-box">
+          <h4>Reference example (Fairy Food Mother)</h4>
+          <p><strong>Situation:</strong> "Prosus acquired JET with a mandate to replicate the iFood playbook. JET holds ~45% UK market share. Young families are 45% of the base. The business is repositioning around profitability."</p>
+          <p><strong>Complication:</strong> "But young families sit at 42% 90-day retention despite the highest promotional spend of any segment. They respond to deals, then leave."</p>
+          <p><em>Note the shape. The Situation makes the Complication painful. A profit mandate plus margin spent on a segment that does not stay = tension. The reader feels this before you speak about solutions.</em></p>
+        </div>
+
+        <label class="output-label">Approved Situation:</label>
+        <div class="output-box"><textarea placeholder="2–4 sentences. Facts that are not controversial. Nothing else."></textarea></div>
+        <label class="output-label">Approved Complication:</label>
+        <div class="output-box"><textarea placeholder="2–3 sentences. What changed. What broke. No solution."></textarea></div>
+        <label class="output-label">Evidence register (fact | source):</label>
+        <div class="output-box"><textarea placeholder="Each fact used above, with its source. This is the input for the tests in A3."></textarea></div>
+
+        <div class="checkpoint"><p class="checkpoint-text">GATE: both statements pass the Nod Test. Each fact has a source.</p></div>
+        <div class="next-step"><strong>Next:</strong> <a href="#a-step-3">A3 — Make hypotheses and test them</a></div>
+      </div>
+
+      <!-- A3 -->
+      <div id="a-step-3" class="step">
+        <div class="step-header">
+          <div class="step-number">A3</div>
+          <div>
+            <h3 class="step-title">Make hypotheses and test them</h3>
+            <p class="step-subtitle">List the possible causes. Write what each cause predicts. Test the predictions against the data.</p>
+          </div>
+        </div>
+        <div class="step-io"><strong>Input:</strong> Situation + Complication + evidence register (A2) · <strong>Output:</strong> hypothesis table with verdicts, strongest hypothesis, research gaps</div>
+
+        <div class="process-box">
+          <h4>Copilot procedure — do the steps in sequence</h4>
+          <ol>
+            <li>Write 3 to 5 candidate hypotheses for the cause. Include the explanation that the stakeholders already believe. You must test it, not assume it.</li>
+            <li>Check that the set is <strong>MECE</strong>. The hypotheses must not overlap. Two phrasings of one cause are one hypothesis. The set must also cover the space. Ask: "what other cause is possible?"</li>
+            <li>For each hypothesis, write predictions: <em>"If H is true, the data will show X, Y, Z."</em> Each prediction must be testable with data you have or can get.</li>
+            <li>Also write <strong>negative</strong> predictions: <em>"If H is true, we will NOT see W."</em> If you cannot write a negative prediction, the hypothesis is not testable.</li>
+            <li>Test each prediction against the evidence register and other supplied data. Record evidence FOR and evidence AGAINST. Do not give a verdict from friendly evidence alone.</li>
+            <li>Give verdicts: SUPPORTED / CONTRADICTED / INCONCLUSIVE. A SUPPORTED verdict needs at least one negative prediction that survived the test.</li>
+            <li>List the research gaps. Which one missing data item will change the verdict most? That item is the most valuable next research action.</li>
+          </ol>
+        </div>
+
+        <div class="prompt-box">
+          <h4>Prompt for Copilot</h4>
+          <pre>You do Step A3 (Hypothesis Tests) of a Minto analysis.
+
+Situation: [PASTE]
+Complication: [PASTE]
+Evidence register: [PASTE]
+Additional data: [PASTE / attach]
+
+Do this:
+1. Write 3–5 MECE hypotheses for the cause. Include the explanation
+   that the stakeholders already believe.
+2. For each hypothesis: write positive predictions ("if true, the data
+   shows X") AND negative predictions ("if true, we will NOT see W").
+3. Test each prediction against the data. Record evidence FOR and
+   evidence AGAINST.
+4. Verdicts: SUPPORTED (needs one negative prediction that survived) /
+   CONTRADICTED / INCONCLUSIVE.
+5. Output a table: Hypothesis | Predictions | Evidence for | Evidence
+   against | Verdict.
+6. Name the strongest hypothesis. Name the one missing data item that
+   will change your confidence most.</pre>
+        </div>
+
+        <div class="check-box">
+          <h4>Your review checklist</h4>
+          <ul>
+            <li>✓ The stakeholders' explanation is in the table. It got a real test.</li>
+            <li>✓ The hypotheses are MECE. No two are one cause with different words. No possible cause is missing.</li>
+            <li>✓ Each SUPPORTED verdict survived a negative prediction test. Friendly evidence alone is not sufficient.</li>
+            <li>✓ The "evidence against" column has content. An empty column shows that Copilot did not look.</li>
+            <li>✓ The named research gap is worth its cost. If not, accept the uncertainty and record it.</li>
+          </ul>
+        </div>
+
+        <div class="reference-box">
+          <h4>Reference example (SME banking)</h4>
+          <p>"Competitor pricing" was the belief of the CFO. Test: if price is the cause, current customers will leave and price objections will increase. Data: current customer churn was stable, and objections DECREASED 30%. Verdict: CONTRADICTED. One hypothesis survived — the competitor's messages changed the market's view. Its negative test also passed: current customers, who have not seen the messages at renewal, show no effect.</p>
+        </div>
+
+        <label class="output-label">Hypothesis table (with verdicts):</label>
+        <div class="output-box"><textarea placeholder="Hypothesis | Evidence for | Evidence against | Verdict"></textarea></div>
+        <label class="output-label">Strongest hypothesis + reason:</label>
+        <div class="output-box"><textarea placeholder="Which hypothesis survived. Which negative test it passed."></textarea></div>
+        <label class="output-label">Research gaps (accepted, or to collect):</label>
+        <div class="output-box"><textarea placeholder="What is not certain. Decision: collect the data, or accept the gap."></textarea></div>
+
+        <div class="checkpoint"><p class="checkpoint-text">GATE: each verdict uses evidence FOR and AGAINST. The popular explanation got a test.</p></div>
+        <div class="next-step"><strong>Next:</strong> <a href="#a-step-4">A4 — Sweep the evidence (adversarial)</a></div>
+      </div>
+
+      <!-- A4 -->
+      <div id="a-step-4" class="step">
+        <div class="step-header">
+          <div class="step-number">A4</div>
+          <div>
+            <h3 class="step-title">Sweep the evidence (adversarial)</h3>
+            <p class="step-subtitle">The hypotheses are tested. Before the answer is written, every claim that will carry weight gets an adversarial evidence pass.</p>
+          </div>
+        </div>
+        <div class="step-io"><strong>Input:</strong> hypothesis verdicts (A3) + source materials · <strong>Output:</strong> evidence register — one row per claim, status marked</div>
+
+        <div class="rule-box">
+          <h4>Friendly evidence alone is never sufficient</h4>
+          <p>The sweep hunts for <strong>disconfirming</strong> evidence and records the hunt even when it finds nothing. An unrecorded search is indistinguishable from no search.</p>
+        </div>
+
+        <div class="process-box">
+          <h4>Copilot procedure — do the steps in sequence</h4>
+          <ol>
+            <li>Attach the engagement's source materials: data extracts, reports, interview notes, prior analyses.</li>
+            <li>List every claim that will carry weight: the surviving hypothesis, the emerging answer, and each load-bearing supporting fact.</li>
+            <li>For EVERY claim: find the best supporting evidence and cite the source.</li>
+            <li>For EVERY claim: actively search for disconfirming evidence — record what was looked for AND what was found, even when nothing was found.</li>
+            <li>Mark each claim's status honestly: <strong>EVIDENCED</strong> / <strong>GAP_RISK_ACCEPTED</strong> (with a stated reason) / <strong>GAP_OPEN</strong>.</li>
+            <li>A GAP_OPEN row blocks the hand-off — resolve it, or accept the risk with a reason a sceptic could read.</li>
+          </ol>
+        </div>
+
+        <div class="prompt-box">
+          <h4>Prompt for Copilot</h4>
+          <pre>You do Step A4 (Evidence Sweep) of a Minto analysis.
+
+Source materials: [ATTACH data extracts, reports, interview
+notes, prior analyses]
+Claims under test: [PASTE the A3 verdicts and the emerging answer]
+
+Attach the engagement's source materials. For EVERY claim in the
+analysis:
+1. Find the best supporting evidence and cite the source.
+2. Actively search for DISCONFIRMING evidence and record what you
+   looked for and what you found — even when nothing was found.
+3. Mark the status honestly: EVIDENCED, GAP_RISK_ACCEPTED with a
+   stated reason, or GAP_OPEN.
+
+Output the register as a table: claim | best supporting evidence |
+source | counter-evidence search (looked for / found) | status.
+
+Do not invent evidence. Do not silently drop a claim you cannot
+evidence.</pre>
+        </div>
+
+        <div class="check-box">
+          <h4>Your review checklist</h4>
+          <ul>
+            <li>✓ Every claim has a row.</li>
+            <li>✓ Every row records a counter-evidence search, not just friendly support.</li>
+            <li>✓ No GAP_OPEN rows remain at hand-off.</li>
+            <li>✓ Every GAP_RISK_ACCEPTED has a reason a sceptic could read.</li>
+            <li>✓ The sources are showable in the meeting.</li>
+          </ul>
+        </div>
+
+        <div class="check-box">
+          <h4>⚠ Engagement asset — keep out of the public repository</h4>
+          <ul>
+            <li>The filled register lives in the client tenant. Never commit a filled register to the public repository.</li>
+            <li>The register maps field-for-field onto the <strong>EVIDENCE_REGISTER</strong> structure in <em>run_pyramid_analysis.py</em> and <em>generate_pyramid_memo.py</em> — the generators refuse to build while any row is GAP_OPEN.</li>
+          </ul>
+        </div>
+
+        <label class="output-label">Evidence register:</label>
+        <div class="output-box"><textarea placeholder="claim | best supporting evidence | source | counter-evidence search (looked for / found) | status"></textarea></div>
+
+        <div class="checkpoint"><p class="checkpoint-text">GATE: every claim has a row. Every row records a counter-evidence search. No GAP_OPEN rows remain.</p></div>
+        <div class="next-step"><strong>Next:</strong> <a href="#a-step-5">A5 — Write the Question and the Answer</a></div>
+      </div>
+
+      <!-- A5 -->
+      <div id="a-step-5" class="step">
+        <div class="step-header">
+          <div class="step-number">A5</div>
+          <div>
+            <h3 class="step-title">Write the Question and the Answer</h3>
+            <p class="step-subtitle">Write the real problem as one question. Answer it from the evidence.</p>
+          </div>
+        </div>
+        <div class="step-io"><strong>Input:</strong> hypothesis verdicts (A3) · <strong>Output:</strong> the Question (one sentence), the Answer (one sentence)</div>
+
+        <div class="process-box">
+          <h4>Copilot procedure — do the steps in sequence</h4>
+          <ol>
+            <li>Read the Situation, the Complication, and the strongest hypothesis together. The Question is what the reader asks when the reader knows all three.</li>
+            <li>Write the Question. Test it three times. (a) It is ONE question. (b) You can answer it with what you know or can decide. (c) The answer tells you what to do. If the answer does not tell you the next move, the question is wrong.</li>
+            <li>Check the level of the Question. It must sit ABOVE the surface debate. In the SME case, the surface question was "must we cut the price?" The real question was "how do we compete when the market has a new frame that we do not win on?"</li>
+            <li>Write the Answer in one sentence. Use only the hypothesis that survived. The Answer is a claim about what is true or what to do. It is not a summary of findings.</li>
+            <li>Check the chain: Answer ← strongest hypothesis ← evidence that survived. If a link needs new facts that are not in the register, flag it.</li>
+          </ol>
+        </div>
+
+        <div class="prompt-box">
+          <h4>Prompt for Copilot</h4>
+          <pre>You do Step A5 (Question and Answer) of a Minto analysis.
+
+Situation: [PASTE]  Complication: [PASTE]
+Strongest hypothesis + evidence: [PASTE from A3]
+
+Do this:
+1. Write THE question that the reader asks when the reader knows the
+   above. One question only. The answer must set the action.
+2. Check the level: is there a deeper question below the surface debate?
+   If yes, give both. Recommend one.
+3. Answer the question in ONE sentence. Use only the hypothesis that
+   survived and its evidence.
+4. Show the chain: Answer ← hypothesis ← evidence. Flag each gap.
+
+Output: Question, Answer, chain, flags.</pre>
+        </div>
+
+        <div class="check-box">
+          <h4>Your review checklist</h4>
+          <ul>
+            <li>✓ One question. No "and" that connects two decisions.</li>
+            <li>✓ The answer sets the action. Apply the test: "when we answer this, we know what to do".</li>
+            <li>✓ It is the real question, not the surface debate.</li>
+            <li>✓ The Answer follows from the A3 verdicts. You can speak the chain aloud.</li>
+          </ul>
+        </div>
+
+        <label class="output-label">The Question:</label>
+        <div class="output-box"><textarea placeholder="One sentence."></textarea></div>
+        <label class="output-label">The Answer:</label>
+        <div class="output-box"><textarea placeholder="One sentence. It stands on the evidence."></textarea></div>
+
+        <div class="checkpoint"><p class="checkpoint-text">GATE: one question. The answer sets the action. The chain to the evidence is complete.</p></div>
+        <div class="next-step"><strong>Next:</strong> <a href="#a-step-6">A6 — Write the recommendation</a></div>
+      </div>
+
+      <!-- A6 -->
+      <div id="a-step-6" class="step">
+        <div class="step-header">
+          <div class="step-number">A6</div>
+          <div>
+            <h3 class="step-title">Write the recommendation</h3>
+            <p class="step-subtitle">Change the answer into an action with costs, dates, and tests</p>
+          </div>
+        </div>
+        <div class="step-io"><strong>Input:</strong> Question + Answer (A5) · <strong>Output:</strong> recommendation with resources, timeline, alternatives, success metrics</div>
+
+        <div class="process-box">
+          <h4>Copilot procedure — do the steps in sequence</h4>
+          <ol>
+            <li>Write 3 to 4 real options for the Answer. Include "do nothing" as an honest baseline with its cost. Do not make it a weak option on purpose.</li>
+            <li>Score each option against five criteria: strategic fit (does it use what the evidence says we win on?), cost, time to impact, reversibility, and risk if the analysis is wrong.</li>
+            <li>Select one option. Write the recommendation: what, why (one clause that points to the Answer), resources, timeline, owner.</li>
+            <li>Attach success metrics: 3 to 4 measures. Each measure has a baseline, a target, and a measurement date. A metric without a date is not a metric.</li>
+            <li>Attach a decision gate: the condition to stop or review. Example: "if X has not moved by [date], review before more spend". The gate makes the recommendation safe to approve.</li>
+            <li>Name the key assumption: the one item that, if false, makes the recommendation invalid.</li>
+          </ol>
+        </div>
+
+        <div class="prompt-box">
+          <h4>Prompt for Copilot</h4>
+          <pre>You do Step A6 (Recommendation) of a Minto analysis.
+
+Question: [PASTE]  Answer: [PASTE]
+Constraints: budget [X], timeline [Y], strategic context [Z]
+
+Do this:
+1. Write 3–4 real options. Include "do nothing" with its real cost.
+2. Score each option: strategic fit / cost / time to impact /
+   reversibility / risk if wrong. Use a short table.
+3. Recommend one option. Format: what, why (point to the Answer),
+   resources, timeline, owner.
+4. Success metrics: 3–4. Each has a baseline, a target, and a
+   measurement DATE.
+5. Decision gate: the stop/review condition and its date.
+6. Key assumption: the one item that, if false, makes this invalid.
+
+Output: options table, recommendation, metrics, gate, assumption.</pre>
+        </div>
+
+        <div class="check-box">
+          <h4>Your review checklist</h4>
+          <ul>
+            <li>✓ The alternatives are real. You could defend each one.</li>
+            <li>✓ "Do nothing" has an honest cost.</li>
+            <li>✓ Each metric has a baseline, a target, and a date.</li>
+            <li>✓ The decision gate makes the recommendation safe for a careful CFO.</li>
+            <li>✓ The key assumption carries real load. Test: if it is false, do you still act?</li>
+          </ul>
+        </div>
+
+        <label class="output-label">Approved recommendation (what / why / resources / timeline / owner):</label>
+        <div class="output-box"><textarea placeholder="The recommendation. It becomes the Governing Thought in Document B."></textarea></div>
+        <label class="output-label">Alternatives examined (with trade-offs):</label>
+        <div class="output-box"><textarea placeholder="Options B and C, plus the do-nothing baseline."></textarea></div>
+        <label class="output-label">Success metrics + decision gate + key assumption:</label>
+        <div class="output-box"><textarea placeholder="Metrics with dates. The stop/review condition. The key assumption."></textarea></div>
+
+        <div class="checkpoint"><p class="checkpoint-text">GATE: the recommendation stands on evidence. It has costs, a gate, and a named assumption.</p></div>
+        <div class="next-step"><strong>Next:</strong> <a href="#a-step-7">A7 — Give the results to Document B</a></div>
+      </div>
+
+      <!-- A7 -->
+      <div id="a-step-7" class="step">
+        <div class="step-header">
+          <div class="step-number">A7</div>
+          <div>
+            <h3 class="step-title">Give the results to Document B</h3>
+            <p class="step-subtitle">Package the analysis for the presentation workbook and the output layer</p>
+          </div>
+        </div>
+        <div class="process-box">
+          <h4>Handoff package — carry all items into Document B (step B0)</h4>
+          <ul>
+            <li>✓ Problem frame (A1)</li>
+            <li>✓ Situation + Complication + evidence register (A2)</li>
+            <li>✓ Hypothesis table with verdicts (A3) — this is your defence material</li>
+            <li>✓ Evidence sweep register (A4) — Document B carries it forward and extends it</li>
+            <li>✓ Question + Answer (A5)</li>
+            <li>✓ Recommendation + alternatives + metrics + gate + assumption (A6)</li>
+          </ul>
+          <p>The recommendation becomes the <strong>Governing Thought</strong>. The registers become the material for the exhibits. The hypotheses that failed become your prepared answers to objections. They are the strongest defence asset from the analysis.</p>
+        </div>
+        <div class="reference-box">
+          <h4>Map onto the PYRAMID DATA schema — the generators' DATA section</h4>
+          <ul>
+            <li>Situation + Complication (A2) → SCQA.situation / SCQA.complication</li>
+            <li>Question (A5) → SCQA.question</li>
+            <li>Recommendation (A6) → GOVERNING_THOUGHT (compress to 25 words or fewer)</li>
+            <li>Answer + surviving evidence (A3/A4) → KEY_LINE seeds and supports</li>
+            <li>Metrics + gate + key assumption (A6) → CONCLUSION + ASK</li>
+            <li>Actions with owners and dates (A6) → NEXT_STEPS</li>
+            <li>Evidence register + sweep (A2/A4) → EVIDENCE_REGISTER</li>
+          </ul>
+          <p><strong>Output layer:</strong> attach <em>run_pyramid_analysis.py</em> to a code-interpreter assistant, move the approved content into its DATA section, and run it — it writes <em>pyramid-analysis.docx</em> and refuses to build while any register row is GAP_OPEN.</p>
+        </div>
+        <div class="output-box" style="text-align: center; padding: 32px;">
+          <p style="margin: 0;"><strong>Analysis complete — open Pyramid_Workbook_B_Presentation and start at step B0.</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
