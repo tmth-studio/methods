@@ -81,6 +81,11 @@ lives in the client tenant. Never commit a filled register to the public
 repository — the shipped register holds fictional demonstration content only.
 
 VERSION NOTES
+  v1.2 — 20 Aug 2026: chart engine aligned with generate_standalone_deck.py
+         so the shared DATA block stays paste-compatible: two-series charts
+         (line / column / bar with a "series" list), a waterfall kind for
+         build-ups and bridges, legend only on multi-series charts. Default
+         fonts now Georgia / Arial (travel-safe on client machines).
   v1.1 — 20 Aug 2026: brand moved from code to data (THEME dict, neutral
          TMTH default; validation gate on hex/fonts; dark-slide tints now
          derived from the dominant colour). Exhibit-reuse stage added with
@@ -110,8 +115,8 @@ THEME = {
     "ink_soft":      "3C4C57",  # body text ink
     "muted":         "6B7A85",  # secondary text, sources, footers
     "chart_compare": "B9C6CD",  # non-highlighted chart bars / comparison elements
-    "font_heading":  "Cambria",
-    "font_body":     "Calibri",
+    "font_heading":  "Georgia",  # travel-safe serif — installed on Windows and Mac alike
+    "font_body":     "Arial",    # travel-safe sans — never substituted on client machines
 }
 
 META = {
@@ -483,17 +488,45 @@ def _valid_exhibit(ex):
         return "exhibit is not a dict"
     kind = ex.get("kind")
     if kind in ("bar", "column", "line"):
+        cats = ex.get("categories")
+        if not cats:
+            return "chart has no categories"
+        series = ex.get("series")
+        if series is not None:
+            # multi-series: [{"name": ..., "values": [...]}, ...], max two
+            if not (isinstance(series, list) and 1 <= len(series) <= 2):
+                return "series must hold one or two {name, values} entries"
+            for sr in series:
+                if not (isinstance(sr, dict) and sr.get("name")
+                        and sr.get("values")):
+                    return "each series needs a name and values"
+                if len(sr["values"]) != len(cats):
+                    return ("series '%s' length does not match categories"
+                            % sr["name"])
+            if len(series) > 1 and ex.get("highlight") is not None:
+                return "highlight applies to single-series charts only"
+        else:
+            vals = ex.get("values")
+            if not vals or len(cats) != len(vals):
+                return "chart categories/values missing or mismatched"
+            hl = ex.get("highlight")
+            if hl is not None and not (0 <= hl < len(vals)):
+                return "highlight index out of range"
+    elif kind == "waterfall":
         cats, vals = ex.get("categories"), ex.get("values")
         if not cats or not vals or len(cats) != len(vals):
-            return "chart categories/values missing or mismatched"
-        hl = ex.get("highlight")
-        if hl is not None and not (0 <= hl < len(vals)):
-            return "highlight index out of range"
+            return "waterfall categories/values missing or mismatched"
+        totals = ex.get("totals", [])
+        if not all(isinstance(t, int) and 0 <= t < len(vals)
+                   for t in totals):
+            return "waterfall totals indices out of range"
+        if not all(isinstance(v, (int, float)) for v in vals):
+            return "waterfall values must be numbers (signed deltas)"
     elif kind == "table":
         if not ex.get("headers") or not ex.get("rows"):
             return "table needs headers and rows"
     else:
-        return "exhibit kind must be bar / column / line / table"
+        return "exhibit kind must be bar / column / line / waterfall / table"
     if not ex.get("source"):
         return "exhibit has no source"
     return None
@@ -717,7 +750,9 @@ from pptx.dml.color import RGBColor
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.chart.data import CategoryChartData
-from pptx.enum.chart import XL_CHART_TYPE, XL_LABEL_POSITION
+from pptx.enum.chart import (XL_CHART_TYPE, XL_LABEL_POSITION,
+                             XL_LEGEND_POSITION)
+from pptx.oxml.ns import qn
 
 def _rgb(h):
     return RGBColor(int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16))
@@ -847,40 +882,7 @@ def num_circle(s, x, y, n, d=0.46, fill=GOLD):
     r.font.bold = True
     r.font.color.rgb = WHITE
 
-def add_chart(s, ex, x, y, w, h):
-    kinds = {"bar": XL_CHART_TYPE.BAR_CLUSTERED,
-             "column": XL_CHART_TYPE.COLUMN_CLUSTERED,
-             "line": XL_CHART_TYPE.LINE}
-    cd = CategoryChartData()
-    cd.categories = [str(c) for c in ex["categories"]]
-    cd.add_series(ex.get("unit", "value"), tuple(ex["values"]))
-    gf = s.shapes.add_chart(kinds[ex["kind"]], Inches(x), Inches(y),
-                            Inches(w), Inches(h), cd)
-    ch = gf.chart
-    ch.has_legend = False
-    ch.has_title = False
-    plot = ch.plots[0]
-    if ex["kind"] != "line":
-        plot.gap_width = 60
-    plot.has_data_labels = True
-    dl = plot.data_labels
-    dl.font.size = Pt(12)
-    dl.font.name = BODY_FONT
-    dl.font.bold = True
-    dl.font.color.rgb = INK
-    if ex["kind"] != "line":
-        dl.position = XL_LABEL_POSITION.OUTSIDE_END
-        ser = plot.series[0]
-        hl = ex.get("highlight")
-        for i in range(len(ex["values"])):
-            pt = ser.points[i]
-            pt.format.fill.solid()
-            pt.format.fill.fore_color.rgb = (SLATE if hl is not None
-                                             and i == hl else GREYC)
-    else:
-        ser = plot.series[0]
-        ser.format.line.color.rgb = BLUE
-        ser.format.line.width = Pt(2.5)
+def _strip_axes(ch):
     va = ch.value_axis
     va.visible = False
     va.has_major_gridlines = False
@@ -888,6 +890,130 @@ def add_chart(s, ex, x, y, w, h):
     ca.format.line.fill.background()
     ca.tick_labels.font.size = Pt(11)
     ca.tick_labels.font.name = BODY_FONT
+
+def _hide_series_labels(ser):
+    """Series-level <c:dLbls><c:delete/> — overrides plot-level labels."""
+    el = ser._element
+    dLbls = el.makeelement(qn("c:dLbls"), {})
+    dLbls.append(el.makeelement(qn("c:delete"), {"val": "1"}))
+    ref = el.find(qn("c:cat"))
+    if ref is None:
+        ref = el.find(qn("c:val"))
+    if ref is not None:
+        ref.addprevious(dLbls)
+    else:
+        el.append(dLbls)
+
+def _add_waterfall(s, ex, x, y, w, h):
+    """Stacked column with an invisible base series. values are signed
+    deltas; indices in ex["totals"] are absolute totals drawn from zero.
+    Deltas colour accent (up) / comparison grey (down); totals dominant."""
+    vals, totals = ex["values"], set(ex.get("totals", []))
+    bases, bars = [], []
+    running = 0.0
+    for i, v in enumerate(vals):
+        if i in totals:
+            bases.append(0)
+            bars.append(v)
+            running = v
+        else:
+            bases.append(running if v >= 0 else running + v)
+            bars.append(abs(v))
+            running += v
+    cd = CategoryChartData()
+    cd.categories = [str(c) for c in ex["categories"]]
+    cd.add_series("base", tuple(bases))
+    cd.add_series(ex.get("unit", "value"), tuple(bars))
+    gf = s.shapes.add_chart(XL_CHART_TYPE.COLUMN_STACKED, Inches(x),
+                            Inches(y), Inches(w), Inches(h), cd)
+    ch = gf.chart
+    ch.has_legend = False
+    ch.has_title = False
+    plot = ch.plots[0]
+    plot.gap_width = 50
+    base_ser, bar_ser = plot.series[0], plot.series[1]
+    base_ser.format.fill.background()
+    base_ser.format.line.fill.background()
+    plot.has_data_labels = True
+    dl = plot.data_labels
+    dl.font.size = Pt(12)
+    dl.font.name = BODY_FONT
+    dl.font.bold = True
+    dl.font.color.rgb = WHITE
+    dl.position = XL_LABEL_POSITION.INSIDE_END
+    _hide_series_labels(base_ser)
+    for i in range(len(vals)):
+        pt = bar_ser.points[i]
+        pt.format.fill.solid()
+        pt.format.fill.fore_color.rgb = (SLATE if i in totals
+                                         else BLUE if vals[i] >= 0
+                                         else GREYC)
+    _strip_axes(ch)
+    return gf
+
+def add_chart(s, ex, x, y, w, h):
+    if ex["kind"] == "waterfall":
+        return _add_waterfall(s, ex, x, y, w, h)
+    kinds = {"bar": XL_CHART_TYPE.BAR_CLUSTERED,
+             "column": XL_CHART_TYPE.COLUMN_CLUSTERED,
+             "line": XL_CHART_TYPE.LINE}
+    cd = CategoryChartData()
+    cd.categories = [str(c) for c in ex["categories"]]
+    series_spec = ex.get("series")
+    if series_spec:
+        for sr in series_spec:
+            cd.add_series(sr["name"], tuple(sr["values"]))
+    else:
+        cd.add_series(ex.get("unit", "value"), tuple(ex["values"]))
+    gf = s.shapes.add_chart(kinds[ex["kind"]], Inches(x), Inches(y),
+                            Inches(w), Inches(h), cd)
+    ch = gf.chart
+    multi = bool(series_spec) and len(series_spec) > 1
+    ch.has_legend = multi
+    if multi:
+        ch.legend.position = XL_LEGEND_POSITION.BOTTOM
+        ch.legend.include_in_layout = False
+        ch.legend.font.size = Pt(11)
+        ch.legend.font.name = BODY_FONT
+        ch.legend.font.color.rgb = BODY
+    ch.has_title = False
+    plot = ch.plots[0]
+    if ex["kind"] != "line":
+        plot.gap_width = 60
+    if multi:
+        # legend carries the meaning; labels would clutter two series
+        if ex["kind"] == "line":
+            colors = (BLUE, GOLD)
+            for i, ser in enumerate(plot.series):
+                ser.format.line.color.rgb = colors[i % 2]
+                ser.format.line.width = Pt(2.5)
+                ser.smooth = False
+        else:
+            colors = (SLATE, GREYC)
+            for i, ser in enumerate(plot.series):
+                ser.format.fill.solid()
+                ser.format.fill.fore_color.rgb = colors[i % 2]
+    else:
+        plot.has_data_labels = True
+        dl = plot.data_labels
+        dl.font.size = Pt(12)
+        dl.font.name = BODY_FONT
+        dl.font.bold = True
+        dl.font.color.rgb = INK
+        if ex["kind"] != "line":
+            dl.position = XL_LABEL_POSITION.OUTSIDE_END
+            ser = plot.series[0]
+            hl = ex.get("highlight")
+            for i in range(len(ex["values"])):
+                pt = ser.points[i]
+                pt.format.fill.solid()
+                pt.format.fill.fore_color.rgb = (SLATE if hl is not None
+                                                 and i == hl else GREYC)
+        else:
+            ser = plot.series[0]
+            ser.format.line.color.rgb = BLUE
+            ser.format.line.width = Pt(2.5)
+    _strip_axes(ch)
     return gf
 
 def add_table(s, ex, x, y, w):
@@ -1007,7 +1133,7 @@ for i, kl in enumerate(KEY_LINE):
         eyebrow(s, "%s  ·  %02d" % (kl["tag"], i + 1))
         title(s, sp["assertion"], size=22)
         ex = sp.get("exhibit")
-        if ex and ex["kind"] in ("bar", "column", "line"):
+        if ex and ex["kind"] in ("bar", "column", "line", "waterfall"):
             txt(s, M, 1.9, 7.6, 0.3, ex.get("unit", ""), size=11, color=MUTE)
             add_chart(s, ex, M, 2.25, 7.6, 4.1)
             rect(s, M + 8.0, 2.25, CW - 8.0, 4.1, TINT, rounded=True)

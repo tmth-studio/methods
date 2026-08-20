@@ -64,11 +64,16 @@ STAGED PROMPTS — the assistant follows these in order and STOPS at each gate.
   get a yes.
 
   STAGE 5 — BODIES AND EXHIBITS. For each support, write the on-slide prose:
-  two to four sentences that prove the title to a cold reader with nobody in
-  the room. Claim first, then the exhibit: name the comparison (component /
-  item / time series / frequency / correlation), pick the chart kind, supply
-  real data with a source, and give each exhibit its register exhibit_id.
-  GATE: show three sample slide bodies, get a yes.
+  two to four sentences (15–55 words) that prove the title to a cold reader
+  with nobody in the room. Claim first, then the exhibit: name the comparison
+  (component / item / time series / frequency / correlation), pick the chart
+  kind — bar / column / line (one or two series) / waterfall (build-ups and
+  bridges) / table — supply real data with a source, and give each exhibit
+  its register exhibit_id. If a title claims two things moved ("X fell while
+  Y rose"), the exhibit must show BOTH series — index them to a common base
+  year when their units differ. The three sidebar bullets must add a second
+  layer (the so-what, the caveat, the scale comparison) — never restate what
+  the exhibit already shows. GATE: show three sample slide bodies, get a yes.
 
   STAGE 6 — FILL AND RUN. Write the approved content into DATA. Replace every
   square-bracketed placeholder — the build fails while any remain. Run the
@@ -79,6 +84,16 @@ lives in the client tenant. Never commit a filled register to the public
 repository — the shipped register holds fictional demonstration content only.
 
 VERSION NOTES
+  v1.2 — 20 Aug 2026: consulting-density pass. Two-series charts (line /
+         column / bar with a "series" list) and a waterfall kind for
+         build-ups and bridges; legend appears only on multi-series charts.
+         Tighter body geometry (exhibit moved up, dead band removed),
+         no-exhibit supports laid out as three parallel cards, page numbers
+         on content slides. Geometry guards in the self-check: titles 5–15
+         words, prose 15–55 words, exactly 1–3 bullets, why_it_matters
+         40 words max (previously long bullets were silently truncated).
+         New warning when a support quotes numbers but carries no exhibit.
+         Default fonts now Georgia / Arial (travel-safe on client machines).
   v1.1 — 20 Aug 2026: brand moved from code to data (THEME dict, neutral
          TMTH default; validation gate on hex/fonts; dark-slide tints now
          derived from the dominant colour). Exhibit-reuse stage added with
@@ -108,8 +123,8 @@ THEME = {
     "ink_soft":      "3C4C57",  # body text ink
     "muted":         "6B7A85",  # secondary text, sources, footers
     "chart_compare": "B9C6CD",  # non-highlighted chart bars / comparison elements
-    "font_heading":  "Cambria",
-    "font_body":     "Calibri",
+    "font_heading":  "Georgia",  # travel-safe serif — installed on Windows and Mac alike
+    "font_body":     "Arial",    # travel-safe sans — never substituted on client machines
 }
 
 META = {
@@ -178,18 +193,23 @@ KEY_LINE = [
                           "losses, objections would rise with churn. They "
                           "moved the opposite way."),
                 "bullets": [
-                    "Objections fell from 46 to 32 a quarter",
-                    "Churn rose 13 points across the same period",
-                    "The two series move in opposite directions",
+                    "A price-driven loss pattern would move these lines together",
+                    "The divergence widens every year — this is not noise",
+                    "Objections data covers all 1,200 contracts, not a sample",
                 ],
-                "source": "CRM objection log, 2023 to 2026",
+                "source": "CRM objection log and renewal records, 2023 to 2026",
                 "exhibit": {"exhibit_id": "EX-OBJECTIONS",
-                            "kind": "column",
-                            "unit": "Price objections per quarter",
+                            "kind": "line",
+                            "unit": "Indexed, 2023 = 100",
                             "categories": ["2023", "2024", "2025", "2026"],
-                            "values": [46, 41, 37, 32],
-                            "highlight": 3,
-                            "source": "CRM objection log, 2023 to 2026"},
+                            "series": [
+                                {"name": "Price objections",
+                                 "values": [100, 89, 80, 70]},
+                                {"name": "Churn rate",
+                                 "values": [100, 123, 145, 159]},
+                            ],
+                            "source": ("CRM objection log and renewal "
+                                       "records, 2023 to 2026")},
                 "notes": ("If price were the cause, this line would rise "
                           "with churn. Let the divergence do the work — no "
                           "editorialising needed."),
@@ -202,9 +222,9 @@ KEY_LINE = [
                           "guarantee. Price appears in none of them. The "
                           "market has changed what it judges providers on."),
                 "bullets": [
-                    "10 of 10 reviews cite the response guarantee",
-                    "Zero reviews cite price",
-                    "Scope and relationship reasons trail far behind",
+                    "Unanimity across 10 reviews is rare — the n is small, the signal is not",
+                    "Price at zero mentions rules it out as the loss driver",
+                    "The competitor set the frame; the market has adopted it",
                 ],
                 "source": "Lost-deal reviews, Oct to Dec 2025, n=10",
                 "exhibit": {"exhibit_id": "EX-LOSTDEAL",
@@ -261,9 +281,9 @@ KEY_LINE = [
                           "evenings, weekends and multi-site jobs. That gap "
                           "is known and priceable."),
                 "bullets": [
-                    "78% of 2025 callouts already inside four hours",
+                    "This is baseline performance — achieved with no guarantee in place",
                     "The gap is evenings, weekends and multi-site jobs",
-                    "The gap is known and priceable",
+                    "The guarantee prices the last 22%, not the whole operation",
                 ],
                 "source": "Dispatch system records, Jan to Dec 2025, n=8,400",
                 "exhibit": {"exhibit_id": "EX-CALLOUTS",
@@ -285,20 +305,18 @@ KEY_LINE = [
                           "credit reserve priced at a 2% breach rate. The "
                           "total is £350k a year, fixed."),
                 "bullets": [
-                    "Extended engineering cover — £190k",
-                    "Triage desk and dispatch tooling — £95k",
-                    "Service-credit reserve at 2% breach — £65k",
+                    "All three lines are fixed cost — no per-callout scaling",
+                    "The reserve is the honest line: it prices the 2% breach rate",
+                    "£350k is 7% of the £5.1M revenue under protection",
                 ],
                 "source": "Operations costing model v2, Jul 2026",
                 "exhibit": {"exhibit_id": "EX-COSTS",
-                            "kind": "table",
-                            "headers": ["Cost line", "Annual cost"],
-                            "rows": [
-                                ["Evening and weekend engineering cover", "£190k"],
-                                ["Triage desk and dispatch tooling", "£95k"],
-                                ["Service-credit reserve at 2% breach rate", "£65k"],
-                                ["Total", "£350k"],
-                            ],
+                            "kind": "waterfall",
+                            "unit": "£k a year",
+                            "categories": ["Engineering cover", "Triage desk",
+                                           "Credit reserve", "Total"],
+                            "values": [190, 95, 65, 350],
+                            "totals": [3],
                             "source": "Operations costing model v2, Jul 2026"},
                 "notes": ("The reserve line is the honest one — a guarantee "
                           "without a priced breach rate is a slogan."),
@@ -403,10 +421,10 @@ EXHIBIT_REGISTER = [
     {"exhibit_id": "EX-OBJECTIONS",
      "message": ("Price objections fell while churn rose — the two series "
                  "diverge"),
-     "chart_form": "column", "source_deck": "Q2 renewal review deck",
+     "chart_form": "line", "source_deck": "Q2 renewal review deck",
      "data_vintage": "2026-07", "decision": "ADAPT",
-     "changes": ("Extend the series to 2026 and move the highlight to the "
-                 "latest year"),
+     "changes": ("Add the churn series alongside objections and index both "
+                 "to 2023 = 100 so the divergence reads on one axis"),
      "vintage_accepted": False, "vintage_reason": ""},
     {"exhibit_id": "EX-LOSTDEAL",
      "message": ("All 10 lost Q4 deals cite the competitor guarantee; none "
@@ -421,8 +439,10 @@ EXHIBIT_REGISTER = [
      "vintage_accepted": False, "vintage_reason": ""},
     {"exhibit_id": "EX-COSTS",
      "message": "The guarantee costs £350k a year, in three fixed lines",
-     "chart_form": "table", "source_deck": "Operations costing pack v2",
-     "data_vintage": "2026-01", "decision": "REUSE", "changes": "",
+     "chart_form": "waterfall", "source_deck": "Operations costing pack v2",
+     "data_vintage": "2026-01", "decision": "ADAPT",
+     "changes": ("Rebuild the costing table as a build-up waterfall so the "
+                 "three lines read as one £350k total"),
      "vintage_accepted": True,
      "vintage_reason": ("Costing re-validated Jul 2026 against supplier "
                         "quotes; underlying rates unchanged")},
@@ -454,6 +474,8 @@ def _assertion_defect(text):
     words = t.split()
     if len(words) < 5:
         return "under 5 words — reads as a label, not a claim"
+    if len(words) > 15:
+        return "over 15 words — will not fit the title zone; sharpen the claim"
     if t.rstrip(".").lower() in BANNED_LABELS:
         return "banned label heading"
     if t.endswith(":"):
@@ -481,17 +503,45 @@ def _valid_exhibit(ex):
         return "exhibit is not a dict"
     kind = ex.get("kind")
     if kind in ("bar", "column", "line"):
+        cats = ex.get("categories")
+        if not cats:
+            return "chart has no categories"
+        series = ex.get("series")
+        if series is not None:
+            # multi-series: [{"name": ..., "values": [...]}, ...], max two
+            if not (isinstance(series, list) and 1 <= len(series) <= 2):
+                return "series must hold one or two {name, values} entries"
+            for sr in series:
+                if not (isinstance(sr, dict) and sr.get("name")
+                        and sr.get("values")):
+                    return "each series needs a name and values"
+                if len(sr["values"]) != len(cats):
+                    return ("series '%s' length does not match categories"
+                            % sr["name"])
+            if len(series) > 1 and ex.get("highlight") is not None:
+                return "highlight applies to single-series charts only"
+        else:
+            vals = ex.get("values")
+            if not vals or len(cats) != len(vals):
+                return "chart categories/values missing or mismatched"
+            hl = ex.get("highlight")
+            if hl is not None and not (0 <= hl < len(vals)):
+                return "highlight index out of range"
+    elif kind == "waterfall":
         cats, vals = ex.get("categories"), ex.get("values")
         if not cats or not vals or len(cats) != len(vals):
-            return "chart categories/values missing or mismatched"
-        hl = ex.get("highlight")
-        if hl is not None and not (0 <= hl < len(vals)):
-            return "highlight index out of range"
+            return "waterfall categories/values missing or mismatched"
+        totals = ex.get("totals", [])
+        if not all(isinstance(t, int) and 0 <= t < len(vals)
+                   for t in totals):
+            return "waterfall totals indices out of range"
+        if not all(isinstance(v, (int, float)) for v in vals):
+            return "waterfall values must be numbers (signed deltas)"
     elif kind == "table":
         if not ex.get("headers") or not ex.get("rows"):
             return "table needs headers and rows"
     else:
-        return "exhibit kind must be bar / column / line / table"
+        return "exhibit kind must be bar / column / line / waterfall / table"
     if not ex.get("source"):
         return "exhibit has no source"
     return None
@@ -606,19 +656,55 @@ def run_self_check():
     checks.append(("no two key-line arguments make the same claim (MECE "
                    "overlap)", len(set(kl_assertions)) == len(kl_assertions)))
 
-    # standalone discipline: the slide itself must prove the title
+    # standalone discipline: the slide itself must prove the title — and fit
     prose_defects = []
     for kl in KEY_LINE:
         for sp in kl["supports"]:
-            if len((sp.get("prose") or "").split()) < 15:
+            n = len((sp.get("prose") or "").split())
+            if n < 15:
                 prose_defects.append("'%s…': on-slide prose under 15 words — "
                                      "a cold reader cannot follow"
                                      % sp["assertion"][:35])
+            elif n > 55:
+                prose_defects.append("'%s…': on-slide prose is %d words "
+                                     "(max 55) — it will collide with the "
+                                     "exhibit; cut or split the slide"
+                                     % (sp["assertion"][:35], n))
     checks.append(("standalone bodies: every support carries on-slide prose "
-                   "of 15+ words"
+                   "of 15–55 words"
                    + ("" if not prose_defects else
                       " — " + "; ".join(prose_defects)),
                    not prose_defects))
+
+    # geometry guards: everything must fit its fixed zone
+    geo_defects = []
+    for kl in KEY_LINE:
+        wm = len((kl.get("why_it_matters") or "").split())
+        if wm > 40:
+            geo_defects.append("'%s…': why_it_matters is %d words (max 40) "
+                               "— it overflows the divider"
+                               % (kl["assertion"][:35], wm))
+        for sp in kl["supports"]:
+            nb = len(sp.get("bullets") or [])
+            if not 1 <= nb <= 3:
+                geo_defects.append("'%s…': %d bullets — the slide shows "
+                                   "exactly one to three; cut to the ones "
+                                   "that matter" % (sp["assertion"][:35], nb))
+    checks.append(("geometry: why_it_matters 40 words max, 1–3 bullets per "
+                   "support"
+                   + ("" if not geo_defects else
+                      " — " + "; ".join(geo_defects)), not geo_defects))
+
+    # a support that argues with numbers should show them, not say them
+    for kl in KEY_LINE:
+        for sp in kl["supports"]:
+            if sp.get("exhibit") is None and re.search(
+                    r"\d+%|£[\d,.]+|\d{2,}",
+                    " ".join(sp.get("bullets", []) or []) + " "
+                    + (sp.get("prose") or "")):
+                warnings.append("'%s…' quotes numbers but carries no "
+                                "exhibit — consider a chart"
+                                % sp["assertion"][:35])
     checks.append(("every evidence slide cites its source on the slide",
                    all(sp.get("source") for kl in KEY_LINE
                        for sp in kl["supports"])))
@@ -710,7 +796,9 @@ from pptx.dml.color import RGBColor
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.enum.shapes import MSO_SHAPE
 from pptx.chart.data import CategoryChartData
-from pptx.enum.chart import XL_CHART_TYPE, XL_LABEL_POSITION
+from pptx.enum.chart import (XL_CHART_TYPE, XL_LABEL_POSITION,
+                             XL_LEGEND_POSITION)
+from pptx.oxml.ns import qn
 
 def _rgb(h):
     return RGBColor(int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16))
@@ -816,43 +904,15 @@ def title(s, t, size=22, color=BLUE):
 def foot(s, t):
     txt(s, M, H - 0.55, CW, 0.3, t, size=9, color=MUTE)
 
+def pageno(s):
+    txt(s, W - M - 0.6, H - 0.55, 0.6, 0.3,
+        "%02d" % len(prs.slides._sldIdLst), size=9, color=MUTE,
+        align=PP_ALIGN.RIGHT)
+
 def notes(s, t):
     s.notes_slide.notes_text_frame.text = t
 
-def add_chart(s, ex, x, y, w, h):
-    kinds = {"bar": XL_CHART_TYPE.BAR_CLUSTERED,
-             "column": XL_CHART_TYPE.COLUMN_CLUSTERED,
-             "line": XL_CHART_TYPE.LINE}
-    cd = CategoryChartData()
-    cd.categories = [str(c) for c in ex["categories"]]
-    cd.add_series(ex.get("unit", "value"), tuple(ex["values"]))
-    gf = s.shapes.add_chart(kinds[ex["kind"]], Inches(x), Inches(y),
-                            Inches(w), Inches(h), cd)
-    ch = gf.chart
-    ch.has_legend = False
-    ch.has_title = False
-    plot = ch.plots[0]
-    if ex["kind"] != "line":
-        plot.gap_width = 60
-    plot.has_data_labels = True
-    dl = plot.data_labels
-    dl.font.size = Pt(12)
-    dl.font.name = BODY_FONT
-    dl.font.bold = True
-    dl.font.color.rgb = INK
-    if ex["kind"] != "line":
-        dl.position = XL_LABEL_POSITION.OUTSIDE_END
-        ser = plot.series[0]
-        hl = ex.get("highlight")
-        for i in range(len(ex["values"])):
-            pt = ser.points[i]
-            pt.format.fill.solid()
-            pt.format.fill.fore_color.rgb = (SLATE if hl is not None
-                                             and i == hl else GREYC)
-    else:
-        ser = plot.series[0]
-        ser.format.line.color.rgb = BLUE
-        ser.format.line.width = Pt(2.5)
+def _strip_axes(ch):
     va = ch.value_axis
     va.visible = False
     va.has_major_gridlines = False
@@ -860,6 +920,130 @@ def add_chart(s, ex, x, y, w, h):
     ca.format.line.fill.background()
     ca.tick_labels.font.size = Pt(11)
     ca.tick_labels.font.name = BODY_FONT
+
+def _hide_series_labels(ser):
+    """Series-level <c:dLbls><c:delete/> — overrides plot-level labels."""
+    el = ser._element
+    dLbls = el.makeelement(qn("c:dLbls"), {})
+    dLbls.append(el.makeelement(qn("c:delete"), {"val": "1"}))
+    ref = el.find(qn("c:cat"))
+    if ref is None:
+        ref = el.find(qn("c:val"))
+    if ref is not None:
+        ref.addprevious(dLbls)
+    else:
+        el.append(dLbls)
+
+def _add_waterfall(s, ex, x, y, w, h):
+    """Stacked column with an invisible base series. values are signed
+    deltas; indices in ex["totals"] are absolute totals drawn from zero.
+    Deltas colour accent (up) / comparison grey (down); totals dominant."""
+    vals, totals = ex["values"], set(ex.get("totals", []))
+    bases, bars = [], []
+    running = 0.0
+    for i, v in enumerate(vals):
+        if i in totals:
+            bases.append(0)
+            bars.append(v)
+            running = v
+        else:
+            bases.append(running if v >= 0 else running + v)
+            bars.append(abs(v))
+            running += v
+    cd = CategoryChartData()
+    cd.categories = [str(c) for c in ex["categories"]]
+    cd.add_series("base", tuple(bases))
+    cd.add_series(ex.get("unit", "value"), tuple(bars))
+    gf = s.shapes.add_chart(XL_CHART_TYPE.COLUMN_STACKED, Inches(x),
+                            Inches(y), Inches(w), Inches(h), cd)
+    ch = gf.chart
+    ch.has_legend = False
+    ch.has_title = False
+    plot = ch.plots[0]
+    plot.gap_width = 50
+    base_ser, bar_ser = plot.series[0], plot.series[1]
+    base_ser.format.fill.background()
+    base_ser.format.line.fill.background()
+    plot.has_data_labels = True
+    dl = plot.data_labels
+    dl.font.size = Pt(12)
+    dl.font.name = BODY_FONT
+    dl.font.bold = True
+    dl.font.color.rgb = WHITE
+    dl.position = XL_LABEL_POSITION.INSIDE_END
+    _hide_series_labels(base_ser)
+    for i in range(len(vals)):
+        pt = bar_ser.points[i]
+        pt.format.fill.solid()
+        pt.format.fill.fore_color.rgb = (SLATE if i in totals
+                                         else BLUE if vals[i] >= 0
+                                         else GREYC)
+    _strip_axes(ch)
+    return gf
+
+def add_chart(s, ex, x, y, w, h):
+    if ex["kind"] == "waterfall":
+        return _add_waterfall(s, ex, x, y, w, h)
+    kinds = {"bar": XL_CHART_TYPE.BAR_CLUSTERED,
+             "column": XL_CHART_TYPE.COLUMN_CLUSTERED,
+             "line": XL_CHART_TYPE.LINE}
+    cd = CategoryChartData()
+    cd.categories = [str(c) for c in ex["categories"]]
+    series_spec = ex.get("series")
+    if series_spec:
+        for sr in series_spec:
+            cd.add_series(sr["name"], tuple(sr["values"]))
+    else:
+        cd.add_series(ex.get("unit", "value"), tuple(ex["values"]))
+    gf = s.shapes.add_chart(kinds[ex["kind"]], Inches(x), Inches(y),
+                            Inches(w), Inches(h), cd)
+    ch = gf.chart
+    multi = bool(series_spec) and len(series_spec) > 1
+    ch.has_legend = multi
+    if multi:
+        ch.legend.position = XL_LEGEND_POSITION.BOTTOM
+        ch.legend.include_in_layout = False
+        ch.legend.font.size = Pt(11)
+        ch.legend.font.name = BODY_FONT
+        ch.legend.font.color.rgb = BODY
+    ch.has_title = False
+    plot = ch.plots[0]
+    if ex["kind"] != "line":
+        plot.gap_width = 60
+    if multi:
+        # legend carries the meaning; labels would clutter two series
+        if ex["kind"] == "line":
+            colors = (BLUE, GOLD)
+            for i, ser in enumerate(plot.series):
+                ser.format.line.color.rgb = colors[i % 2]
+                ser.format.line.width = Pt(2.5)
+                ser.smooth = False
+        else:
+            colors = (SLATE, GREYC)
+            for i, ser in enumerate(plot.series):
+                ser.format.fill.solid()
+                ser.format.fill.fore_color.rgb = colors[i % 2]
+    else:
+        plot.has_data_labels = True
+        dl = plot.data_labels
+        dl.font.size = Pt(12)
+        dl.font.name = BODY_FONT
+        dl.font.bold = True
+        dl.font.color.rgb = INK
+        if ex["kind"] != "line":
+            dl.position = XL_LABEL_POSITION.OUTSIDE_END
+            ser = plot.series[0]
+            hl = ex.get("highlight")
+            for i in range(len(ex["values"])):
+                pt = ser.points[i]
+                pt.format.fill.solid()
+                pt.format.fill.fore_color.rgb = (SLATE if hl is not None
+                                                 and i == hl else GREYC)
+        else:
+            ser = plot.series[0]
+            ser.format.line.color.rgb = BLUE
+            ser.format.line.width = Pt(2.5)
+    _strip_axes(ch)
     return gf
 
 def add_table(s, ex, x, y, w):
@@ -931,6 +1115,7 @@ txt(s, M + 0.4, y + 0.42,
     CW - 0.9, 0.85, "   ·   ".join("%d) %s" % (i + 1, kl["assertion"])
                                    for i, kl in enumerate(KEY_LINE)),
     size=12, color=WHITE, spacing=16)
+pageno(s)
 notes(s, "The 30-second read: SCQA plus the key line. A reader who stops "
          "here has the whole argument.")
 
@@ -950,6 +1135,7 @@ for i, kl in enumerate(KEY_LINE):
     y += 1.22
 txt(s, M, y + 0.05, CW, 0.5, "Then the conclusion, the key assumption, and "
     "the single decision requested.", size=12, color=MUTE, italic=True)
+pageno(s)
 notes(s, "Agenda doubles as the title-read test: the three claims alone "
          "carry the argument.")
 
@@ -977,31 +1163,36 @@ for i, kl in enumerate(KEY_LINE):
         eyebrow(s, "%s  ·  %02d" % (kl["tag"], i + 1))
         title(s, sp["assertion"], size=21)
         # standalone: prose proves the title on the slide itself
-        txt(s, M, 1.78, CW, 1.0, sp["prose"], size=13, color=BODY,
+        txt(s, M, 1.72, CW, 1.0, sp["prose"], size=13, color=BODY,
             spacing=18)
         ex = sp.get("exhibit")
-        if ex and ex["kind"] in ("bar", "column", "line"):
-            txt(s, M, 3.0, 7.6, 0.3, ex.get("unit", ""), size=11, color=MUTE)
-            add_chart(s, ex, M, 3.32, 7.6, 3.35)
-            rect(s, M + 8.0, 3.32, CW - 8.0, 3.35, TINT, rounded=True)
-            txt(s, M + 8.3, 3.55, CW - 8.6, 0.3, "WHAT THIS SHOWS", size=10,
+        if ex and ex["kind"] in ("bar", "column", "line", "waterfall"):
+            txt(s, M, 2.62, 7.6, 0.3, ex.get("unit", ""), size=11, color=MUTE)
+            add_chart(s, ex, M, 2.94, 7.6, 3.75)
+            rect(s, M + 8.0, 2.94, CW - 8.0, 3.75, TINT, rounded=True)
+            txt(s, M + 8.3, 3.2, CW - 8.6, 0.3, "WHAT THIS SHOWS", size=10,
                 color=BLUE, bold=True)
-            bullets(s, sp["bullets"][:3], M + 8.3, 3.95, CW - 8.65,
+            bullets(s, sp["bullets"][:3], M + 8.3, 3.6, CW - 8.65,
                     size=11.5, gap=8)
         elif ex and ex["kind"] == "table":
-            add_table(s, ex, M, 3.15, 8.2)
-            rect(s, M + 8.6, 3.15, CW - 8.6, 3.2, TINT, rounded=True)
-            txt(s, M + 8.9, 3.38, CW - 9.2, 0.3, "WHAT THIS SHOWS", size=10,
+            add_table(s, ex, M, 2.85, 8.2)
+            rect(s, M + 8.6, 2.85, CW - 8.6, 3.6, TINT, rounded=True)
+            txt(s, M + 8.9, 3.1, CW - 9.2, 0.3, "WHAT THIS SHOWS", size=10,
                 color=BLUE, bold=True)
-            bullets(s, sp["bullets"][:3], M + 8.9, 3.78, CW - 9.25,
+            bullets(s, sp["bullets"][:3], M + 8.9, 3.5, CW - 9.25,
                     size=11, gap=8)
         else:
+            # parallel cards — supports without an exhibit read horizontally
+            n = max(1, len(sp["bullets"][:3]))
+            card_w = (CW - 0.3 * (n - 1)) / n
             for bi, b in enumerate(sp["bullets"][:3]):
-                yy = 3.15 + bi * 1.12
-                rect(s, M, yy, CW, 0.95, TINT, rounded=True)
-                txt(s, M + 0.42, yy + 0.24, CW - 0.9, 0.55, b, size=14.5,
-                    color=INK, spacing=19)
+                xx = M + bi * (card_w + 0.3)
+                rect(s, xx, 2.9, card_w, 2.7, TINT, rounded=True)
+                rect(s, xx, 2.9, card_w, 0.07, GOLD)
+                txt(s, xx + 0.32, 3.05, card_w - 0.64, 2.4, b, size=13.5,
+                    color=INK, spacing=19, anchor=MSO_ANCHOR.MIDDLE)
         foot(s, "SOURCE: " + sp["source"])
+        pageno(s)
         notes(s, sp.get("notes") or "")
 
 # ---------------- CONCLUSION ----------------
@@ -1022,6 +1213,7 @@ if NEXT_STEPS:
         color=SLATE, bold=True, font=HEAD_FONT)
     bullets(s, ["%s — %s, %s" % t for t in NEXT_STEPS], M, y + 0.45, CW,
             size=11.5, gap=5)
+pageno(s)
 notes(s, "Minto's three-part close: restate, name the assumption, name the "
          "next action.")
 

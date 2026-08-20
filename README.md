@@ -87,26 +87,36 @@ specific registers sit at the end of each DATA section — keep each script's
 own registers in place when pasting. `run_pyramid_analysis.py` ends its .docx
 with a hand-off section mapping the analysis field-for-field onto the schema.
 
-## QA record (20 Aug 2026, v1.1)
+## QA record (20 Aug 2026, v1.2)
 
-All six generators (four pyramid + two proposition) and `extract_theme.py`
-run clean; all self-checks pass on the shipped demonstration content.
-Negative tests confirmed every new gate bites with a named defect: a
-`GAP_OPEN` register row, a key-line point without a register row, a stale
-exhibit vintage, an ADAPT without stated changes, an orphaned exhibit_id,
-and malformed THEME hex each refuse the build with no file written. THEME
-round-trip verified: a deck built from a modified THEME, fed to
-`extract_theme.py`, returns the same dominant / accent / highlight /
-card_fill / ink and both fonts. Visual QA: all outputs converted to PDF
-(LibreOffice headless), every page rendered and inspected.
+**v1.2 (deck generators only — memo and analysis generators unchanged at
+v1.1):** both deck generators run clean on the shipped demonstration
+content. Negative tests confirmed every new gate bites with a named defect
+and no file written: a 16-word assertion, on-slide prose over 55 words,
+four bullets on one support, waterfall totals index out of range, and a
+mismatched two-series length each refuse the build. The
+numbers-without-exhibit warning fires on the two demo supports that quote
+figures without a chart (warning, not failure — by design). Visual QA:
+standalone deck converted to PDF (LibreOffice headless), every page
+rendered and inspected — two-series divergence line, cost build-up
+waterfall, parallel no-exhibit cards and page numbers all verified.
+Paste-compatibility verified: the v1.2 exhibit kinds (`series`,
+`waterfall`) validate identically in both deck generators.
 
-Known limits carried from v1.0 (LibreOffice font substitution in QA renders,
-`line` exhibit kind unexercised by demo content, fixed-height side cards)
-still apply.
+Known limits at v1.2: LibreOffice font substitution in QA renders;
+single-series `line`, two-series `column`/`bar` and negative-delta
+waterfalls are code-supported but unexercised by demo content; the
+presentation generator's new chart paths are code-identical to the
+standalone's but not separately rendered.
+
+**v1.1 record:** all six generators and `extract_theme.py` ran clean;
+negative tests confirmed the register gates (GAP_OPEN, missing register
+row, stale vintage, ADAPT without changes, orphaned exhibit_id, malformed
+THEME hex). THEME round-trip verified via `extract_theme.py`.
 
 Design system default: neutral TMTH palette (slate 2F4858, blue 4E7C90, gold
-C9A227, tint EEF3F6, ink 1F2A31), Cambria headings / Calibri body, 13.3in ×
-7.5in, 0.62in margins — now data, not code.
+C9A227, tint EEF3F6, ink 1F2A31), Georgia headings / Arial body (travel-safe
+on client machines), 13.3in × 7.5in, 0.62in margins — data, not code.
 
 ## Licence
 
