@@ -21,9 +21,21 @@ THE SHARED SCHEMA: the PYRAMID data below is identical to the DATA sections of
 generate_pyramid_memo.py and generate_presentation_deck.py. Fill it once,
 paste it between the DATA markers of all three, and one argument drives the
 memo and both decks. (Each script sets its own output filename in the build
-section, so a pasted DATA block never renames the artefact.)
+section, so a pasted DATA block never renames the artefact.) Generator-
+specific registers sit at the END of each DATA section (the decks:
+EXHIBIT_REGISTER + MAX_VINTAGE_MONTHS; the memo: EVIDENCE_REGISTER) — when
+pasting the shared block between scripts, keep each script's own registers
+in place.
 
 STAGED PROMPTS — the assistant follows these in order and STOPS at each gate.
+
+  STAGE 0 — APPLY THE CLIENT'S BRAND (optional). All brand values live in
+  the THEME dict at the top of the DATA section; the shipped default is the
+  neutral TMTH palette. Two routes to a client brand: (i) paste the client's
+  palette hexes and font names into THEME; (ii) attach any existing client
+  .pptx and run extract_theme.py (same repository) — it prints a
+  ready-to-paste THEME dict with a suggested role mapping. Client brand
+  arrives at runtime; never commit a client THEME to the public repository.
 
   STAGE 1 — FRAME. Ask, one question at a time: who reads this, and where —
   inbox, portal, pre-read? What decision is wanted? Which of the four patterns
@@ -40,15 +52,39 @@ STAGED PROMPTS — the assistant follows these in order and STOPS at each gate.
   evidence the user supplies — never invented. GATE: show the pyramid, get a
   yes.
 
-  STAGE 4 — BODIES AND EXHIBITS. For each support, write the on-slide prose:
+  STAGE 4 — EXHIBIT REUSE. Attach the engagement's prior decks. Catalogue
+  the existing exhibits — for each: the MESSAGE it proves (a claim, not a
+  topic), its chart form, its source deck, and its data vintage (the date
+  of the underlying data, not the deck date). For every key-line point
+  needing an exhibit, propose REUSE / ADAPT (say exactly what changes) /
+  NEW, and fill the EXHIBIT_REGISTER. Staleness guard: any REUSE or ADAPT
+  whose data vintage is older than MAX_VINTAGE_MONTHS (default 6) FAILS the
+  build unless flagged vintage_accepted with a stated reason. Only NEW and
+  ADAPT exhibits get design effort in Stage 5. GATE: show the register,
+  get a yes.
+
+  STAGE 5 — BODIES AND EXHIBITS. For each support, write the on-slide prose:
   two to four sentences that prove the title to a cold reader with nobody in
   the room. Claim first, then the exhibit: name the comparison (component /
   item / time series / frequency / correlation), pick the chart kind, supply
-  real data with a source. GATE: show three sample slide bodies, get a yes.
+  real data with a source, and give each exhibit its register exhibit_id.
+  GATE: show three sample slide bodies, get a yes.
 
-  STAGE 5 — FILL AND RUN. Write the approved content into DATA. Replace every
+  STAGE 6 — FILL AND RUN. Write the approved content into DATA. Replace every
   square-bracketed placeholder — the build fails while any remain. Run the
   script; hand back the .pptx and the self-check report.
+
+ENGAGEMENT ASSETS: a filled EXHIBIT_REGISTER is client work product. It
+lives in the client tenant. Never commit a filled register to the public
+repository — the shipped register holds fictional demonstration content only.
+
+VERSION NOTES
+  v1.1 — 20 Aug 2026: brand moved from code to data (THEME dict, neutral
+         TMTH default; validation gate on hex/fonts; dark-slide tints now
+         derived from the dominant colour). Exhibit-reuse stage added with
+         the EXHIBIT_REGISTER, exhibit_id linking, and a data-vintage
+         staleness guard (MAX_VINTAGE_MONTHS, default 6).
+  v1.0 — 20 Aug 2026: first published version.
 
 Requires: python-pptx.  Output: standalone-deck.pptx
 """
@@ -57,6 +93,24 @@ Requires: python-pptx.  Output: standalone-deck.pptx
 # DATA — EDIT THIS SECTION ONLY  (shared PYRAMID schema — see docstring)
 # All demonstration content is fictional (Meridian Office Services).
 # ============================================================================
+
+# --- THEME: all brand values live here, as data. Ship = neutral TMTH palette.
+# To apply a client's brand: (i) paste their palette hexes + font names below,
+# or (ii) attach any existing client .pptx and run extract_theme.py (same
+# repository) — it prints a ready-to-paste THEME dict. Hex: 6 chars, no '#',
+# no alpha. Never commit a client THEME to the public repository.
+THEME = {
+    "dominant":      "2F4858",  # lead brand colour — cover, dividers, the answer, table headers
+    "accent":        "4E7C90",  # secondary brand colour — slide titles, line charts
+    "highlight":     "C9A227",  # the one-highlight colour — eyebrows, numbers, highlighted bars
+    "card_fill":     "EEF3F6",  # card / panel background tint
+    "ink":           "1F2A31",  # near-black headings ink
+    "ink_soft":      "3C4C57",  # body text ink
+    "muted":         "6B7A85",  # secondary text, sources, footers
+    "chart_compare": "B9C6CD",  # non-highlighted chart bars / comparison elements
+    "font_heading":  "Cambria",
+    "font_body":     "Calibri",
+}
 
 META = {
     "title": "Win renewals on response time, not price",
@@ -129,7 +183,8 @@ KEY_LINE = [
                     "The two series move in opposite directions",
                 ],
                 "source": "CRM objection log, 2023 to 2026",
-                "exhibit": {"kind": "column",
+                "exhibit": {"exhibit_id": "EX-OBJECTIONS",
+                            "kind": "column",
                             "unit": "Price objections per quarter",
                             "categories": ["2023", "2024", "2025", "2026"],
                             "values": [46, 41, 37, 32],
@@ -152,7 +207,8 @@ KEY_LINE = [
                     "Scope and relationship reasons trail far behind",
                 ],
                 "source": "Lost-deal reviews, Oct to Dec 2025, n=10",
-                "exhibit": {"kind": "bar",
+                "exhibit": {"exhibit_id": "EX-LOSTDEAL",
+                            "kind": "bar",
                             "unit": "Mentions across 10 lost-deal reviews",
                             "categories": ["Competitor response guarantee",
                                            "Service scope",
@@ -210,7 +266,8 @@ KEY_LINE = [
                     "The gap is known and priceable",
                 ],
                 "source": "Dispatch system records, Jan to Dec 2025, n=8,400",
-                "exhibit": {"kind": "bar",
+                "exhibit": {"exhibit_id": "EX-CALLOUTS",
+                            "kind": "bar",
                             "unit": "% of 2025 callouts",
                             "categories": ["Met within four hours today",
                                            "Requires new cover"],
@@ -233,7 +290,8 @@ KEY_LINE = [
                     "Service-credit reserve at 2% breach — £65k",
                 ],
                 "source": "Operations costing model v2, Jul 2026",
-                "exhibit": {"kind": "table",
+                "exhibit": {"exhibit_id": "EX-COSTS",
+                            "kind": "table",
                             "headers": ["Cost line", "Annual cost"],
                             "rows": [
                                 ["Evening and weekend engineering cover", "£190k"],
@@ -272,7 +330,8 @@ KEY_LINE = [
                     "All three cases clear the £350k outlay",
                 ],
                 "source": "Renewal economics model, scenario run Jul 2026",
-                "exhibit": {"kind": "table",
+                "exhibit": {"exhibit_id": "EX-SCENARIOS",
+                            "kind": "table",
                             "headers": ["Scenario", "Churn recovered to",
                                         "Revenue recovered", "Payback"],
                             "rows": [
@@ -331,9 +390,54 @@ NEXT_STEPS = [
     ("Brief the account teams on the renewal script", "Sales director", "19 Sep 2026"),
 ]
 
+# --- EXHIBIT REUSE (Stage 4) — one row per exhibit this deck uses. Every
+# support exhibit's exhibit_id must appear here. decision: "REUSE" (as-is
+# from a prior deck) | "ADAPT" ('changes' required) | "NEW". data_vintage =
+# date of the UNDERLYING data (YYYY-MM), not the deck date. Staleness guard:
+# REUSE/ADAPT rows older than MAX_VINTAGE_MONTHS fail the build unless
+# vintage_accepted is True with a stated vintage_reason. NEW rows are exempt.
+# ENGAGEMENT ASSET: never commit a filled register to the public repository.
+MAX_VINTAGE_MONTHS = 6
+
+EXHIBIT_REGISTER = [
+    {"exhibit_id": "EX-OBJECTIONS",
+     "message": ("Price objections fell while churn rose — the two series "
+                 "diverge"),
+     "chart_form": "column", "source_deck": "Q2 renewal review deck",
+     "data_vintage": "2026-07", "decision": "ADAPT",
+     "changes": ("Extend the series to 2026 and move the highlight to the "
+                 "latest year"),
+     "vintage_accepted": False, "vintage_reason": ""},
+    {"exhibit_id": "EX-LOSTDEAL",
+     "message": ("All 10 lost Q4 deals cite the competitor guarantee; none "
+                 "cite price"),
+     "chart_form": "bar", "source_deck": "",
+     "data_vintage": "2025-12", "decision": "NEW", "changes": "",
+     "vintage_accepted": False, "vintage_reason": ""},
+    {"exhibit_id": "EX-CALLOUTS",
+     "message": "Meridian already meets four hours on 78% of callouts",
+     "chart_form": "bar", "source_deck": "",
+     "data_vintage": "2026-02", "decision": "NEW", "changes": "",
+     "vintage_accepted": False, "vintage_reason": ""},
+    {"exhibit_id": "EX-COSTS",
+     "message": "The guarantee costs £350k a year, in three fixed lines",
+     "chart_form": "table", "source_deck": "Operations costing pack v2",
+     "data_vintage": "2026-01", "decision": "REUSE", "changes": "",
+     "vintage_accepted": True,
+     "vintage_reason": ("Costing re-validated Jul 2026 against supplier "
+                        "quotes; underlying rates unchanged")},
+    {"exhibit_id": "EX-SCENARIOS",
+     "message": ("Recovered renewals return £0.9M–£1.6M a year against the "
+                 "£350k outlay"),
+     "chart_form": "table", "source_deck": "Renewal economics model pack",
+     "data_vintage": "2026-07", "decision": "REUSE", "changes": "",
+     "vintage_accepted": False, "vintage_reason": ""},
+]
+
 # ============================================================================
 # BUILD — DO NOT EDIT BELOW THIS LINE
 # ============================================================================
+import datetime
 import re
 import sys
 
@@ -392,8 +496,76 @@ def _valid_exhibit(ex):
         return "exhibit has no source"
     return None
 
+EXHIBIT_DECISIONS = ("REUSE", "ADAPT", "NEW")
+
+def _theme_defects():
+    defects = []
+    for k, v in THEME.items():
+        if k.startswith("font_"):
+            if not str(v).strip():
+                defects.append("THEME['%s'] is empty — name a real font" % k)
+        elif not re.fullmatch(r"[0-9A-Fa-f]{6}", str(v)):
+            defects.append("THEME['%s'] = %r is not a 6-char hex "
+                           "(no '#', no alpha)" % (k, v))
+    return defects
+
+def _vintage_age_months(vintage):
+    """Age of a YYYY-MM vintage in months, or None if malformed."""
+    m = re.fullmatch(r"(\d{4})-(\d{2})", str(vintage).strip())
+    if not m:
+        return None
+    y, mo = int(m.group(1)), int(m.group(2))
+    if not 1 <= mo <= 12:
+        return None
+    today = datetime.date.today()
+    return (today.year - y) * 12 + (today.month - mo)
+
+def _exhibit_register_defects():
+    """Structural defects and the staleness guard, separately named."""
+    struct, stale = [], []
+    seen = set()
+    for r in EXHIBIT_REGISTER:
+        rid = str(r.get("exhibit_id", "")).strip() or "?"
+        if rid == "?":
+            struct.append("a register row has no exhibit_id")
+        elif rid in seen:
+            struct.append("duplicate exhibit_id %s" % rid)
+        seen.add(rid)
+        if not str(r.get("message", "")).strip():
+            struct.append("%s has no message — name the claim it proves"
+                          % rid)
+        dec = r.get("decision")
+        if dec not in EXHIBIT_DECISIONS:
+            struct.append("%s decision must be REUSE / ADAPT / NEW" % rid)
+        if dec == "ADAPT" and not str(r.get("changes", "")).strip():
+            struct.append("%s is ADAPT with no 'changes' — say what "
+                          "changes" % rid)
+        if r.get("vintage_accepted") and not str(
+                r.get("vintage_reason", "")).strip():
+            struct.append("%s is vintage_accepted with no stated reason"
+                          % rid)
+        age = _vintage_age_months(r.get("data_vintage", ""))
+        if dec in ("REUSE", "ADAPT"):
+            if not str(r.get("source_deck", "")).strip():
+                struct.append("%s is %s with no source_deck" % (rid, dec))
+            if age is None:
+                struct.append("%s data_vintage must be YYYY-MM (date of "
+                              "the underlying data)" % rid)
+            elif age > MAX_VINTAGE_MONTHS and not (
+                    r.get("vintage_accepted")
+                    and str(r.get("vintage_reason", "")).strip()):
+                stale.append("%s: data vintage %s is %d months old (max "
+                             "%d) — rebuild as NEW or set vintage_accepted "
+                             "with a reason"
+                             % (rid, r["data_vintage"], age,
+                                MAX_VINTAGE_MONTHS))
+    return struct, stale
+
 def run_self_check():
     checks, warnings = [], []
+    td = _theme_defects()
+    checks.append(("THEME: colours are 6-char hex and fonts are named"
+                   + ("" if not td else " — " + "; ".join(td)), not td))
     gt_words = len(GOVERNING_THOUGHT.split())
     checks.append(("governing thought is 25 words or fewer (%d)" % gt_words,
                    0 < gt_words <= 25))
@@ -461,6 +633,36 @@ def run_self_check():
                    + ("" if not ex_defects else " — " + "; ".join(ex_defects)),
                    not ex_defects))
 
+    # --- exhibit reuse register (Stage 4)
+    reg_struct, reg_stale = _exhibit_register_defects()
+    checks.append(("exhibit register rows are well-formed: message, valid "
+                   "decision, ADAPT changes, REUSE/ADAPT source + vintage"
+                   + ("" if not reg_struct else
+                      " — " + "; ".join(reg_struct)), not reg_struct))
+    checks.append(("staleness guard: no REUSE/ADAPT older than %d months "
+                   "without an accepted vintage" % MAX_VINTAGE_MONTHS
+                   + ("" if not reg_stale else
+                      " — " + "; ".join(reg_stale)), not reg_stale))
+    reg_ids = set(str(r.get("exhibit_id", "")).strip()
+                  for r in EXHIBIT_REGISTER)
+    link_defects = []
+    for kl in KEY_LINE:
+        for sp in kl["supports"]:
+            ex = sp.get("exhibit")
+            if ex is None:
+                continue
+            eid = str(ex.get("exhibit_id", "")).strip()
+            if not eid:
+                link_defects.append("'%s…' exhibit has no exhibit_id"
+                                    % sp["assertion"][:35])
+            elif eid not in reg_ids:
+                link_defects.append("'%s…' exhibit_id %s has no register "
+                                    "row" % (sp["assertion"][:35], eid))
+    checks.append(("every support exhibit carries an exhibit_id with a "
+                   "register row (REUSE / ADAPT / NEW decided)"
+                   + ("" if not link_defects else
+                      " — " + "; ".join(link_defects)), not link_defects))
+
     checks.append(("conclusion has Minto's three parts: restate, key "
                    "assumption, next action",
                    all([CONCLUSION.get("restate"),
@@ -510,16 +712,29 @@ from pptx.enum.shapes import MSO_SHAPE
 from pptx.chart.data import CategoryChartData
 from pptx.enum.chart import XL_CHART_TYPE, XL_LABEL_POSITION
 
-SLATE = RGBColor(0x2F, 0x48, 0x58)
-BLUE = RGBColor(0x4E, 0x7C, 0x90)
-GOLD = RGBColor(0xC9, 0xA2, 0x27)
-TINT = RGBColor(0xEE, 0xF3, 0xF6)
-INK = RGBColor(0x1F, 0x2A, 0x31)
-BODY = RGBColor(0x3C, 0x4C, 0x57)
-MUTE = RGBColor(0x6B, 0x7A, 0x85)
-GREYC = RGBColor(0xB9, 0xC6, 0xCD)
-WHITE = RGBColor(0xFF, 0xFF, 0xFF)
-HEAD_FONT, BODY_FONT = "Cambria", "Calibri"
+def _rgb(h):
+    return RGBColor(int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16))
+
+def _blend(base_hex, mix_hex, f):
+    """f = share of mix_hex blended into base_hex."""
+    b = [int(base_hex[i:i + 2], 16) for i in (0, 2, 4)]
+    m = [int(mix_hex[i:i + 2], 16) for i in (0, 2, 4)]
+    return RGBColor(*(round(b[i] * (1 - f) + m[i] * f) for i in range(3)))
+
+SLATE = _rgb(THEME["dominant"])
+BLUE = _rgb(THEME["accent"])
+GOLD = _rgb(THEME["highlight"])
+TINT = _rgb(THEME["card_fill"])
+INK = _rgb(THEME["ink"])
+BODY = _rgb(THEME["ink_soft"])
+MUTE = _rgb(THEME["muted"])
+GREYC = _rgb(THEME["chart_compare"])
+WHITE = RGBColor(0xFF, 0xFF, 0xFF)   # functional — not brand
+# derived tints of the dominant colour, for text on dark slides
+DOM_LT = _blend(THEME["dominant"], "FFFFFF", 0.75)   # light body on dark
+DOM_MID = _blend(THEME["dominant"], "FFFFFF", 0.50)  # metadata on dark
+DOM_NUM = _blend(THEME["dominant"], "FFFFFF", 0.22)  # watermark numerals
+HEAD_FONT, BODY_FONT = THEME["font_heading"], THEME["font_body"]
 
 W, H, M = 13.333, 7.5, 0.62
 CW = W - 2 * M
@@ -689,10 +904,10 @@ txt(s, M, 2.05, 11.6, 2.2, META["title"], size=44, color=WHITE,
 txt(s, M, 4.35, 11.2, 0.9, "A standalone read — the full case, evidence and "
     "the decision requested, in %d pages." % (
         3 + sum(1 + len(kl["supports"]) for kl in KEY_LINE) + 2),
-    size=15, color=RGBColor(0xC9, 0xD6, 0xDD), spacing=21)
+    size=15, color=DOM_LT, spacing=21)
 txt(s, M, 6.5, 10, 0.4, "%s   ·   %s   ·   for: %s" % (
     META["author_line"], META["date"], META["audience"]), size=11.5,
-    color=RGBColor(0x9A, 0xAE, 0xB9))
+    color=DOM_MID)
 notes(s, "Standalone deck — reads unaided. Generated by "
          "generate_standalone_deck.py; edit the DATA section and re-run.")
 
@@ -743,18 +958,18 @@ for i, kl in enumerate(KEY_LINE):
     s = slide()
     flood(s, SLATE)
     txt(s, M, 2.0, 2.4, 1.6, "%02d" % (i + 1), size=80,
-        color=RGBColor(0x51, 0x6B, 0x7C), bold=True, font=HEAD_FONT)
+        color=DOM_NUM, bold=True, font=HEAD_FONT)
     txt(s, M + 2.45, 2.18, 9.6, 0.4, kl["tag"].upper(), size=12, color=GOLD,
         bold=True)
     txt(s, M + 2.45, 2.6, 9.6, 1.4, kl["assertion"], size=30, color=WHITE,
         font=HEAD_FONT, spacing=37)
     txt(s, M + 2.45, 4.05, 9.4, 0.9, kl["why_it_matters"], size=13.5,
-        color=RGBColor(0xC9, 0xD6, 0xDD), spacing=19)
+        color=DOM_LT, spacing=19)
     # section position strip
     strip = "   ·   ".join(("■ " if j == i else "□ ") + k2["tag"].title()
                            for j, k2 in enumerate(KEY_LINE))
     txt(s, M + 2.45, 6.4, 9.4, 0.35, strip, size=11,
-        color=RGBColor(0x9A, 0xAE, 0xB9))
+        color=DOM_MID)
     notes(s, kl.get("transition") or "Section divider.")
 
     for sp in kl["supports"]:
@@ -826,7 +1041,7 @@ for lab, text in (("Gate", ASK["gate"]), ("Owner", ASK["owner"]),
         spacing=19)
     y += 0.75
 txt(s, M, 6.55, CW, 0.35, META["footer_tag"], size=9,
-    color=RGBColor(0x9A, 0xAE, 0xB9))
+    color=DOM_MID)
 notes(s, "One decision, one gate, one owner, one date — nothing else on the "
          "page.")
 
