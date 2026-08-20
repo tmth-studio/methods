@@ -154,3 +154,17 @@ Motif: gold numbered circles + soft-shadowed rounded cards. No accent stripes or
 2. Build archetype #2 (*should we, yes/no?*) reusing the `gen.js` helper functions —
    `slide()`, `title()`, `card()`, `numCircle()`, `pill()`, `divider()` are all generic.
 3. Extract those helpers into `lib/deck.js` once there are two decks, not before.
+
+## Theme-as-data (20 Aug 2026)
+
+The two python-pptx generators no longer embed a client palette. Brand values —
+eight palette roles plus heading and body fonts — sit in a `THEME` dict at the top of
+each generator's DATA section, and the LAYOUT constants are derived from it (two
+tints are computed by blending, so a client supplies fewer values than the deck uses).
+The shipped default is the neutral TMTH palette from the design system above.
+Client brand is applied at runtime: paste hexes into `THEME`, or run
+`extract_theme.py` (repository root) against any client `.pptx` for a ready-to-paste
+dict. A validation gate refuses to build on malformed hexes or unnamed fonts, so a
+bad paste fails loudly instead of corrupting the file. The standing rule is the same as
+for client numbers: a filled `THEME` or a client-branded copy never gets committed —
+the public repository stays neutral.
