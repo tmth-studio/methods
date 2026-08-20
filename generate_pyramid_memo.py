@@ -25,9 +25,20 @@ THE SHARED SCHEMA: the PYRAMID data below is identical to the DATA section of
 generate_presentation_deck.py and generate_standalone_deck.py. Fill it once,
 paste it into all three, and one argument drives the memo and both decks.
 run_pyramid_analysis.py produces a hand-off section that maps onto these
-fields when the argument comes out of a diagnostic.
+fields when the argument comes out of a diagnostic. Generator-specific
+registers sit at the END of each DATA section (this memo: EVIDENCE_REGISTER;
+the decks: EXHIBIT_REGISTER + MAX_VINTAGE_MONTHS) — when pasting the shared
+block between scripts, keep each script's own registers in place.
 
 STAGED PROMPTS — the assistant follows these in order and STOPS at each gate.
+
+  STAGE 0 — APPLY THE CLIENT'S BRAND (optional). All brand values live in
+  the THEME dict at the top of the DATA section; the shipped default is the
+  neutral TMTH palette. Two routes to a client brand: (i) paste the client's
+  palette hexes and font names into THEME; (ii) attach any existing client
+  .pptx and run extract_theme.py (same repository) — it prints a
+  ready-to-paste THEME dict with a suggested role mapping. Client brand
+  arrives at runtime; never commit a client THEME to the public repository.
 
   STAGE 1 — FRAME. Ask the user, one question at a time: who is the reader and
   what do they already believe; what decision is wanted; which of the four
@@ -55,11 +66,35 @@ STAGED PROMPTS — the assistant follows these in order and STOPS at each gate.
   reframe where the objection is right. Revise the ask to carry its own
   decision gate. GATE: show the objection table, get a yes.
 
-  STAGE 5 — FILL AND RUN. Write the approved content into the DATA section:
+  STAGE 5 — EVIDENCE SWEEP (ADVERSARIAL). Attach the engagement's source
+  materials. For EVERY claim that carries weight — each key-line point and
+  each load-bearing support claim: (1) find the best supporting evidence
+  and cite the source; (2) actively search for DISCONFIRMING evidence and
+  record what was looked for AND what was found, even when nothing was
+  found; (3) mark the status honestly: EVIDENCED / GAP_RISK_ACCEPTED (with
+  a stated reason) / GAP_OPEN. Fill the EVIDENCE_REGISTER. The build
+  REFUSES while any row is GAP_OPEN, and every key-line point must have a
+  register row. Risk-accepted gaps render in the memo as an explicit
+  "stated limits" block — never silently absorbed. GATE: show the register,
+  get a yes.
+
+  STAGE 6 — FILL AND RUN. Write the approved content into the DATA section:
   prose for every support (memo body), bullets (dot-dash / decks), sources,
   conclusion in Minto's three parts, one ask with gate + owner + date. Replace
   every square-bracketed placeholder — the build fails while any remain. Run
   the script; hand the user the .docx and the self-check report.
+
+ENGAGEMENT ASSETS: a filled EVIDENCE_REGISTER is client work product. It
+lives in the client tenant. Never commit a filled register to the public
+repository — the shipped register holds fictional demonstration content only.
+
+VERSION NOTES
+  v1.1 — 20 Aug 2026: brand moved from code to data (THEME dict, neutral
+         TMTH default; validation gate on hex/fonts). Adversarial evidence
+         sweep added as Stage 5 with the EVIDENCE_REGISTER, a GAP_OPEN
+         build gate, per-section evidence footnotes and a rendered
+         "stated limits" block for risk-accepted gaps.
+  v1.0 — 20 Aug 2026: first published version.
 
 Requires: python-docx.  Output: pyramid-memo.docx
 """
@@ -68,6 +103,24 @@ Requires: python-docx.  Output: pyramid-memo.docx
 # DATA — EDIT THIS SECTION ONLY
 # All demonstration content is fictional (Meridian Office Services).
 # ============================================================================
+
+# --- THEME: all brand values live here, as data. Ship = neutral TMTH palette.
+# To apply a client's brand: (i) paste their palette hexes + font names below,
+# or (ii) attach any existing client .pptx and run extract_theme.py (same
+# repository) — it prints a ready-to-paste THEME dict. Hex: 6 chars, no '#',
+# no alpha. Never commit a client THEME to the public repository.
+THEME = {
+    "dominant":      "2F4858",  # lead brand colour — section heads, table header fills
+    "accent":        "4E7C90",  # secondary brand colour — sub-headings
+    "highlight":     "C9A227",  # the one-highlight colour (used by the deck generators)
+    "card_fill":     "EEF3F6",  # panel / label-cell background tint
+    "ink":           "1F2A31",  # near-black body ink
+    "ink_soft":      "3C4C57",  # softer body ink (used by the deck generators)
+    "muted":         "6B7A85",  # secondary text, sources, footers
+    "chart_compare": "B9C6CD",  # non-highlighted chart elements (deck generators)
+    "font_heading":  "Cambria",
+    "font_body":     "Calibri",
+}
 
 META = {
     "title": "Win renewals on response time, not price",
@@ -140,7 +193,8 @@ KEY_LINE = [
                     "The two series move in opposite directions",
                 ],
                 "source": "CRM objection log, 2023 to 2026",
-                "exhibit": {"kind": "column",
+                "exhibit": {"exhibit_id": "EX-OBJECTIONS",
+                            "kind": "column",
                             "unit": "Price objections per quarter",
                             "categories": ["2023", "2024", "2025", "2026"],
                             "values": [46, 41, 37, 32],
@@ -163,7 +217,8 @@ KEY_LINE = [
                     "Scope and relationship reasons trail far behind",
                 ],
                 "source": "Lost-deal reviews, Oct to Dec 2025, n=10",
-                "exhibit": {"kind": "bar",
+                "exhibit": {"exhibit_id": "EX-LOSTDEAL",
+                            "kind": "bar",
                             "unit": "Mentions across 10 lost-deal reviews",
                             "categories": ["Competitor response guarantee",
                                            "Service scope",
@@ -221,7 +276,8 @@ KEY_LINE = [
                     "The gap is known and priceable",
                 ],
                 "source": "Dispatch system records, Jan to Dec 2025, n=8,400",
-                "exhibit": {"kind": "bar",
+                "exhibit": {"exhibit_id": "EX-CALLOUTS",
+                            "kind": "bar",
                             "unit": "% of 2025 callouts",
                             "categories": ["Met within four hours today",
                                            "Requires new cover"],
@@ -244,7 +300,8 @@ KEY_LINE = [
                     "Service-credit reserve at 2% breach — £65k",
                 ],
                 "source": "Operations costing model v2, Jul 2026",
-                "exhibit": {"kind": "table",
+                "exhibit": {"exhibit_id": "EX-COSTS",
+                            "kind": "table",
                             "headers": ["Cost line", "Annual cost"],
                             "rows": [
                                 ["Evening and weekend engineering cover", "£190k"],
@@ -283,7 +340,8 @@ KEY_LINE = [
                     "All three cases clear the £350k outlay",
                 ],
                 "source": "Renewal economics model, scenario run Jul 2026",
-                "exhibit": {"kind": "table",
+                "exhibit": {"exhibit_id": "EX-SCENARIOS",
+                            "kind": "table",
                             "headers": ["Scenario", "Churn recovered to",
                                         "Revenue recovered", "Payback"],
                             "rows": [
@@ -340,6 +398,67 @@ ASK = {
 NEXT_STEPS = [
     ("Confirm the service-credit terms with legal", "Commercial lead", "12 Sep 2026"),
     ("Brief the account teams on the renewal script", "Sales director", "19 Sep 2026"),
+]
+
+# --- EVIDENCE SWEEP (Stage 5) — one row per key-line point (claim_id = its
+# tag) and per load-bearing support claim (claim_id = TAG-S<n>). status:
+# "EVIDENCED" | "GAP_RISK_ACCEPTED" (status_reason required) | "GAP_OPEN"
+# (blocks the build). counter_evidence_search records what was looked for
+# AND what was found — even when nothing was found. Every key-line tag MUST
+# have a row. Risk-accepted gaps render as the memo's "stated limits" block.
+# ENGAGEMENT ASSET: never commit a filled register to the public repository.
+EVIDENCE_REGISTER = [
+    {"claim_id": "DIAGNOSIS",
+     "claim": "Churn is perception-driven, not price-driven",
+     "best_supporting_evidence": ("Existing-contract churn stable at 21–23% "
+                                  "while competitor-bid churn climbs; price "
+                                  "objections fell 30% as churn rose"),
+     "source": ("Contract system renewal records n=1,180; CRM objection log "
+                "2023–2026"),
+     "counter_evidence_search": ("Looked for: price-led losses and discount "
+                                 "pressure in the 2025–26 renewal notes. "
+                                 "Found: two competitor rate cards below "
+                                 "ours — and zero lost deals citing them."),
+     "status": "EVIDENCED", "status_reason": ""},
+    {"claim_id": "DIAGNOSIS-S3",
+     "claim": ("All 10 lost Q4 deals cite the competitor guarantee and none "
+               "cite price"),
+     "best_supporting_evidence": ("Unanimous citation across the full Q4 "
+                                  "2025 lost-deal review set"),
+     "source": "Lost-deal reviews, Oct to Dec 2025, n=10",
+     "counter_evidence_search": ("Looked for: selection bias in which lost "
+                                 "deals received reviews. Found: none — all "
+                                 "ten Q4 losses were reviewed, none "
+                                 "skipped."),
+     "status": "EVIDENCED", "status_reason": ""},
+    {"claim_id": "REMEDY",
+     "claim": ("A four-hour response guarantee wins the frame the market "
+               "now uses"),
+     "best_supporting_evidence": ("78% of 2025 callouts already inside four "
+                                  "hours (n=8,400); the residual gap is "
+                                  "costed at £350k a year"),
+     "source": ("Dispatch system records 2025; operations costing model v2, "
+                "Jul 2026"),
+     "counter_evidence_search": ("Looked for: evidence the 22% gap is not "
+                                 "closable at the quoted cost — external "
+                                 "cover quotes for evenings and weekends. "
+                                 "Found: quotes within the model's range."),
+     "status": "EVIDENCED", "status_reason": ""},
+    {"claim_id": "ECONOMICS",
+     "claim": ("The programme pays back within four quarters on the central "
+               "case"),
+     "best_supporting_evidence": ("Scenario table: all three cases clear "
+                                  "the £350k outlay; pessimistic case pays "
+                                  "back in five quarters"),
+     "source": "Renewal economics model, scenario run Jul 2026",
+     "counter_evidence_search": ("Looked for: observed churn-recovery rates "
+                                 "from comparable guarantee launches. "
+                                 "Found: none in-house; market analogues "
+                                 "are directional only."),
+     "status": "GAP_RISK_ACCEPTED",
+     "status_reason": ("Recovery rates are modelled, not observed — "
+                       "untestable before launch. Bounded by the "
+                       "pessimistic case and the 90-day stop gate.")},
 ]
 
 # ============================================================================
@@ -412,8 +531,25 @@ def _valid_exhibit(ex):
         return "exhibit has no source"
     return None
 
+SWEEP_STATUSES = ("EVIDENCED", "GAP_RISK_ACCEPTED", "GAP_OPEN")
+
+def _theme_defects():
+    defects = []
+    for k, v in THEME.items():
+        if k.startswith("font_"):
+            if not str(v).strip():
+                defects.append("THEME['%s'] is empty — name a real font" % k)
+        elif not re.fullmatch(r"[0-9A-Fa-f]{6}", str(v)):
+            defects.append("THEME['%s'] = %r is not a 6-char hex "
+                           "(no '#', no alpha)" % (k, v))
+    return defects
+
 def run_self_check():
     checks, warnings = [], []
+
+    td = _theme_defects()
+    checks.append(("THEME: colours are 6-char hex and fonts are named"
+                   + ("" if not td else " — " + "; ".join(td)), not td))
 
     gt_words = len(GOVERNING_THOUGHT.split())
     checks.append(("governing thought is 25 words or fewer (%d)" % gt_words,
@@ -497,9 +633,47 @@ def run_self_check():
                    all([ASK.get("decision"), ASK.get("gate"),
                         ASK.get("owner"), ASK.get("date")])))
 
+    # --- evidence sweep (Stage 5): adversarial register, gated
+    row_defects = []
+    for r in EVIDENCE_REGISTER:
+        rid = r.get("claim_id", "?")
+        for fld in ("claim", "best_supporting_evidence", "source",
+                    "counter_evidence_search"):
+            if not str(r.get(fld, "")).strip():
+                row_defects.append("%s missing %s" % (rid, fld))
+        if r.get("status") not in SWEEP_STATUSES:
+            row_defects.append("%s status must be EVIDENCED / "
+                               "GAP_RISK_ACCEPTED / GAP_OPEN" % rid)
+        if (r.get("status") == "GAP_RISK_ACCEPTED"
+                and not str(r.get("status_reason", "")).strip()):
+            row_defects.append("%s is GAP_RISK_ACCEPTED with no stated "
+                               "reason" % rid)
+    checks.append(("every register row is complete: claim, best evidence, "
+                   "source, counter-evidence search, valid status"
+                   + ("" if not row_defects else
+                      " — " + "; ".join(row_defects)), not row_defects))
+    open_gaps = [r["claim_id"] for r in EVIDENCE_REGISTER
+                 if r.get("status") == "GAP_OPEN"]
+    checks.append(("no GAP_OPEN rows — every claim is EVIDENCED or "
+                   "explicitly GAP_RISK_ACCEPTED with a reason"
+                   + ("" if not open_gaps else
+                      " — resolve or risk-accept: " + ", ".join(open_gaps)),
+                   not open_gaps))
+    reg_ids = set(r.get("claim_id") for r in EVIDENCE_REGISTER)
+    reg_claims = set(str(r.get("claim", "")).strip().lower()
+                     for r in EVIDENCE_REGISTER)
+    missing_kl = [kl["tag"] for kl in KEY_LINE
+                  if kl["tag"] not in reg_ids
+                  and kl["assertion"].strip().lower() not in reg_claims]
+    checks.append(("every key-line point has a register row (claim_id = "
+                   "tag, or claim = exact assertion text)"
+                   + ("" if not missing_kl else
+                      " — missing rows: " + ", ".join(missing_kl)),
+                   not missing_kl))
+
     strings = []
     for blob in (META, SCQA, GOVERNING_THOUGHT, KEY_LINE, CONCLUSION, ASK,
-                 NEXT_STEPS):
+                 NEXT_STEPS, EVIDENCE_REGISTER):
         _collect_strings(blob, strings)
     placeholders = sorted(set(m for s in strings
                               for m in re.findall(r"\[[^\]]+\]", s)))
@@ -542,13 +716,17 @@ from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 
-SLATE = RGBColor(0x2F, 0x48, 0x58)
-BLUE = RGBColor(0x4E, 0x7C, 0x90)
-GOLD = RGBColor(0xC9, 0xA2, 0x27)
-INK = RGBColor(0x1F, 0x2A, 0x31)
-MUTE = RGBColor(0x6B, 0x7A, 0x85)
-TINT_HEX = "EEF3F6"
-HEAD_FONT, BODY_FONT = "Cambria", "Calibri"
+def _rgb(h):
+    return RGBColor(int(h[0:2], 16), int(h[2:4], 16), int(h[4:6], 16))
+
+SLATE = _rgb(THEME["dominant"])
+BLUE = _rgb(THEME["accent"])
+GOLD = _rgb(THEME["highlight"])
+INK = _rgb(THEME["ink"])
+MUTE = _rgb(THEME["muted"])
+TINT_HEX = THEME["card_fill"]
+DOMINANT_HEX = THEME["dominant"]
+HEAD_FONT, BODY_FONT = THEME["font_heading"], THEME["font_body"]
 
 doc = Document()
 for sec in doc.sections:
@@ -610,13 +788,37 @@ def data_table(headers, rows):
     t = doc.add_table(rows=1 + len(rows), cols=len(headers))
     t.style = "Table Grid"
     for j, h in enumerate(headers):
-        shade(t.cell(0, j), "2F4858")
+        shade(t.cell(0, j), DOMINANT_HEX)
         cell_text(t.cell(0, j), h, size=10, color=RGBColor(0xFF, 0xFF, 0xFF),
                   bold=True, font=HEAD_FONT)
     for i, row in enumerate(rows):
         for j, v in enumerate(row):
             cell_text(t.cell(1 + i, j), str(v), size=10)
     return t
+
+def _register_row(tag, assertion):
+    for r in EVIDENCE_REGISTER:
+        if (r.get("claim_id") == tag
+                or str(r.get("claim", "")).strip().lower()
+                == assertion.strip().lower()):
+            return r
+    return None
+
+_ACCEPTED_GAPS = [r for r in EVIDENCE_REGISTER
+                  if r["status"] == "GAP_RISK_ACCEPTED"]
+
+def stated_limits_block():
+    """Risk-accepted gaps render explicitly — never silently absorbed."""
+    if not _ACCEPTED_GAPS:
+        return
+    para("Stated limits", size=12, color=SLATE, bold=True, font=HEAD_FONT,
+         space_after=3)
+    para("These gaps are accepted, with reasons — they are limits of the "
+         "argument, not omissions from it.", size=9.5, color=MUTE,
+         italic=True, space_after=4)
+    panel([(r["claim_id"], "%s — %s" % (r["claim"], r["status_reason"]))
+           for r in _ACCEPTED_GAPS])
+    para("", space_after=8)
 
 def exhibit_block(sp):
     ex = sp.get("exhibit")
@@ -680,7 +882,15 @@ if archetype == "dot_dash":
             p3 = para("Evidence: " + sp["source"], size=9, color=MUTE,
                       italic=True, space_after=6)
             p3.paragraph_format.left_indent = Inches(0.7)
+        reg = _register_row(kl["tag"], kl["assertion"])
+        if reg:
+            p4 = para("Register %s (%s): counter-evidence — %s"
+                      % (reg["claim_id"], reg["status"],
+                         reg["counter_evidence_search"]), size=8.5,
+                      color=MUTE, italic=True, space_after=8)
+            p4.paragraph_format.left_indent = Inches(0.35)
     para("", space_after=6)
+    stated_limits_block()
     para("The ask", size=12, color=SLATE, bold=True, font=HEAD_FONT,
          space_after=4)
     panel([("Decision", ASK["decision"]), ("Gate", ASK["gate"]),
@@ -710,6 +920,14 @@ else:
             if not sp.get("exhibit"):
                 para("Evidence: " + sp["source"], size=9, color=MUTE,
                      italic=True, space_after=10)
+        reg = _register_row(kl["tag"], kl["assertion"])
+        if reg:
+            para("Evidence line — register %s (%s): %s (%s). "
+                 "Counter-evidence search: %s"
+                 % (reg["claim_id"], reg["status"],
+                    reg["best_supporting_evidence"], reg["source"],
+                    reg["counter_evidence_search"]), size=8.5, color=MUTE,
+                 italic=True, space_after=8)
         if kl.get("transition"):
             para(kl["transition"], size=11, italic=True, color=MUTE,
                  space_after=12)
@@ -720,6 +938,8 @@ else:
     para("Key assumption: " + CONCLUSION["key_assumption"], size=11,
          space_after=4)
     para("Next action: " + CONCLUSION["next_action"], size=11, space_after=12)
+
+    stated_limits_block()
 
     para("The decision requested" if archetype != "status"
          else "Decisions needed", size=14, color=SLATE, bold=True,
