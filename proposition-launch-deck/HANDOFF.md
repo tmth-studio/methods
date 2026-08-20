@@ -66,7 +66,7 @@ Slide 17 states this distinction explicitly. Do not collapse it back.
 has `python-pptx`, and returns generated files for download (field-tested by Tom).
 No Python on the *estate* itself still holds — but the Copilot sandbox is enough.
 
-**New canonical route for the Barclays build:** `generate_backlog_deck.py` — a
+**New canonical route for the client-tenant build:** `generate_backlog_deck.py` — a
 single-file python-pptx generator. ALL content sits in a DATA section at the top
 (Copilot edits only that); layout below is marked do-not-edit. The deck is
 self-computing (per-slot = NPV/slots, bridge summed, headline earnings derived) and
