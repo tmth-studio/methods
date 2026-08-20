@@ -8,11 +8,13 @@ The working transport for AI-assistant execution is **Python**. Each generator i
 
 | Capability | Generator | Status |
 |---|---|---|
-| Minto-style analysis of a problem | — | In build |
-| Pyramid memo (Minto's memo archetypes) | — | In build |
-| Presentation slides (text-light, presented live) from a pyramid memo | — | In build |
-| Standalone slides (self-sufficient, read unaided) from a pyramid memo | — | In build |
+| Minto-style analysis of a problem | [`run_pyramid_analysis.py`](run_pyramid_analysis.py) | Live |
+| Pyramid memo (recommendation / dot-dash / status archetypes) | [`generate_pyramid_memo.py`](generate_pyramid_memo.py) | Live |
+| Presentation slides (text-light, presented live) from a pyramid memo | [`generate_presentation_deck.py`](generate_presentation_deck.py) | Live |
+| Standalone slides (self-sufficient, read unaided) from a pyramid memo | [`generate_standalone_deck.py`](generate_standalone_deck.py) | Live |
 | Proposition deck archetypes (which-of-these / should-we / backlog) | [`proposition-launch-deck/`](proposition-launch-deck/) | Live |
+
+The analysis generator's final section maps field-for-field onto the shared PYRAMID data section of the other three — fill the pyramid once, and the memo and both decks generate from the same data by copy-paste.
 
 ## Standards
 
