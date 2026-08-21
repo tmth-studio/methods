@@ -1,6 +1,7 @@
 # Minto dot-dash-memo process — for an LLM
 
-**Version 2 — 21 August 2026.**
+**Version 2.1 — 21 August 2026.**
+Changes in v2.1: scan-first intake — the LLM builds the evidence register from supplied material before asking anything; assumptions are permitted with a stated basis and the basis's source (`[ASSUMED — basis: X, source: Y]`); only basis-less load-bearing gaps go to the user as questions.
 Changes from v1 (chat draft, not published): added format selection by reader state (Stage 2); made the evidence register a flow-through artifact that later stages must draw from; added the session state header; added independent fresh-chat verification at the two gates; added grounding rules for evidence depth (Stage 6). The adversarial attack step from the presentation workbook was considered and deliberately left out — memos go outline → prose.
 
 ## What this is
@@ -42,8 +43,8 @@ Rule 3 is the important one. It turns the LLM from a passive producer into an ac
 
 ## Rules of engagement
 
-- **R1.** Interview before you produce. If required input is missing, ask numbered questions and STOP. Do not fill gaps with plausible inventions.
-- **R2.** Never invent facts, numbers or quotes. Mark every assumption `[ASSUMED]`.
+- **R1.** Scan before you ask. Build the evidence register from the supplied material first. Ask numbered questions only for what scanning cannot settle — the reader, the question, the ask, and any load-bearing gap the data does not cover.
+- **R2.** Every claim carries provenance. Facts and derived numbers cite their source. Assumptions are allowed — each states its basis (the data pattern, analogue, or prior it rests on) and cites where that basis comes from: `[ASSUMED — basis: X, source: Y]`. The one banned move is a bare assumption with no stated basis.
 - **R3.** Every point at every level is a full assertion sentence with a verb — never a topic label. "Costs" is banned; "Costs fall 20% by year 2" is the form.
 - **R4.** At the end of each stage, show the output and the stage's self-check table (check | pass/fail). Wait for approval before the next stage.
 - **R5.** If a later stage breaks an earlier one (for example the evidence will not support a key-line point), go BACK and fix the pyramid. Never patch in prose.
@@ -53,15 +54,17 @@ Rule 3 is the important one. It turns the LLM from a passive producer into an ac
 
 ## Stage 1 — Intake and evidence register
 
-Ask, then STOP for answers:
+First SCAN: read everything supplied or pointed to (documents, data, notes) and build the **evidence register** from it — the artifact every later stage draws from. Where the material implies something without stating it, enter it as an assumption with its basis, not a gap.
 
-1. Who is the single primary reader? What do they already know and accept?
-2. What question is this memo answering? (One question. If the user gives two, ask which one the memo must settle.)
+Then ASK only what scanning cannot settle, as numbered questions:
+
+1. Who is the single primary reader? What do they already know and accept? (Propose an answer from the material if it supports one; ask for confirmation.)
+2. What question is this memo answering? (One question. If the material suggests two, ask which one the memo must settle.)
 3. What action should the reader take after reading?
-4. What evidence exists? List every item the user supplies or points to.
+4. Any load-bearing gap: a claim the argument will need that neither the data nor a based assumption can carry.
 5. Length and register constraints? (Default: 1–2 pages, plain English.)
 
-Then build the **evidence register** — the artifact every later stage draws from:
+The register:
 
 | ID | Statement | Source | Type | Note |
 |----|-----------|--------|------|------|
@@ -71,9 +74,9 @@ Type definitions:
 - **fact** — raw observation from a named source
 - **derived** — an analysis output; record the calculation or where it lives
 - **expert** — a named person's judgment; record who and their basis
-- **assumption** — no source; carries `[ASSUMED]` everywhere it appears
+- **assumption** — not directly evidenced; records its basis (the data pattern, analogue, or prior it rests on) and the source of that basis. Carries `[ASSUMED — basis: X, source: Y]` everywhere it appears. An assumption with no statable basis goes to the user as a question, not into the register.
 
-Self-check: one reader named · one question · one action · register built with every item typed and sourced · missing items listed for the user, not invented.
+Self-check: supplied material scanned before any question was asked · one reader named · one question · one action · register built with every item typed and sourced · every assumption carries a basis and its source · only basis-less load-bearing gaps went to the user.
 
 ## Stage 2 — Select the memo format
 
@@ -142,7 +145,7 @@ Structural rules:
 
 **Grounding rules — how deep the pyramid goes:**
 
-- **G1. Every dash ends in a typed grounding** that cites its register entry: `[E4: fact]`, `[E7: derived → appendix A]`, `[E2: expert — name]`, or `[ASSUMED]`.
+- **G1. Every dash ends in a typed grounding** that cites its register entry: `[E4: fact]`, `[E7: derived → appendix A]`, `[E2: expert — name]`, or `[E9: ASSUMED — basis: X, source: Y]`.
 - **G2. Derived numbers carry their derivation in an appendix, not in the argument.** "Churn concentrates in month 2" is an analysis output; the dash cites the appendix item that shows the calculation. Argument in the body, arithmetic in the appendix.
 - **G3. Promotion test.** If a dash needs its own argument (not just a citation) to be believed, decide: is it doing key-line-sized work? Then promote it and restructure. Otherwise allow ONE sub-dash level and stop. Three levels of live argument means the document wants to be a report, not a memo — the depth moves to the appendix.
 - **G4. Appendix contract.** Every appendix item is pulled by a citation from exactly one dash. No orphan appendices; no dash citing thin air.
@@ -168,7 +171,7 @@ Run and report every check:
 1. Title-read test: reading only the title and the section headings gives the complete argument.
 2. The governing thought still answers the Stage 3 question after drafting.
 3. No paragraph contains a claim absent from the approved outline.
-4. Every number and quote traces to a register entry or is marked `[ASSUMED]`; all `[ASSUMED]` items listed in one place for the reader.
+4. Every number and quote traces to a register entry; all `[ASSUMED]` items listed in one place for the reader, each with its basis and the basis's source.
 5. Appendix contract holds: every appendix item cited from exactly one dash; every `derived` grounding has its appendix item.
 6. Ending has all three parts (restate · assumption · action).
 7. No section heading is a topic label.
@@ -192,8 +195,9 @@ evidence for your verdict). Do not repair anything — report only.
 3. MECE: no register entry could sit under two points; if all points are
    true the reader must accept the governing thought.
 4. Every dash answers the "why?"/"how?" of its dot and nothing else.
-5. Every dash ends in a typed grounding that cites a register entry or
-   [ASSUMED]. Spot-check five groundings against the register.
+5. Every dash ends in a typed grounding that cites a register entry.
+   Spot-check five groundings against the register; check every ASSUMED
+   entry states a basis and the source of that basis.
 6. No dash carries more than one level of sub-argument.
 7. Every appendix item is cited from exactly one dash.
 8. Every line at every level is an assertion sentence, not a topic label.
