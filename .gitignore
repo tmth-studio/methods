@@ -8,3 +8,4 @@ qa/*.pdf
 
 # workbooks are source artefacts, not generated outputs
 !/OCV_Workbook.docx
+!/Profit_Pool_Adjacency_Workbook.docx

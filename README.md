@@ -30,6 +30,7 @@ straight into the DATA sections.
 | BRAND EXTRACTOR — reads any client .pptx and prints a ready-to-paste THEME dict with a suggested role mapping | `extract_theme.py` | printed report |
 | OCV STANDARD — Objective Customer Value: definition, formula, four cost classes, measurement protocol, deflation chain to uptake, lint rules L1–L14 | `objective-customer-value-standard.md` | reference |
 | GUIDED OCV workbook (11 steps: playback gate → bare outcome → outcome ladder → routine map → cost classes → banding → ceiling → deflators → gates → uptake → lint) — same session-state + checklist pattern as the Pyramid workbooks | `OCV_Workbook.docx` | filled workbook: OCV, WTP, gate verdicts, adoption order |
+| GUIDED PROFIT POOL ADJACENCY workbook (11 steps: core-strength test → pool boundary → bottom-up sizing with verification status → distribution map → adjacency distance + ownership audit → leadership screen → Porter tests → verdicts, repeatable formula, refuse-to-play list → A1–A12 lint) — Zook + Gadiesh & Gilbert + Hamel & Prahalad, TMTH synthesis | `Profit_Pool_Adjacency_Workbook.docx` | filled workbook: pool map, screened adjacency programme, refuse list |
 
 ## How to use (Copilot, Claude, ChatGPT — any assistant with a code interpreter)
 
