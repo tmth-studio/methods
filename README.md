@@ -24,6 +24,7 @@ straight into the DATA sections.
 | GUIDED PRESENTATION workbook (Flow B: format → audience → SCQA and governing thought → pyramid → attack → evidence sweep → exhibit reuse → exhibits → narrative → lint → storyboard → build) | `Pyramid_Workbook_B_Presentation.docx` / `.html` | filled workbook, ready for the generators |
 | Minto ANALYSIS of a problem, executable (the Flow A method as staged prompts + a self-checked build) | `run_pyramid_analysis.py` | `pyramid-analysis.docx` |
 | Minto MEMO from a completed pyramid (archetypes: recommendation memo, dot-dash lap visual, status update) — with per-section evidence lines and a rendered "stated limits" block | `generate_pyramid_memo.py` | `pyramid-memo.docx` |
+| MEMO PROCESS for any LLM, no code interpreter needed — 8-stage dot-dash flow: evidence register, format by reader state, outline gate with grounding rules (G1–G5) for evidence depth, session state header, fresh-chat verifier | `Minto_Memo_Process.md` | drafted memo, in-chat |
 | PRESENTED slides — text-light, speaker carries the argument, notes hold the narrative | `generate_presentation_deck.py` | `presented-deck.pptx` |
 | STANDALONE slides — self-sufficient, executive summary up front, prose and sources on-slide | `generate_standalone_deck.py` | `standalone-deck.pptx` |
 | BRAND EXTRACTOR — reads any client .pptx and prints a ready-to-paste THEME dict with a suggested role mapping | `extract_theme.py` | printed report |
