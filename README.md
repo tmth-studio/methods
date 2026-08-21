@@ -28,6 +28,8 @@ straight into the DATA sections.
 | PRESENTED slides — text-light, speaker carries the argument, notes hold the narrative | `generate_presentation_deck.py` | `presented-deck.pptx` |
 | STANDALONE slides — self-sufficient, executive summary up front, prose and sources on-slide | `generate_standalone_deck.py` | `standalone-deck.pptx` |
 | BRAND EXTRACTOR — reads any client .pptx and prints a ready-to-paste THEME dict with a suggested role mapping | `extract_theme.py` | printed report |
+| OCV STANDARD — Objective Customer Value: definition, formula, four cost classes, measurement protocol, deflation chain to uptake, lint rules L1–L14 | `objective-customer-value-standard.md` | reference |
+| GUIDED OCV workbook (11 steps: playback gate → bare outcome → outcome ladder → routine map → cost classes → banding → ceiling → deflators → gates → uptake → lint) — same session-state + checklist pattern as the Pyramid workbooks | `OCV_Workbook.docx` | filled workbook: OCV, WTP, gate verdicts, adoption order |
 
 ## How to use (Copilot, Claude, ChatGPT — any assistant with a code interpreter)
 

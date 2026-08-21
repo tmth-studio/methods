@@ -5,3 +5,6 @@ __pycache__/
 /*.docx
 exemplars/*.pdf
 qa/*.pdf
+
+# workbooks are source artefacts, not generated outputs
+!/OCV_Workbook.docx
