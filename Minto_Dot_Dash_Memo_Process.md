@@ -1,4 +1,4 @@
-# Minto dot-dash memo — process for an LLM
+# Minto dot-dash-memo process — for an LLM
 
 **Version 2 — 21 August 2026.**
 Changes from v1 (chat draft, not published): added format selection by reader state (Stage 2); made the evidence register a flow-through artifact that later stages must draw from; added the session state header; added independent fresh-chat verification at the two gates; added grounding rules for evidence depth (Stage 6). The adversarial attack step from the presentation workbook was considered and deliberately left out — memos go outline → prose.
