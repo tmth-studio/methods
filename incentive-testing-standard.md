@@ -1,8 +1,10 @@
 # Incentive Testing — design and measurement standard
 
-**Version 1.0 · August 2026 · Tough Minds, Tender Hearts**
+**Version 1.1 · August 2026 · Tough Minds, Tender Hearts**
 
-*First release. An application note extending the [Objective Customer Value standard](objective-customer-value-standard.md) (v1.3): its first published two-sided application, plus the experiment discipline that makes the OCV calibration loop (§4.3.4 there) executable. Companion execution layer: `Incentive_Test_Workbook.docx`.*
+*v1.1 — category entry point mapping added (§2.4): the procedure for deriving the events the event-reset rule depends on, and the retrieval-versus-conversion boundary that stops incentive budgets being sold as mental availability. Retrieval diagnostic added to §5.1; lint rule I13. v1.0 — first release.*
+
+*An application note extending the [Objective Customer Value standard](objective-customer-value-standard.md) (v1.3): its first published two-sided application, plus the experiment discipline that makes the OCV calibration loop (§4.3.4 there) executable. Companion execution layer: `Incentive_Test_Workbook.docx`.*
 
 An operating manual an AI assistant can execute. It defines how to design an incentive offer so it can be priced, how to predict who responds, and how to test the prediction so the spend calibrates itself. Decision procedures, contrastive examples, and lint rules throughout.
 
@@ -61,7 +63,7 @@ B is scored, not calculated, against the parent standard's anchors, with one sen
 
 **The scoring question:** how much of the customer's existing routine must change for them to comply — and is that routine being re-decided anyway when the offer lands?
 
-**The event-reset rule:** B resets toward 1.0 at events where the routine is being re-decided regardless (category entry, renewal, refinancing, formation, a failure). Event-timed offers are therefore the highest-leverage incentive class: the same money meets no drag.
+**The event-reset rule:** B resets toward 1.0 at events where the routine is being re-decided regardless (category entry, renewal, refinancing, formation, a failure). Event-timed offers are therefore the highest-leverage incentive class: the same money meets no drag. Do not list these events by instinct — derive them (§2.4).
 
 **The reminder that B never makes a case alone:** a customer about to defect scores B ≈ 1.0 (their routine is being re-decided) — and targeting them by *predicted propensity* still fails, on Part 2.3's arithmetic. B is one term in a chain.
 
@@ -83,7 +85,29 @@ is paid to customers who were staying anyway. No model tuning escapes a
 low base rate; the failure is structural.
 ```
 
-If the targeting is propensity-based and the base rate is below ~10%, redesign around an observed state or an observed event before costing anything (I2).
+If the targeting is propensity-based and the base rate is below ~10%, redesign around an observed state or an observed event before costing anything (I2). Derive the candidate events in §2.4 rather than naming the ones already in view.
+
+### 2.4 Finding the events: category entry point mapping
+
+The event-reset rule (§2.2) and observed-event targeting (§2.3) both depend on knowing which events matter. Listing them from the sponsor's side produces a short list, biased toward the events the sponsor already happens to see. Derive them instead.
+
+A **category entry point (CEP)** is an occasion that makes a buyer think of the category and search memory for who is in it — the when, where, why, with whom and what-just-happened of a buying situation. CEP mapping is the buyer-side enumeration of those occasions.
+
+**Procedure:**
+
+1. **Enumerate from the buyer's side.** List the occasions when the category need arises, in the buyer's terms, cued by situation prompts — what just changed, what are they doing, who is with them, what are they feeling. Breadth-first. Do not filter by what the sponsor sells.
+2. **Weight each occasion** by how much of the decision it re-opens and how much value rides on it. In rare-purchase categories a single entry point can carry most of the acquisition, so frequency is not the ranking.
+3. **Mark observability.** For each occasion: can the sponsor see it in its own data, in a partner's data, in a public registry, or not at all?
+4. **Route by observability.** Observable occasions become the trigger list for event-timed offers (§2.2) and observed-event targeting (§2.3). **Unobservable but high-value occasions are a retrieval problem, not an incentive problem** — route them to brand and distribution, and out of the incentive budget.
+
+**The boundary that matters most.** An incentive converts at an entry point; it does not create retrieval at one. An offer is visible only to buyers already in contact with the sponsor. Whether the sponsor is considered at all is decided in memory, before any offer is seen, and is bought with reach, consistency and distinctive assets — a different budget, with a different measurement. Selling an incentive programme internally as the way to win an entry point is the most common way this spend is oversold (I13).
+
+**Measuring retrieval is admissible.** CEP-prompted recall — cue the buyer with the entry point, count which providers come to mind — is memory measurement, not stated preference. It does not fall foul of the parent standard's L1, which bans asking buyers what they would pay, not asking them what they remember.
+
+**Contrastive pair:**
+
+- ❌ "We will target the refinance date, the annual review and the complaint." (three events the sponsor happens to see)
+- ✅ "Twelve occasions enumerated buyer-side: four observable in our data, two through partners, six not observable. The four become triggers. The largest unobservable one is a brand brief, not an offer."
 
 ---
 
@@ -119,6 +143,7 @@ Run the register to completion first. Experiments are for the parameters records
 - **Primary metric = the target behaviour**, defined before launch. Never an engagement proxy — clicks, enrolments, and offer views are not behaviours the sponsor earns from (I8).
 - **Persistence is mandatory.** A follow-up window (typically 6–12 months) measures whether the behaviour survives the incentive. Value claimed on launch-window behaviour alone is lint (I5).
 - **Guardrail metrics.** Name in advance what the offer must not damage (cohort quality, margin mix, complaint rates).
+- **Diagnose retrieval separately.** Where the mechanic depends on being considered at an entry point (§2.4), pair the behavioural test with CEP-prompted recall in the same cells, measured before and at readout. Weak conversion and weak retrieval look identical in the outcome metric and need opposite fixes — a better offer, or being remembered at all.
 
 ### 5.2 Sizing and duration
 
@@ -183,6 +208,7 @@ Run on any incentive analysis or test plan before presenting it. Report failures
 - **I10 — Unjustified deflator.** A B score without an anchor and one sentence of justification; or V/C left unpinned when the design could pin them.
 - **I11 — Leaky randomisation.** Individual randomisation where the offer spreads through intermediaries, advertising, or word of mouth.
 - **I12 — Uncalibrated scale-up.** Spend scaled without reconciling observed take-up, deadweight, and mechanic ordering against the predictions.
+- **I13 — Undermapped events.** An event-timed offer, or a B ≈ 1.0 event-reset score, with no CEP map on record (§2.4); or an incentive proposed as the fix for a retrieval problem the map has identified.
 
 ---
 
@@ -191,6 +217,8 @@ Run on any incentive analysis or test plan before presenting it. Report failures
 - **Objective Customer Value standard (TMTH, 2026)** — the parent: definition, deflation chain, gates, calibration loop. This note operationalises §4.1's deflators for offers and §4.3.4's loop as a test design.
 - **Prospect theory and the 9× problem** — Kahneman & Tversky (1979); Gourville (HBR, 2006): the behavioural-drag deflator.
 - **Field-experiment practice** — the FCA's banking field trials (Occasional Papers 36/40) as the exemplar of default-vs-encouragement designs; Duflo & Banerjee on RCT discipline; Kohavi, Tang & Xu on online controlled experiments (guardrails, proxy-metric hazards).
+- **Category entry points and mental availability** — Romaniuk & Sharp (Ehrenberg-Bass Institute): the retrieval construct and the prompted-recall measurement protocol behind §2.4.
+- **Loyalty-programme scepticism** — Dowling & Uncles (1997); Sharp, *How Brands Grow*: continuous reward schemes skew to buyers who would have bought anyway. That is §2.3's deadweight finding reached from a different direction, and the two converge on the same verdict for ongoing schemes. Scope caution: this evidence base is largely repertoire categories with frequent purchase. In subscription categories with single-homing and rare purchase occasions, the critique bites harder on ongoing schemes and less on one-off state-change offers — while the entry-point argument gets stronger, because acquisition concentrates into a few rare occasions.
 - **Deadweight in incentive schemes** — the UK Incentivised Switching Scheme (2019–21) as the cautionary natural experiment: scheme-scale reporting without retention measurement is what this standard's I5/I6 exist to prevent.
 
 ---
