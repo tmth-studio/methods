@@ -1,8 +1,8 @@
 # Incentive Testing — design and measurement standard
 
-**Version 1.1 · August 2026 · Tough Minds, Tender Hearts**
+**Version 1.2 · August 2026 · Tough Minds, Tender Hearts**
 
-*v1.1 — category entry point mapping added (§2.4): the procedure for deriving the events the event-reset rule depends on, and the retrieval-versus-conversion boundary that stops incentive budgets being sold as mental availability. Retrieval diagnostic added to §5.1; lint rule I13. v1.0 — first release.*
+*v1.2 — event windows added (§2.5): the two latencies that decide whether an event-triggered offer can land at all, and the reframing of any observation advantage as a lead time rather than an exclusivity, with its three erosion paths. Window instrumentation added to §5.1; lint rule I14. v1.1 — category entry point mapping added (§2.4): the procedure for deriving the events the event-reset rule depends on, and the retrieval-versus-conversion boundary that stops incentive budgets being sold as mental availability. Retrieval diagnostic added to §5.1; lint rule I13. v1.0 — first release.*
 
 *An application note extending the [Objective Customer Value standard](objective-customer-value-standard.md) (v1.3): its first published two-sided application, plus the experiment discipline that makes the OCV calibration loop (§4.3.4 there) executable. Companion execution layer: `Incentive_Test_Workbook.docx`.*
 
@@ -109,6 +109,35 @@ A **category entry point (CEP)** is an occasion that makes a buyer think of the 
 - ❌ "We will target the refinance date, the annual review and the complaint." (three events the sponsor happens to see)
 - ✅ "Twelve occasions enumerated buyer-side: four observable in our data, two through partners, six not observable. The four become triggers. The largest unobservable one is a brand brief, not an offer."
 
+### 2.5 Event windows: an observation advantage is a lead time, not an exclusivity
+
+§2.4 finds the events. This section asks whether the sponsor can act inside one, and it disposes of the most common overclaim in event-triggered programmes.
+
+**Every event opens a window, and two clocks run in it:**
+
+- **Customer clock — event-to-decision latency.** How long from the occasion arising to the customer closing the decision. Weeks at some events, hours at others.
+- **Sponsor clock — detection-to-offer latency.** How long from the signal becoming observable to the offer being in front of the customer: detection, decisioning, approval, delivery.
+
+**The window gate.** If sponsor latency exceeds customer latency, the mechanic fails regardless of its scores. An offer that arrives after the decision has closed is not a weak offer, it is an absent one — and V, C and B are all irrelevant to an offer nobody saw in time. Run this gate before costing any event-triggered mechanic (I14).
+
+**Why observation advantages are usually mis-stated.** Sponsors describe privileged data as an asset they own — a resource competitors lack. Under consent-based data-sharing regimes that claim rarely survives contact, because customers can authorise competitors to read the same data, often in minutes. What the sponsor actually holds is narrower and more perishable:
+
+- **Initiation** — consent-based access is customer-initiated, so it begins only once the customer has decided to search. Passive observation predates that decision. This timing asymmetry is the whole of the advantage.
+- **Granularity and population** — the observer often sees a finer stream than any shared summary carries, and sees it across a whole base rather than one consented slice at a time. Useful, and secondary to initiation.
+
+**Three things erode a lead time.** Name all three before building a programme on one:
+
+1. **Mandated or frictionless sharing.** Data-portability regimes convert exclusivity into consent, and consent into a formality. Track the regulatory trajectory, not just the current position.
+2. **Intermediary substitution.** Where customers reach the category through a broker, agent, adviser or marketplace, they simply tell the intermediary what the signal would have predicted. That route needs no data at all — so a lead time defends against competitors who lack distribution, never against those who have it.
+3. **The sponsor's own latency.** An unwired signal has a lead time of zero. Observation that no routine acts on is not an asset; it is a collection.
+
+**The measurement consequence.** For any event-triggered mechanic the primary operational metric is lead time — how far ahead of the customer's own search the offer lands — not conversion alone. A mechanic can convert well in a pilot run on manual effort and still be worthless at scale, because the value lives in a latency the pilot never had to industrialise. Instrument the window (§5.1).
+
+**Contrastive pair:**
+
+- ❌ "We see the customer's position before anyone else, so we will win the renewal."
+- ✅ "The trigger is observable about 11 weeks out. Our detection-to-offer latency is 6 weeks; customers typically approach an intermediary at 8. We act inside the window by 2 weeks — and lose it entirely if latency slips or the intermediary is approached earlier."
+
 ---
 
 ## Part 3 — Costing conventions
@@ -144,6 +173,7 @@ Run the register to completion first. Experiments are for the parameters records
 - **Persistence is mandatory.** A follow-up window (typically 6–12 months) measures whether the behaviour survives the incentive. Value claimed on launch-window behaviour alone is lint (I5).
 - **Guardrail metrics.** Name in advance what the offer must not damage (cohort quality, margin mix, complaint rates).
 - **Diagnose retrieval separately.** Where the mechanic depends on being considered at an entry point (§2.4), pair the behavioural test with CEP-prompted recall in the same cells, measured before and at readout. Weak conversion and weak retrieval look identical in the outcome metric and need opposite fixes — a better offer, or being remembered at all.
+- **Instrument the window.** For event-triggered mechanics (§2.5), record lead time per case — how far ahead of the customer's own search the offer landed — as an operational metric alongside the behaviour, and record the cases where the offer arrived too late separately from those where it arrived and was declined. A pilot that converts on manual, hand-worked latency proves nothing about a mechanic whose value at scale lives in a latency nobody has yet industrialised.
 
 ### 5.2 Sizing and duration
 
@@ -209,6 +239,7 @@ Run on any incentive analysis or test plan before presenting it. Report failures
 - **I11 — Leaky randomisation.** Individual randomisation where the offer spreads through intermediaries, advertising, or word of mouth.
 - **I12 — Uncalibrated scale-up.** Spend scaled without reconciling observed take-up, deadweight, and mechanic ordering against the predictions.
 - **I13 — Undermapped events.** An event-timed offer, or a B ≈ 1.0 event-reset score, with no CEP map on record (§2.4); or an incentive proposed as the fix for a retrieval problem the map has identified.
+- **I14 — Unmeasured window.** An event-triggered mechanic with no stated event-to-decision and detection-to-offer latencies (§2.5); or an observation advantage claimed as an exclusivity rather than as a lead time with its erosion paths named.
 
 ---
 
@@ -218,6 +249,7 @@ Run on any incentive analysis or test plan before presenting it. Report failures
 - **Prospect theory and the 9× problem** — Kahneman & Tversky (1979); Gourville (HBR, 2006): the behavioural-drag deflator.
 - **Field-experiment practice** — the FCA's banking field trials (Occasional Papers 36/40) as the exemplar of default-vs-encouragement designs; Duflo & Banerjee on RCT discipline; Kohavi, Tang & Xu on online controlled experiments (guardrails, proxy-metric hazards).
 - **Category entry points and mental availability** — Romaniuk & Sharp (Ehrenberg-Bass Institute): the retrieval construct and the prompted-recall measurement protocol behind §2.4.
+- **Resource-based view** — Barney (1991): a resource confers advantage only while it stays inimitable. §2.5 applies that test to observation advantages, which data-portability regimes make imitable on the customer's say-so. What remains is timing — and timing is a flow, not a stock, which is why it has to be managed and measured rather than owned.
 - **Loyalty-programme scepticism** — Dowling & Uncles (1997); Sharp, *How Brands Grow*: continuous reward schemes skew to buyers who would have bought anyway. That is §2.3's deadweight finding reached from a different direction, and the two converge on the same verdict for ongoing schemes. Scope caution: this evidence base is largely repertoire categories with frequent purchase. In subscription categories with single-homing and rare purchase occasions, the critique bites harder on ongoing schemes and less on one-off state-change offers — while the entry-point argument gets stronger, because acquisition concentrates into a few rare occasions.
 - **Deadweight in incentive schemes** — the UK Incentivised Switching Scheme (2019–21) as the cautionary natural experiment: scheme-scale reporting without retention measurement is what this standard's I5/I6 exist to prevent.
 
