@@ -4,7 +4,7 @@
 
 *v1.0 — first release.*
 
-*The design half of the organisation architecture pack. Executes [`organisation-architecture-standard.md`](organisation-architecture-standard.md) and consumes the handoff from [`current-state-diagnosis-process.md`](current-state-diagnosis-process.md).*
+*The design half of the organisation architecture pack. Executes [`organisation-architecture-standard.md`](organisation-architecture-standard.md) (Stages 1–3 and 6–9) and [`executor-assignment-standard.md`](executor-assignment-standard.md) (Stage 4). Consumes the handoff from [`current-state-diagnosis-process.md`](current-state-diagnosis-process.md).*
 
 ## What this is
 
@@ -137,7 +137,7 @@ Fields: **job to be done · input · transformation · output · decision rights
 
 ## Stage 4 — Assign executors
 
-**Prompt.** Score every subfunction on the six-criterion rubric in the standard, apply the mapping rule and the overrides, and record the rating with its rationale. Then record the tooling rung it runs on today — the **approved** rung — and the next rung up.
+**Prompt.** Score every subfunction on the six-criterion rubric in [`executor-assignment-standard.md`](executor-assignment-standard.md) §1, answer its four rationale prompts, apply the mapping rule and both hard overrides, and record the rating with its rationale. Then record the tooling rung it runs on today — the **approved** rung — and the next rung up. That standard's lint rules E1–E16 govern this stage.
 
 **Decision rules.**
 
