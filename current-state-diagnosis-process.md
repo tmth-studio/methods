@@ -4,7 +4,7 @@
 
 *v1.0 — first release.*
 
-*The diagnosis half of the organisation architecture pack. Reads against [`organisation-architecture-standard.md`](organisation-architecture-standard.md) (the standard whose vocabulary and lint rules this process obeys) and hands off to [`operating-model-design-process.md`](operating-model-design-process.md).*
+*The diagnosis half of the organisation architecture pack. Obeys the vocabulary and lint rules of [`organisation-architecture-standard.md`](organisation-architecture-standard.md); uses the four-rung ladder defined in [`executor-assignment-standard.md`](executor-assignment-standard.md) §2 to record the tooling dimension. Hands off to [`operating-model-design-process.md`](operating-model-design-process.md).*
 
 ## What this is
 
