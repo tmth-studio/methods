@@ -1,18 +1,27 @@
 # Organisation architecture — specify the work, then choose who does it
 
-A three-document method for architecting an operating model outside-in, in a large regulated enterprise.
+A four-document method for architecting an operating model outside-in, in a large regulated enterprise: two reference standards and two staged processes.
 
 **The claim the pack rests on:** an operating model is a set of specifications, not a set of boxes. Write each unit of work as a precise statement of what must be true for it to be done well *by anyone*, and the work becomes portable between executors, measurable without a separate measurement project, and automatable without a redesign. Structure is then a consequence of the specification set, not an input to it. The corollary that does most of the work: **a function charter and an agent role definition are the same artefact at different maturities.**
 
 **Two units of design, deliberately at different altitudes.** The **unit of scope** is the whole organisation — never one team at a time, because boundaries drawn team-by-team overlap or leave gaps. The **unit of specification** is the **subfunction** — never the function, because a function is a container and containers are not executable. Most operating-model failures are one of these two units being wrong.
 
-The pipeline: **diagnose what exists → design the target → stand it up, pilot one function, migrate on evidence.** The diagnosis hands a baseline, a gap table and a sequence to the design process; the design process consumes them at its transition stage. Either half runs alone — a design with no diagnosis is legitimate but its transition sequence is ungrounded, and the pack says so out loud rather than hiding it.
+**Three quantities the pack keeps strictly apart**, because conflating them is how heatmaps get misread:
+
+```
+READINESS (a property of the work)  ·  RUNG (what is approved today)  ·  AUTONOMY (what may be decided alone)
+```
+
+A subfunction can be highly agent-ready and correctly sitting on rung 2 because rung 2 is what is approved — and still escalate every call, because autonomy is decided by reversibility, not by either of the other two.
+
+The pipeline: **diagnose what exists → design the target → assign executors → stand it up, pilot one function, migrate on evidence.** The diagnosis hands a baseline, a gap table and a sequence to the design process; the design process consumes them at its transition stage. Either half runs alone — a design with no diagnosis is legitimate but its transition sequence is ungrounded, and the pack says so out loud rather than hiding it.
 
 ## Capability → file
 
 | Capability | File | Output |
 |---|---|---|
-| ORGANISATION ARCHITECTURE STANDARD — what an operating model is made of and how to build one: the two units of design, the seven-step sequence, the nine-field specification set and the stranger test, the six-criterion agent-readiness rubric with its hard overrides, the four-rung tooling ladder and its promotion gates, graduated autonomy (act-then-log / escalate-first / never-delegate) and the widening rule, three-tier measurement derived from the mandate, ten failure modes with controls, lint rules O1–O28 | `organisation-architecture-standard.md` | reference |
+| ORGANISATION ARCHITECTURE STANDARD — what an operating model is made of and how to build one: the two units of design, the seven-step sequence, the nine-field specification set and the stranger test, decision rights and the three authorities, one splitting principle and one trade-off forum, three-tier measurement derived from the mandate, objectives-become-bets, who owns the model, ten failure modes with controls, lint rules O1–O25 | `organisation-architecture-standard.md` | reference |
+| EXECUTOR ASSIGNMENT STANDARD — who performs the specified work and how much it may decide: the six-criterion readiness rubric with its two hard overrides and four rationale prompts, the splitting rule for regulated sign-off, the four-rung tooling ladder and the four rung-2 discipline rules, promotion and demotion gates, the test protocol before any live connection, graduated autonomy (act-then-log / escalate-first / never-delegate) with the widening rule and the fixed regulated floor, a worked example, lint rules E1–E16 | `executor-assignment-standard.md` | reference |
 | CURRENT-STATE DIAGNOSIS process for any LLM, no code interpreter needed — 8-stage flow: playback gate → evidence register → six-dimension baseline → routine capture at the load concentrations → gap table severity-rated by blocking power → dated operating-tier before-picture → quick wins / foundational / dependency sequencing → handoff package. Session state header, structural-never-personal rule, lint rules D1–D14 | `current-state-diagnosis-process.md` | baseline, gap table, sequence — in-chat |
 | OPERATING-MODEL DESIGN process for any LLM — 10-stage flow: playback gate → mandate one-pager → function map → subfunction specs → executor assignment → operating layer stood up in six timeboxed blocks → alignment gate one → target operating model document (governing thought, SCQA, three MECE arguments) → alignment gate two and live pilot → results read and migration sequence. Session state header, placeholders-never-inventions rule, lint rules M1–M28 | `operating-model-design-process.md` | target model, specs, pilot read, migration sequence — in-chat |
 
@@ -24,11 +33,13 @@ The pipeline: **diagnose what exists → design the target → stand it up, pilo
 
 **If a target function map does not yet exist:** run the design process to Stage 3, then run the diagnosis against that draft map, then return to design Stage 4 with the gap table in hand. The diagnosis needs something to compare against, and a strawman is enough.
 
-**In every case, the operating layer is stood up on day one, in parallel with everything else.** It is seventh in logical dependency and first in calendar time. It relieves load immediately and starts the trend series against which every later claim of improvement is checked. Skip it and the results read has nothing to read.
+**In every case, the operating layer is stood up on day one, in parallel with everything else.** It is sixth in logical dependency and first in calendar time. It relieves load immediately and starts the trend series against which every later claim of improvement is checked. Skip it and the results read has nothing to read.
+
+**The two standards split at a real seam, not an arbitrary one.** The architecture standard answers *what the work is and who decides* — a design question, answerable before any tooling exists. The executor standard answers *who performs it and how much it may decide alone* — an assignment question, answerable only against what is approved today, and re-answered every quarter as evidence accrues. The design does not change when the answer to the second question does. That is the whole point of the split, and of the specification discipline underneath it.
 
 ## How to use (any assistant — Copilot, Claude, ChatGPT)
 
-**The standard** is reference: attach it and ask for a specific procedure, or paste the relevant Part. It is written to be executed rather than admired, so a request like "score these subfunctions against Part 4.1 and apply both overrides" is the intended mode of use.
+**The two standards** are reference: attach one and ask for a specific procedure, or paste the relevant Part. They are written to be executed rather than admired, so a request like "score these subfunctions against §1 of the executor standard and apply both hard overrides" is the intended mode of use. Attach only the one you need — each is sized to be held whole.
 
 **The two processes** are staged prompts. Two ways to run them: paste the whole file and say *"follow this process; start at Stage 1"*, or run stage by stage in separate prompts with the session state header at the top of each. Each stage ends with a self-check table and waits for approval before the next one. A half-finished process is a legitimate state — park it, come back, resume with the header.
 
