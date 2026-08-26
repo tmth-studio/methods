@@ -34,6 +34,13 @@ straight into the DATA sections.
 | INCENTIVE TESTING STANDARD — two-sided OCV application for offers: pin V/C by design, B as discriminator, observed-state vs propensity targeting (base-rate arithmetic), category entry point mapping (derive the events; retrieval vs conversion boundary), pre-registered decision rules, cheapest-alternative benchmark, event windows (lead time, not exclusivity — the two latencies that decide whether an event-triggered offer lands), calibration loop, lint rules I1–I14 | `incentive-testing-standard.md` | reference |
 | GUIDED INCENTIVE TEST workbook (8 steps: behaviour frame → offer scoring + CEP map → per-1,000 banded costing → data register → experiment design → pre-registration → read against registration → calibrate and bank parameters) | `Incentive_Test_Workbook.docx` | filled workbook: scored offer, registered test, calibrated B + deadweight |
 
+| ORGANISATION ARCHITECTURE STANDARD — what an operating model is made of and how to build one outside-in: the two units of design (scope = whole organisation, specification = subfunction), the seven-step sequence, the nine-field specification set and the stranger test, executor assignment with an agent-readiness rubric, graduated autonomy, three-tier measurement, ten failure modes, lint rules O1–O28 | `organisation-architecture-standard.md` | reference |
+| CURRENT-STATE DIAGNOSIS process for any LLM, no code interpreter needed — 8 stages: playback gate → evidence register → six-dimension baseline → routine capture → gap table rated by blocking power → dated before-picture → sequencing → handoff. Structural-never-personal rule, lint rules D1–D14 | `current-state-diagnosis-process.md` | baseline, gap table, sequence — in-chat |
+| OPERATING-MODEL DESIGN process for any LLM — 10 stages: playback gate → mandate → function map → subfunction specs → executor assignment → operating layer → alignment gate → target model document → pilot → results read and migration sequence. Placeholders-never-inventions rule, lint rules M1–M28 | `operating-model-design-process.md` | target model, specs, pilot read, migration sequence — in-chat |
+
+The three architecture documents sequence together (diagnose → design → stand up);
+`README-architecture.md` is the pack's own index and explains how they hand off.
+
 ## How to use (Copilot, Claude, ChatGPT — any assistant with a code interpreter)
 
 **Workbooks:** attach one and work through it in conversation, step by step.
