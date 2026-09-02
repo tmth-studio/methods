@@ -1,8 +1,8 @@
-# The Calmly Resolve Assessment Methodology — Standard v1.0
+# The Calmly Resolve Assessment Methodology — Standard v1.1
 
-**Published 22 August 2026 · Tough Minds, Tender Hearts Ltd · Calmly Resolve**
+**Published 22 August 2026 · v1.1, 2 September 2026 · Tough Minds, Tender Hearts Ltd · Calmly Resolve**
 
-This standard defines how Calmly Resolve assesses individual consumer disputes. It is published so that any qualifying independent institution can train on it, endorse assessments against it, and audit conformance to it. Endorsement under this standard covers **method-conformance** — that the methodology was followed — never the outcome of an individual assessment.
+This standard defines how Calmly Resolve assesses individual consumer disputes. It is published so that anyone — a party, a funder, a court, an auditor — can check an assessment against it. Conformance under this standard means **the methodology was followed**; it never warrants the outcome of an individual assessment. Independence is carried by publication, simultaneous disclosure and an independent check of the published record (§4), not by an endorsing institution.
 
 ---
 
@@ -40,16 +40,19 @@ Every admitted case receives an EV report with these sections, in order:
 5. **Liability** — the basis in the applicable rules (for UK consumer cases, typically the Consumer Rights Act 2015 and the contract terms), the reference class used, and the conclusion, with the determinative evidence named.
 6. **Quantum** — a central figure and a range, with the basis stated (price paid, cost to cure, part-performance).
 7. **Settlement recommendation** — a figure and a window, with one line on why it lands inside both parties' realistic outcomes.
-8. **Methodology and endorsement statement.**
+8. **Methodology and conformance statement** — the standard version applied, and the conformance checklist (§6) completed.
 
 **Reference classes.** Liability and quantum judgements are anchored to a reference class — dispute type crossed with value band — carrying documented base rates from resolved cases. Reference-class tables are maintained centrally and updated only from coded outcomes (§5).
 
-## 4 · Independence — endorsement and disclosure
+## 4 · Independence — publication, disclosure and the checked record
 
-Two mechanisms carry the independence of an assessment:
+Three mechanisms carry the independence of an assessment:
 
-1. **Independent endorsement.** A qualifying institution — independent of the parties and of the case outcome — countersigns each report for method-conformance against this standard. The endorser's duty is to the standard, not to any party.
+1. **Published standard.** This document is public and versioned. Every report states the version it was produced under, so any reader can test the report against the standard without relying on the assessor.
 2. **Both-parties disclosure.** The full report is disclosed to both parties simultaneously. Neither side receives a different document. The report is the shared basis for settlement.
+3. **Checked record.** The calibration record (§5) — predicted against realised outcomes by reference class — is published, and is checked periodically by an independent accountant under agreed-upon procedures (ISRS 4400) covering completeness of coding and the arithmetic of the published variance figures. The check covers the record, never an individual valuation.
+
+No institution countersigns individual reports. Version 1.0 of this standard provided for institutional endorsement of each report; that provision is withdrawn in v1.1.
 
 ## 5 · Calibration — the outcome loop
 
@@ -57,7 +60,7 @@ Every closed case is coded against its intake state within five working days: ev
 
 ## 6 · Conformance
 
-An assessment conforms to this standard when: the case was in scope (§1); the gate was applied as specified with the coding discipline (§2); the report contains all eight sections with citations (§3); endorsement and simultaneous disclosure occurred (§4); and the outcome was coded (§5). An endorsing institution may audit any assessment against this checklist.
+An assessment conforms to this standard when: the case was in scope (§1); the gate was applied as specified with the coding discipline (§2); the report contains all eight sections with citations (§3); the version was stated and simultaneous disclosure occurred (§4); and the outcome was coded (§5). Anyone may audit any assessment against this checklist.
 
 ---
 
