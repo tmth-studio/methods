@@ -52,7 +52,7 @@ Three mechanisms carry the independence of an assessment:
 2. **Both-parties disclosure.** The full report is disclosed to both parties simultaneously. Neither side receives a different document. The report is the shared basis for settlement.
 3. **Checked record.** The calibration record (§5) — predicted against realised outcomes by reference class — is published, and is checked periodically by an independent accountant under agreed-upon procedures (ISRS 4400) covering completeness of coding and the arithmetic of the published variance figures. The check covers the record, never an individual valuation.
 
-No institution countersigns individual reports. Version 1.1 of this standard provided for institutional endorsement of each report; that provision is withdrawn in v1.1.
+No institution countersigns individual reports. Version 1.0 of this standard provided for institutional endorsement of each report; that provision is withdrawn in v1.1.
 
 ## 5 · Calibration — the outcome loop
 
@@ -64,4 +64,4 @@ An assessment conforms to this standard when: the case was in scope (§1); the g
 
 ---
 
-*Version 1.1 — first published 22 August 2026. Changes to this standard are versioned; assessments state the version they were prepared under.*
+*Version 1.1, 2 September 2026 (v1.0 first published 22 August 2026). Changes to this standard are versioned; assessments state the version they were prepared under.*
