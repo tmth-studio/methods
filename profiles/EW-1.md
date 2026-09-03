@@ -39,11 +39,25 @@ The six shares sum to 100%. A further deduction of 3.2% of gross applies as a fo
 | Settles before issue | 0.450 | Researched, bracketed | Specimen claim file SP-007, 26 Aug 2026 |
 | Issued and resolved, as a share of issued claims | 0.280 | Researched, residual | The residual of the official flows |
 | Default judgment, as a share of issued money claims | 0.610 | Researched | MoJ Civil Justice Statistics Quarterly, official range 60–64% |
-| Defended, as a share of issued claims | 0.110 | Researched — **two readings, see below** | MoJ Civil Justice Statistics Quarterly, Jan–Mar 2026 |
+| Defended, as a share of issued **money** claims | 0.110 | Researched | MoJ Civil Justice Statistics Quarterly, Jan–Mar 2026; corroborated by the MoJ money-claim cohort tool |
 | Defended claims that settle | 0.800 | Researched | HMCTS small claims mediation data |
 | Tried claims that succeed | 0.800 | Inference | Not a published figure |
 
-**Named disagreement in the record.** The waterfall model reads the defence rate as 51,000 defences on 450,000 claims in Jan–Mar 2026, which is 11.0%. The C3 re-run of 2 September 2026 reads the same quarter as 72,000 defended claims on 527,000 claims received, which is 13.7%. Both cite the same publication. The tree above uses 11.0%. The difference is open, and it is listed in the open items at the end of this file.
+**The defence rate — resolved 3 September 2026.** The record carried two readings. They are both real, they come from the same publication, and they are percentages of different things. Stating the denominator settles it.
+
+| Reading | Arithmetic | What it is the rate of | Status |
+|---|---|---|---|
+| **11.3%** | 51,000 money-claim defences ÷ 450,000 money claims issued, Jan–Mar 2026 | Defences on **money claims** | **The rate this profile uses.** The tree carries 0.110 |
+| 13.7% | 72,000 defended claims ÷ 527,000 County Court claims received, Jan–Mar 2026 | Defences on **all County Court claims**, money and damages together | Correct as a fact. Not used: it counts 16,000 damages-claim defences and other claim classes this profile does not admit |
+| 16.0% | 72,000 defended claims ÷ 450,000 money claims issued | Nothing | **Withdrawn.** It divides the all-claims count of defences by the money-claims count of issues. The two lines come from different populations, so the result is not a rate of anything |
+
+The published quarter reports 527,000 County Court claims received. Of those, 450,000 (85%) were money claims. It reports 72,000 claims defended in total. Of those, 51,000 were money-claim defences and 16,000 were damages-claim defences. Read 3 September 2026.
+
+**Why the money-claims reading is the one the tree needs.** The tree runs on money claims, and every other rate in it already uses that denominator — the default-judgment rate in entry 3 is a share of issued money claims. A defence rate taken across all claim types put into the same tree would count defences the tree has no issues for.
+
+**Independent corroboration, on a better construct.** The MoJ money-claim cohort tool follows every money claim issued in a year through to its end. That is what the tree models. The quarterly bulletin instead compares issues and defences arising in the same quarter, which is a flow ratio and not a cohort. The 2024 cohort gives 10.8% defended and the 2023 cohort 11.1%. The tree's 0.110 sits between them.
+
+**One arithmetic note, carried rather than corrected here.** 51,000 ÷ 450,000 is 11.3%, and the record has been labelling that division 11.0%. The tree's 0.110 is right against the cohort readings and wrong against its own stated division by 0.3 of a point. Correcting the parameter is a model recompute and is held for the CEO's numbers approval; it is named here so no reader has to find it again.
 
 **Sources behind the tree.** MoJ Civil Justice Statistics Quarterly Q1 2026; Civil Justice Council enforcement report, April 2025; HMCTS small claims mediation data; BIS/IFF tribunal awards study 2013; HCEOA 2024; EX50A fees, November 2025 edition. All carried through specimen claim file SP-007, 26 August 2026.
 
@@ -196,6 +210,8 @@ These are the figures and lists the country-scoped sections of the standard read
 | Consumer-rights baseline for the liability section (§3) | Consumer Rights Act 2015, read with the contract terms — entry 7 |
 | Reference classes (§3, §5) | Held under EW-1 and updated only from outcomes coded under EW-1 |
 
+**The £500 value floor is not the whole admission test.** It is the methodological floor: below it, the cost of assessing and resolving a dispute exceeds any realistic recovery, and that holds for anyone applying this standard in England and Wales. Calmly Resolve additionally admits nothing below **£2,500 of face value** into its launch book. That second figure is a commercial choice about which cases the venture takes first. It is not a finding about which cases can be assessed. So it is not a rule of the standard, and not a rule of this profile. It is set and versioned in the Calmly Resolve venture design record, in the C4 admission rules. A case between £500 and £2,500 is assessable under this profile and is outside the launch book.
+
 ---
 
 ## Open items in this profile
@@ -204,11 +220,16 @@ These are stated rather than smoothed over. Each is a defect a reader is entitle
 
 1. **The fee table is verified in one band only.** Seven of the eight rows in entry 2 are reconstructed. They must be checked against EX50A before any live pricing.
 2. **Two editions of EX50A are mixed.** The table was built against the November 2025 edition and the effective date is the July 2026 edition. The two have not been reconciled row by row.
-3. **Two readings of the defence rate.** 11.0% and 13.7%, both cited to MoJ Q1 2026. The tree uses 11.0%. One of the two readings is wrong and the difference has not been resolved.
+3. ~~**Two readings of the defence rate.**~~ **Closed 3 September 2026.** Both readings are right and they measure different populations. The profile uses defences on money claims; the all-claims rate is recorded next to it with its denominator. See the resolution table in entry 1. A third reading, 16.0%, was found in use elsewhere in the venture record and is withdrawn: it divides an all-claims numerator by a money-claims denominator.
 4. **The recovery percentages in entry 1 are judgement-set.** Four of the five paying states recover at a judgement-set percentage. The shares of claims reaching each state are researched; what is collected there is mostly not.
 5. **Step 2 of the enforcement route is medium confidence.** The permission route on a change of party is carried with counsel ratification outstanding.
-6. **The launch book carries a minimum admitted face value of £2,500** in the venture record. That is a record-side commercial rule and it is not a rule of the standard or of this profile. It is named here so a reader does not mistake the £500 value floor for the whole admission test.
+
+The £2,500 launch-book minimum was listed here as item 6 and is now removed. It is not a defect and it was never a rule of this profile. It is set in the Calmly Resolve venture design record, in the C4 admission rules, and the cross-reference above the open items says so.
+
+*Item 3 closed 3 September 2026. Items 1, 2, 4 and 5 remain open.*
 
 ---
 
 *Profile EW-1, 3 September 2026. First published with standard v2.0. Profile versions and standard versions move independently. Reports already issued keep the profile version they were produced under.*
+
+*Amended the same day, before any report was issued under it. Two changes. The defence rate is resolved to a stated denominator (entry 1, open item 3). The £2,500 launch-book minimum moved from the open items to a cross-reference, because it belongs to the venture record. No parameter value changed, so the profile name does not change.*
