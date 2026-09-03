@@ -33,6 +33,8 @@ straight into the DATA sections.
 | GUIDED PROFIT POOL ADJACENCY workbook (11 steps: core-strength test → pool boundary → bottom-up sizing with verification status → distribution map → adjacency distance + ownership audit → leadership screen → Porter tests → measured leadership prize (return spread, share stability, fade) + leadership screen → Porter tests → verdicts, repeatable formula, refuse-to-play list → A1–A13 lint) — Zook + Gadiesh & Gilbert + Hamel & Prahalad + Greenwald & Mauboussin, TMTH synthesis | `Profit_Pool_Adjacency_Workbook.docx` | filled workbook: pool map, screened adjacency programme, refuse list |
 | INCENTIVE TESTING STANDARD — two-sided OCV application for offers: pin V/C by design, B as discriminator, observed-state vs propensity targeting (base-rate arithmetic), category entry point mapping (derive the events; retrieval vs conversion boundary), pre-registered decision rules, cheapest-alternative benchmark, event windows (lead time, not exclusivity — the two latencies that decide whether an event-triggered offer lands), calibration loop, lint rules I1–I14 | `incentive-testing-standard.md` | reference |
 | GUIDED INCENTIVE TEST workbook (8 steps: behaviour frame → offer scoring + CEP map → per-1,000 banded costing → data register → experiment design → pre-registration → read against registration → calibrate and bank parameters) | `Incentive_Test_Workbook.docx` | filled workbook: scored offer, registered test, calibrated B + deadweight |
+| ASSESSMENT METHODOLOGY STANDARD (Calmly Resolve) — how an individual consumer dispute is assessed: scope, the issue-bearing evidence gate with two-pass coding, the eight-section expert valuation report, independence by publication + simultaneous disclosure + an accountant's check of the record, the calibration loop, the conformance checklist, and the jurisdiction profile the country-scoped sections read | `calmly-assessment-methodology-standard.md` | reference — v2.0 |
+| JURISDICTION PROFILE — England and Wales: path tree, fee schedule, undefended-judgment rate, enforcement route, limitation by claim class, solvency registers, consumer-rights baseline, card-rights baseline | `profiles/EW-1.md` | reference — EW-1 |
 
 | ORGANISATION ARCHITECTURE STANDARD — what an operating model is made of and how to build one outside-in: the two units of design (scope = whole organisation, specification = subfunction), the seven-step sequence, the nine-field specification set and the stranger test, decision rights and the three authorities, three-tier measurement derived from the mandate, who owns the model, ten failure modes with controls, lint rules O1–O25 | `organisation-architecture-standard.md` | reference |
 | EXECUTOR ASSIGNMENT STANDARD — who performs a specified subfunction and how much it may decide: the readiness rubric and its hard overrides, the splitting rule, the four-rung executor ladder with promotion and demotion gates, the test protocol, graduated autonomy (act-then-log / escalate-first / never-delegate) and the widening rule, worked example, lint rules E1–E16 | `executor-assignment-standard.md` | reference |
@@ -41,6 +43,13 @@ straight into the DATA sections.
 
 The four architecture documents sequence together (diagnose → design → assign executors → stand up);
 `README-architecture.md` is the pack's own index and explains how they hand off.
+
+**A jurisdiction profile** is the country half of the assessment standard: a named,
+versioned file holding the eight inputs that change at a border — path tree, fee
+schedule, undefended-judgment rate, enforcement route, limitation, solvency
+registers, consumer-rights baseline, card-rights baseline — so the standard's
+method can be read in one country without carrying another country's numbers.
+The standard and the profile are cited together as `v2.0 / EW-1`.
 
 ## How to use (Copilot, Claude, ChatGPT — any assistant with a code interpreter)
 
